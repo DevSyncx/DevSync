@@ -10,6 +10,7 @@ import SignUp from "./pages/SignUp";
 import { ToastContainer, toast } from "react-toastify";
 import { useEffect, useState } from "react";
 import Loader from "./Components/Loader/Loader";
+import NotFound from "./Components/NotFound";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -57,6 +58,7 @@ function App() {
         />
 
         <Route path="/login" element={<SignUp />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   ) : (
