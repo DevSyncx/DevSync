@@ -1,5 +1,5 @@
 "use client";
-import React, { JSX, useState } from "react";
+import React, { JSX, useContext, useState } from "react";
 import {
   motion,
   AnimatePresence,
@@ -7,6 +7,10 @@ import {
   useMotionValueEvent,
 } from "motion/react";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
+import { AppContext } from "@/Context/AppContext";
+
+
 
 
 export const FloatingNav = ({
@@ -40,6 +44,9 @@ export const FloatingNav = ({
       }
     }
   });
+  const navigate = useNavigate()
+
+const {token, profileName} = useContext(AppContext)
 
   return (
     <AnimatePresence mode="wait">
@@ -72,10 +79,20 @@ export const FloatingNav = ({
             <span className="hidden sm:block text-sm">{navItem.name}</span>
           </a>
         ))}
-        <button className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full">
-          <span>Login</span>
+        {
+          token ?<div className="flex text-center items-center">
+      <img
+      className="w-8"
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnFRPx77U9mERU_T1zyHcz9BOxbDQrL4Dvtg&s"
+        alt=""
+      />
+      <p className="text-xs text-center">{profileName}</p>
+    </div>: <button   className="border cursor-pointer text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full">
+          <span onClick={()=> navigate('/login')}>Login</span>
           <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
         </button>
+        }
+       
       </motion.div>
     </AnimatePresence>
   );
