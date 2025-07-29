@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Github, Home, Info, Sparkle } from "lucide-react";
 import { FloatingNav } from "../ui/floating-navbar";
+import { Phone } from "lucide-react";
 
 const navItems = [
   {
@@ -22,6 +23,12 @@ const navItems = [
     name: "Github",
     link: "https://github.com/DevSyncx/DevSync.git",
     icon: <Github className="h-4 w-4" />,
+  },
+  {
+    name: "Contact Us",
+    link: "#contact",
+    icon: <Phone className="h-4 w-4" />
+    ,
   },
 ];
 
