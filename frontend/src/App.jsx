@@ -8,9 +8,19 @@ import Footer from "./Components/footer";
 import ScrollRevealWrapper from "./Components/ui/ScrollRevealWrapper";
 import SignUp from "./pages/SignUp";
 import { ToastContainer, toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import Loader from "./Components/Loader/Loader";
 
 function App() {
-  return (
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
+  return !isLoading ? (
     <div className="min-h-screen w-full bg-gradient-to-b from-[#E4ECF1] to-[#D2DEE7] scroll-smooth">
       <ToastContainer />
       <Routes>
@@ -49,6 +59,8 @@ function App() {
         <Route path="/login" element={<SignUp />} />
       </Routes>
     </div>
+  ) : (
+    <Loader />
   );
 }
 
