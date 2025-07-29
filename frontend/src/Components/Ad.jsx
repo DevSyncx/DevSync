@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { RocketIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { PointerHighlight } from "./ui/pointer-highlight";
+import { useNavigate } from "react-router-dom";
 
 // Generate random jitter for words
 const randomShift = () => ({
@@ -30,6 +31,8 @@ const AnimatedWords = ({ text }) => {
 };
 
 const AdStrip = () => {
+  const navigate = useNavigate();
+
   return (
     <motion.section
       initial={{ opacity: 0, y: 20 }}
@@ -39,7 +42,6 @@ const AdStrip = () => {
       className="w-full py-16 px-6 mt-12"
     >
       <div className="max-w-2xl mx-auto text-center flex flex-col items-center space-y-6">
-        
         {/* Top label */}
         <div className="flex items-center gap-3 justify-center">
           <RocketIcon className="w-8 h-8 text-blue-950" />
@@ -61,7 +63,7 @@ const AdStrip = () => {
         {/* CTA Button */}
         <PointerHighlight>
           <Button className="text-white bg-cyan-500 hover:bg-cyan-600 px-6 py-3 text-base rounded-xl shadow-lg transition">
-            Sign Up
+            <span onClick={() => navigate("/login")}>Sign Up</span>
           </Button>
         </PointerHighlight>
       </div>
