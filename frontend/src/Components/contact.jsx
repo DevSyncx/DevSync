@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { z } from 'zod';
-import { Toaster, toast } from 'react-hot-toast';
 import { Send, Cloud } from 'lucide-react'; // Import Send and Cloud icons from Lucide
 
 // Zod schema for form validation
@@ -44,7 +43,8 @@ const Contact = () => {
       contactFormSchema.parse(formData);
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      toast.success('Message sent successfully!');
+      // Replaced toast.success with alert
+      alert('Message sent successfully!');
       setFormData({ email: '', name: '', message: '' }); // Clear form
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -53,9 +53,11 @@ const Contact = () => {
           newErrors[err.path[0]] = err.message;
         });
         setErrors(newErrors);
-        toast.error('Please correct the errors in the form.');
+        // Replaced toast.error with alert
+        alert('Please correct the errors in the form.');
       } else {
-        toast.error('An unexpected error occurred.');
+        // Replaced toast.error with alert
+        alert('An unexpected error occurred.');
       }
     } finally {
       setIsSubmitting(false);
@@ -64,7 +66,7 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 font-inter rounded-3xl" style={{ backgroundColor:'rgb(217,228,236)' }}>
-      <Toaster position="top-center" reverseOrder={false} />
+      {/* Removed Toaster component */}
 
       {/* Define keyframes for animations */}
       <style>

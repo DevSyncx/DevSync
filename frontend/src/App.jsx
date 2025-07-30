@@ -7,7 +7,7 @@ import AdStrip from "./Components/Ad";
 import { FeaturesSection } from "./Components/Features";
 import Footer from "./Components/footer";
 import ScrollRevealWrapper from "./Components/ui/ScrollRevealWrapper";
-import { Toaster } from "sonner";
+
 
 function App() {
   return (
@@ -40,7 +40,7 @@ function App() {
         </div>
         <ScrollRevealWrapper delay={0.2}>
         <div id="contact">
-        <Toaster position="top-center" />
+       
           <Contact/>
         </div>
         </ScrollRevealWrapper>
