@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Github, Home, Info, Sparkle, Mail, Phone } from "lucide-react";
+import { Github, Home, Info, Sparkle, Mail, Phone } from "lucide-react"; // Ensure all necessary icons are imported
 import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import { FloatingNav } from "../ui/floating-navbar"; // Ensure this import path is correct for .jsx or .tsx
 
@@ -23,9 +23,9 @@ const navItems = [
     icon: <Info className="h-4 w-4" />,
   },
   {
-    name: "Contact Us",
+    name: "Contact Us", // Resolved to keep this entry
     to: "/contact", // Path for react-router-dom
-    icon: <Phone className="h-4 w-4" />,
+    icon: <Phone className="h-4 w-4" />, // Using Phone icon for Contact
   },
   {
     name: "Github",
