@@ -75,7 +75,9 @@ Whether you're preparing for internships, building a personal brand, or just sta
 
 ## 🛠️ Setup & Installation
 
-### 1. Clone the Repository
+### 1. Fork the Repository
+
+### 2. Clone the Repository
 
 ```bash
 git clone https://github.com/your-username/DevSync.git
@@ -83,7 +85,7 @@ cd DevSync
 
 ```
 
-### 2. Setup Frontend
+### 3. Setup Frontend
 ```bash 
 #move into the frontend directory
 cd frontend
@@ -94,7 +96,7 @@ npm run dev
 ```
 Your frontend app should now be running at: http://localhost:5173
 
-### 3. Setup backtend
+### 4. Setup backtend
 ```bash 
 #move into the backend directory
 cd backend
@@ -109,7 +111,6 @@ Your frontend app should now be running at: http://localhost:5000
 ```
 ## 📁 Folder Structure
 
-```text
 DevSync/
 ├── client/                # Frontend (React + Shadcn UI)
 ├── server/                # Backend (Node.js + Express)

@@ -1,16 +1,28 @@
 // src/App.jsx
-import React, { useState } from "react";
-import Hero from "./Components/Hero.jsx"; // Added .jsx extension
-import Navbar from "./Components/Navbar/Navbar.jsx"; // Added .jsx extension
-import About from "./Components/About.jsx"; // Added .jsx extension
-import AdStrip from "./Components/Ad.jsx"; // Added .jsx extension
-import { FeaturesSection } from "./Components/Features.jsx"; // Added .jsx extension
-import Footer from "./Components/footer.jsx"; // Added .jsx extension
-import ScrollRevealWrapper from "./Components/ui/ScrollRevealWrapper.jsx"; // Added .jsx extension
+import React, { useState, useEffect } from "react"; // Added useEffect
+import Hero from "./Components/Hero.jsx";
+import Navbar from "./Components/Navbar/Navbar.jsx";
+import About from "./Components/About.jsx";
+import AdStrip from "./Components/Ad.jsx";
+import { FeaturesSection } from "./Components/Features.jsx";
+import Footer from "./Components/footer.jsx";
+import ScrollRevealWrapper from "./Components/ui/ScrollRevealWrapper.jsx";
+import Loader from "./Components/ui/Loader.tsx"; // Changed to .tsx as per your Loader file
 
 function App() {
-  // State to manage the current active page, initialized to 'home'.
+  // State to manage initial loading animation
+  const [loading, setLoading] = useState(true);
+  // State to manage the current active page for navigation
   const [currentPage, setCurrentPage] = useState('home');
+
+  // Effect to simulate initial app/data loading from the main branch's changes
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000); // adjust delay if needed
+
+    return () => clearTimeout(timer);
+  }, []);
 
   /**
    * Handles changing the current page displayed in the application.
@@ -65,6 +77,15 @@ function App() {
         );
     }
   };
+
+  // Conditional rendering for the loading screen
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#E4ECF1]">
+        <Loader size="lg" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-[#E4ECF1] to-[#D2DEE7] scroll-smooth overflow-hidden">

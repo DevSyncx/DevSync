@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Github, Home, Info, Sparkle } from "lucide-react";
-import { FloatingNav } from "../ui/floating-navbar";
+import { FloatingNav } from "../ui/floating-navbar"; // Ensure this import path is correct for .jsx or .tsx
 
 // Define navigation items.
 // 'page' property is used for internal, state-based navigation.
@@ -36,6 +36,7 @@ const navItems = [
  */
 const Navbar = ({ onPageChange }) => {
   const [showFloating, setShowFloating] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false); // Keep the menuOpen state from main branch
 
   // Effect to control the visibility of the floating navigation bar based on scroll.
   useEffect(() => {
@@ -48,19 +49,31 @@ const Navbar = ({ onPageChange }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Function to handle internal navigation clicks
+  const handleInternalNavigation = (page) => {
+    onPageChange(page); // Update App.jsx's state
+    setMenuOpen(false); // Close mobile menu on navigation
+
+    // Update the URL without reloading the page
+    // For 'home', the path is '/', otherwise it's '/pageName'
+    const path = page === 'home' ? '/' : `/${page}`;
+    window.history.pushState(null, '', path);
+  };
+
   // Prepare navigation items specifically for the FloatingNav component.
-  // FloatingNav expects a 'link' property for its items.
-  // For internal pages, we provide an 'onClick' handler instead of a direct 'link'.
+  // FloatingNav expects a 'link' property for its items, but we've modified it
+  // to also accept an 'onClick' handler for internal navigation.
   const floatingNavItems = navItems.map(item => {
     if (item.link) {
       // If it's an external link, pass it as is.
       return item;
     } else {
       // For internal pages, create an item with an onClick handler.
-      // The 'link' property is omitted here, as FloatingNav will use the onClick.
+      // The 'link' property can be omitted or set to '#' in FloatingNav if needed,
+      // but the onClick will take precedence due to our FloatingNav logic.
       return {
         ...item,
-        onClick: () => onPageChange(item.page) // Call the parent's page change handler
+        onClick: () => handleInternalNavigation(item.page) // Use the new handler
       };
     }
   });
@@ -74,7 +87,9 @@ const Navbar = ({ onPageChange }) => {
             <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#2E3A59] to-[#2E3A59]">
               DevSync
             </h1>
-            <nav className="flex gap-6">
+
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex space-x-8">
               {navItems.map((item) => (
                 // Render either an anchor tag for external links
                 // or a button for internal page changes.
@@ -92,7 +107,7 @@ const Navbar = ({ onPageChange }) => {
                 ) : (
                   <button
                     key={item.name}
-                    onClick={() => onPageChange(item.page)} // Trigger page change in App.jsx
+                    onClick={() => handleInternalNavigation(item.page)} // Use the new handler
                     className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200 bg-transparent border-none cursor-pointer"
                   >
                     {item.icon}
@@ -101,7 +116,46 @@ const Navbar = ({ onPageChange }) => {
                 )
               ))}
             </nav>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="text-[#2E3A59] font-semibold text-base"
+              >
+                {menuOpen ? "Close" : "Menu"} {/* Toggle text based on state */}
+              </button>
+            </div>
           </div>
+
+          {/* Mobile Navigation Menu (Conditional Rendering) */}
+          {menuOpen && (
+            <div className="md:hidden mt-4 flex flex-col gap-3 px-4 pb-4">
+              {navItems.map((item) => (
+                item.link ? (
+                  <a
+                    key={item.name}
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                  >
+                    {item.icon}
+                    {item.name}
+                  </a>
+                ) : (
+                  <button
+                    key={item.name}
+                    onClick={() => handleInternalNavigation(item.page)} // Use the new handler
+                    className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200 bg-transparent border-none cursor-pointer"
+                  >
+                    {item.icon}
+                    {item.name}
+                  </button>
+                )
+              ))}
+            </div>
+          )}
         </header>
       )}
 
