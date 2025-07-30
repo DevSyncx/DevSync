@@ -1,21 +1,21 @@
 // src/App.jsx
-import React, { useState, useEffect } from "react"; // Added useEffect
+import React, { useState, useEffect } from "react";
+import { Routes, Route } from 'react-router-dom'; // Import Routes and Route
 import Hero from "./Components/Hero.jsx";
 import Navbar from "./Components/Navbar/Navbar.jsx";
 import About from "./Components/About.jsx";
+import Contact from "./Components/Contact.jsx"; // Ensure this path is correct
 import AdStrip from "./Components/Ad.jsx";
 import { FeaturesSection } from "./Components/Features.jsx";
 import Footer from "./Components/footer.jsx";
 import ScrollRevealWrapper from "./Components/ui/ScrollRevealWrapper.jsx";
-import Loader from "./Components/ui/Loader.tsx"; // Changed to .tsx as per your Loader file
+import Loader from "./Components/ui/Loader.tsx"; // Ensure this path is correct for your Loader file
 
 function App() {
-  // State to manage initial loading animation
+  // Keep loading state as it's independent of routing method
   const [loading, setLoading] = useState(true);
-  // State to manage the current active page for navigation
-  const [currentPage, setCurrentPage] = useState('home');
 
-  // Effect to simulate initial app/data loading from the main branch's changes
+  // Effect to simulate initial app/data loading
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -23,60 +23,6 @@ function App() {
 
     return () => clearTimeout(timer);
   }, []);
-
-  /**
-   * Handles changing the current page displayed in the application.
-   * Scrolls to the top of the window for a smooth transition.
-   * @param {string} page - The identifier of the page to navigate to ('home', 'features', 'about').
-   */
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-    // Scroll to the top of the window when navigating to a new page.
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  /**
-   * Renders the component corresponding to the current active page.
-   * Wraps components in ScrollRevealWrapper for animation effects.
-   * Includes AdStrip only on the home page as per original structure.
-   */
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'home':
-        return (
-          <>
-            <ScrollRevealWrapper>
-              <Hero />
-            </ScrollRevealWrapper>
-            <ScrollRevealWrapper delay={0.1}>
-              <AdStrip />
-            </ScrollRevealWrapper>
-          </>
-        );
-      case 'features':
-        return (
-          <ScrollRevealWrapper delay={0.2}>
-            <FeaturesSection />
-          </ScrollRevealWrapper>
-        );
-      case 'about':
-        return (
-          <About />
-        );
-      default:
-        // Default to home page if an unknown page is requested.
-        return (
-          <>
-            <ScrollRevealWrapper>
-              <Hero />
-            </ScrollRevealWrapper>
-            <ScrollRevealWrapper delay={0.1}>
-              <AdStrip />
-            </ScrollRevealWrapper>
-          </>
-        );
-    }
-  };
 
   // Conditional rendering for the loading screen
   if (loading) {
@@ -89,12 +35,31 @@ function App() {
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-[#E4ECF1] to-[#D2DEE7] scroll-smooth overflow-hidden">
-      {/* Navbar component receives the handlePageChange function as a prop */}
-      <Navbar onPageChange={handlePageChange} />
+      {/* Navbar component - no longer needs onPageChange prop directly */}
+      <Navbar />
 
-      {/* Main content area where different pages are rendered */}
+      {/* Main content area where different pages are rendered using React Router */}
       <main className="relative z-10 px-4 py-24">
-        {renderPage()} {/* Dynamically render the current page */}
+        <Routes>
+          <Route path="/" element={
+            <>
+              <ScrollRevealWrapper><Hero /></ScrollRevealWrapper>
+              <ScrollRevealWrapper delay={0.1}><AdStrip /></ScrollRevealWrapper>
+            </>
+          } />
+          <Route path="/features" element={
+            <ScrollRevealWrapper delay={0.2}><FeaturesSection /></ScrollRevealWrapper>
+          } />
+          <Route path="/about" element={
+            <About />
+          } />
+          <Route path="/contact" element={
+            <ScrollRevealWrapper delay={0.2}><Contact /></ScrollRevealWrapper>
+          } />
+          {/* You can add a 404 Not Found page here if desired */}
+          {/* <Route path="*" element={<div>404 Not Found</div>} /> */}
+        </Routes>
+        {/* Footer component - no longer needs onPageChange prop directly */}
         <Footer />
       </main>
     </div>

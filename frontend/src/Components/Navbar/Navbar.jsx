@@ -1,29 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { Github, Home, Info, Sparkle } from "lucide-react";
+import { Github, Home, Info, Sparkle, Mail, Phone } from "lucide-react";
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import { FloatingNav } from "../ui/floating-navbar"; // Ensure this import path is correct for .jsx or .tsx
 
 // Define navigation items.
-// 'page' property is used for internal, state-based navigation.
+// 'to' property is used for react-router-dom Link component.
 // 'link' property is used for external URLs.
 const navItems = [
   {
     name: "Home",
-    page: "home", // Internal page identifier for App.jsx state
+    to: "/", // Path for react-router-dom
     icon: <Home className="h-4 w-4" />,
   },
   {
     name: "Features",
-    page: "features", // Internal page identifier
+    to: "/features", // Path for react-router-dom
     icon: <Sparkle className="h-4 w-4" />,
   },
   {
     name: "About us",
-    page: "about", // Internal page identifier
+    to: "/about", // Path for react-router-dom
     icon: <Info className="h-4 w-4" />,
   },
   {
+    name: "Contact Us",
+    to: "/contact", // Path for react-router-dom
+    icon: <Phone className="h-4 w-4" />,
+  },
+  {
     name: "Github",
-    link: "https://github.com/DevSyncx/DevSync.git", // External link
+    link: "https://github.com/DevSyncx/DevSync.git", // External link still uses 'link'
     icon: <Github className="h-4 w-4" />,
   },
 ];
@@ -31,49 +37,31 @@ const navItems = [
 /**
  * Navbar component responsible for site navigation.
  * It renders a fixed header and a floating navigation bar based on scroll position.
- * @param {object} props - Component props.
- * @param {function} props.onPageChange - Callback function to change the current page in App.jsx.
+ * It now uses react-router-dom's Link component for internal navigation.
  */
-const Navbar = ({ onPageChange }) => {
+const Navbar = () => { // Removed onPageChange prop
   const [showFloating, setShowFloating] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false); // Keep the menuOpen state from main branch
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // Effect to control the visibility of the floating navigation bar based on scroll.
   useEffect(() => {
     const handleScroll = () => {
-      // Show floating nav if scrolled more than 100px from the top.
       setShowFloating(window.scrollY > 100);
     };
     window.addEventListener("scroll", handleScroll);
-    // Cleanup the event listener on component unmount.
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Function to handle internal navigation clicks
-  const handleInternalNavigation = (page) => {
-    onPageChange(page); // Update App.jsx's state
-    setMenuOpen(false); // Close mobile menu on navigation
-
-    // Update the URL without reloading the page
-    // For 'home', the path is '/', otherwise it's '/pageName'
-    const path = page === 'home' ? '/' : `/${page}`;
-    window.history.pushState(null, '', path);
-  };
-
-  // Prepare navigation items specifically for the FloatingNav component.
-  // FloatingNav expects a 'link' property for its items, but we've modified it
-  // to also accept an 'onClick' handler for internal navigation.
+  // Prepare navigation items for FloatingNav.
+  // FloatingNav needs to be updated to use 'to' for internal links or 'link' for external.
+  // We'll pass 'to' as 'link' for FloatingNav's internal logic.
   const floatingNavItems = navItems.map(item => {
-    if (item.link) {
-      // If it's an external link, pass it as is.
+    if (item.link) { // External link
       return item;
-    } else {
-      // For internal pages, create an item with an onClick handler.
-      // The 'link' property can be omitted or set to '#' in FloatingNav if needed,
-      // but the onClick will take precedence due to our FloatingNav logic.
+    } else { // Internal link
       return {
         ...item,
-        onClick: () => handleInternalNavigation(item.page) // Use the new handler
+        link: item.to // Map 'to' to 'link' for FloatingNav's expected prop
       };
     }
   });
@@ -91,48 +79,7 @@ const Navbar = ({ onPageChange }) => {
             {/* Desktop Navigation */}
             <nav className="hidden md:flex space-x-8">
               {navItems.map((item) => (
-                // Render either an anchor tag for external links
-                // or a button for internal page changes.
-                item.link ? (
-                  <a
-                    key={item.name}
-                    href={item.link}
-                    target="_blank" // Open external links in a new tab
-                    rel="noopener noreferrer" // Security best practice
-                    className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
-                  >
-                    {item.icon}
-                    {item.name}
-                  </a>
-                ) : (
-                  <button
-                    key={item.name}
-                    onClick={() => handleInternalNavigation(item.page)} // Use the new handler
-                    className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200 bg-transparent border-none cursor-pointer"
-                  >
-                    {item.icon}
-                    {item.name}
-                  </button>
-                )
-              ))}
-            </nav>
-
-            {/* Mobile Menu Button */}
-            <div className="md:hidden">
-              <button
-                onClick={() => setMenuOpen(!menuOpen)}
-                className="text-[#2E3A59] font-semibold text-base"
-              >
-                {menuOpen ? "Close" : "Menu"} {/* Toggle text based on state */}
-              </button>
-            </div>
-          </div>
-
-          {/* Mobile Navigation Menu (Conditional Rendering) */}
-          {menuOpen && (
-            <div className="md:hidden mt-4 flex flex-col gap-3 px-4 pb-4">
-              {navItems.map((item) => (
-                item.link ? (
+                item.link ? ( // Check for external link
                   <a
                     key={item.name}
                     href={item.link}
@@ -143,15 +90,56 @@ const Navbar = ({ onPageChange }) => {
                     {item.icon}
                     {item.name}
                   </a>
-                ) : (
-                  <button
+                ) : ( // Use Link for internal navigation
+                  <Link
                     key={item.name}
-                    onClick={() => handleInternalNavigation(item.page)} // Use the new handler
-                    className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200 bg-transparent border-none cursor-pointer"
+                    to={item.to}
+                    className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                    onClick={() => setMenuOpen(false)} // Close mobile menu on click
                   >
                     {item.icon}
                     {item.name}
-                  </button>
+                  </Link>
+                )
+              ))}
+            </nav>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="text-[#2E3A59] font-semibold text-base"
+              >
+                {menuOpen ? "Close" : "Menu"}
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Navigation Menu (Conditional Rendering) */}
+          {menuOpen && (
+            <div className="md:hidden mt-4 flex flex-col gap-3 px-4 pb-4">
+              {navItems.map((item) => (
+                item.link ? ( // Check for external link
+                  <a
+                    key={item.name}
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                  >
+                    {item.icon}
+                    {item.name}
+                  </a>
+                ) : ( // Use Link for internal navigation
+                  <Link
+                    key={item.name}
+                    to={item.to}
+                    className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                    onClick={() => setMenuOpen(false)} // Close menu after selection
+                  >
+                    {item.icon}
+                    {item.name}
+                  </Link>
                 )
               ))}
             </div>
@@ -160,7 +148,6 @@ const Navbar = ({ onPageChange }) => {
       )}
 
       {/* Floating navigation bar, visible when scrolled down */}
-      {/* It receives the specially prepared floatingNavItems */}
       {showFloating && <FloatingNav navItems={floatingNavItems} />}
     </div>
   );
