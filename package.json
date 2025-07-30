@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "motion": "^12.23.6",
-    "react-router-dom": "^7.7.1"
-  }
-}
