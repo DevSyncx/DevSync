@@ -1,103 +1,36 @@
-// src/Components/FeaturesSectionDemo.jsx
-import { cn } from "@/lib/utils";
-import {
-  Activity,
-  Brain,
-  GitBranch,
-  Clock,
-  BookOpen,
-  MessageCircle,
-  TimerReset,
-  BarChart3,
-} from "lucide-react";
+// frontend/src/Components/Features.jsx
+import React from 'react';
+// Assuming the original content of your Features component is similar to this structure.
+// If your Features component has different content, make sure to preserve it.
 
-export function FeaturesSection() {
-  const features = [
-    {
-      title: "Unified Developer Dashboard",
-      description: "Track GitHub, LeetCode, Codeforces, and more from a single dashboard.",
-      icon: <Activity />,
-    },
-    {
-      title: "Smart Productivity Logs",
-      description: "Log tasks, wins, blockers, and progress with daily summaries.",
-      icon: <BookOpen />,
-    },
-    {
-      title: "Live Pomodoro Timer",
-      description: "Focus with an integrated Pomodoro and break cycle tracker.",
-      icon: <TimerReset />,
-    },
-    {
-      title: "Auto GitHub Sync",
-      description: "Sync contributions, commits, and streaks automatically.",
-      icon: <GitBranch />,
-    },
-    {
-      title: "DSA Progress Tracking",
-      description: "Keep tabs on your problem-solving journey across platforms.",
-      icon: <Brain />,
-    },
-    {
-      title: "Interactive Visualizations",
-      description: "Understand your productivity via dynamic graphs and charts.",
-      icon: <BarChart3 />,
-    },
-    {
-      title: "Community Collaboration",
-      description: "Connect, share logs, and grow together with other developers.",
-      icon: <MessageCircle />,
-    },
-    {
-      title: "Time Management Tools",
-      description: "Track how you spend your dev hours with real insights.",
-      icon: <Clock />,
-    },
-  ];
-
+const Features = () => {
   return (
-       <div id="features" className=" bg-[#101e35] border border-[#1c2e4a] rounded-3xl p-8 md:p-12 shadow-lg">
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 relative z-10 py-10 max-w-7xl mx-auto">
-      {features.map((feature, index) => (
-        <Feature key={feature.title} {...feature} index={index} />
-      ))}
-    </div>
-    </div>
-  );
-}
-
-const Feature = ({
-  title,
-  description,
-  icon,
-  index,
-}) => {
-  return (
-    <div
-      className={cn(
-        "flex flex-col lg:border-r py-10 relative group/feature dark:border-neutral-800",
-        (index === 0 || index === 4) && "lg:border-l dark:border-neutral-500",
-        index < 4 && "lg:border-b dark:border-neutral-800"
-      )}
-    >
-   {index < 4 ? (
-  <div className="opacity-0 hover:cursor-pointer" />
-) : (
-  <div className="opacity-0 hover:cursor-pointer" />
-)}
-
-      <div className="mb-4 relative z-10 px-10 text-blue-100 dark:text-neutral-400">
-        {icon}
+    <section id="features" className="py-20 bg-gray-900 text-white">
+      <div className="container mx-auto px-4 text-center">
+        <h2 className="text-4xl font-bold mb-12">Key Features</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          <div className="bg-gray-800 p-8 rounded-lg shadow-lg">
+            <h3 className="text-2xl font-semibold mb-4">Unified Dashboard</h3>
+            <p className="text-gray-400">
+              Track all your coding activity, tasks, and progress in one central place.
+            </p>
+          </div>
+          <div className="bg-gray-800 p-8 rounded-lg shadow-lg">
+            <h3 className="text-2xl font-semibold mb-4">Real-time Sync</h3>
+            <p className="text-gray-400">
+              Effortlessly sync data from various platforms like GitHub, Jira, and more.
+            </p>
+          </div>
+          <div className="bg-gray-800 p-8 rounded-lg shadow-lg">
+            <h3 className="text-2xl font-semibold mb-4">Insightful Analytics</h3>
+            <p className="text-gray-400">
+              Visualize your productivity trends and identify areas for improvement.
+            </p>
+          </div>
+        </div>
       </div>
-      <div className="text-lg font-bold mb-2 relative z-10 px-10">
-        <div className="absolute left-0 inset-y-0 h-6 group-hover/feature:h-8 w-1 rounded-tr-full rounded-br-full bg-neutral-300 dark:bg-blue-200 group-hover/feature:bg-blue-500 transition-all duration-200 origin-center" />
-        <span className="group-hover/feature:translate-x-2 transition duration-200 inline-block text-blue-100 dark:text-neutral-100">
-          {title}
-        </span>
-      </div>
-      <p className="text-sm text-blue-50 dark:text-neutral-300 max-w-xs relative z-10 px-10">
-        {description}
-      </p>
-    </div>
+    </section>
   );
 };
+
+export default Features; // This line is crucial for fixing the import error

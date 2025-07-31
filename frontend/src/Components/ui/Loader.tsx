@@ -1,29 +1,16 @@
-import React from "react";
-import { cn } from "@/lib/utils"; // if you have shadcn's `cn`, else remove
+// frontend/src/Components/ui/Loader.tsx
+import React from 'react';
 
-interface LoaderProps {
-  className?: string;
-  size?: "sm" | "md" | "lg";
-}
-
-const Loader = ({ className, size = "md" }: LoaderProps) => {
-  const sizes = {
-    sm: "h-4 w-4",
-    md: "h-6 w-6",
-    lg: "h-10 w-10",
-  };
-
+const Loader = () => {
   return (
-    <div className="flex items-center justify-center">
-      <div
-        className={cn(
-          "animate-spin rounded-full border-4 border-muted border-t-primary",
-          sizes[size],
-          className
-        )}
-      />
+    <div className="flex items-center justify-center min-h-screen bg-black">
+      <div className="relative">
+        <div className="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-200 animate-spin"></div>
+        <div className="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-500 animate-spin-reverse"></div>
+        <p className="absolute text-white text-lg font-semibold top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">Loading...</p>
+      </div>
     </div>
   );
 };
 
-export default Loader;
+export default Loader; // This line is crucial for fixing the import error

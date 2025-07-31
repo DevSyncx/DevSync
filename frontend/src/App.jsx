@@ -1,73 +1,50 @@
-// src/App.jsx
-import React, { useEffect, useState } from "react";
-import Hero from "./Components/Hero";
-import Navbar from "./Components/Navbar/Navbar";
-import About from "./Components/About";
-import Contact from "./Components/contact";
-import AdStrip from "./Components/Ad";
-import { FeaturesSection } from "./Components/Features";
-import Footer from "./Components/footer";
-import ScrollRevealWrapper from "./Components/ui/ScrollRevealWrapper";
-import Loader from "./Components/ui/Loader"; // ✅ Import the Loader
-
+// frontend/src/App.jsx
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Navbar } from './Components/Navbar/Navbar'; // Assuming Navbar is a named export
+import Footer from './Components/footer'; // Assuming Footer is a default export
+import Loader from './Components/ui/Loader'; // Assuming Loader is a default export
+import HomePage from './Pages/HomePage';
+import AboutPage from './Pages/AboutPage';
+import ContactPage from './Pages/ContactPage';
+import AdPage from './Pages/AdPage';
+import FeaturesPage from './Pages/FeaturesPage'; // Import the new FeaturesPage
+import NotFound from './Components/ui/NotFound';
 
 function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate initial app/data loading
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2000); // adjust delay if needed
+    }, 1500);
 
     return () => clearTimeout(timer);
   }, []);
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#E4ECF1]">
-        <Loader size="lg" />
-      </div>
-    );
+    return <Loader />;
   }
 
   return (
+    <Router>
+      <div className="min-h-screen flex flex-col bg-black text-white">
+        <Navbar />
 
-    <div className="min-h-screen w-full bg-gradient-to-b from-[#E4ECF1] to-[#D2DEE7] scroll-smooth overflow-hidden">
-      {/* Navbar */}
-      <Navbar />
-
-      {/* Main Content */}
-      <main className="relative z-10 px-4 py-24">
-        <ScrollRevealWrapper>
-          <div id="home">
-            <Hero />
-          </div>
-        </ScrollRevealWrapper>
-
-        <ScrollRevealWrapper delay={0.1}>
-          <AdStrip />
-        </ScrollRevealWrapper>
-
-        <ScrollRevealWrapper delay={0.2}>
-          <div id="features">
-            <FeaturesSection />
-          </div>
-        </ScrollRevealWrapper>
-
-        <div id="about">
-          <About />
-        </div>
-        <ScrollRevealWrapper delay={0.2}>
-        <div id="contact">
-       
-          <Contact/>
-        </div>
-        </ScrollRevealWrapper>
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/ad" element={<AdPage />} />
+            <Route path="/features" element={<FeaturesPage />} /> {/* Route for Features page */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </main>
 
         <Footer />
-      </main>
-    </div>
+      </div>
+    </Router>
   );
 }
 
