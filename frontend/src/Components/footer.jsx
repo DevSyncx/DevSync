@@ -1,68 +1,33 @@
-import { Github, Mail } from "lucide-react";
-import { Link } from "react-router-dom"; // or use `next/link` if using Next.js
+// frontend/src/Components/footer.jsx
+import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="bg-slate-900 rounded-lg text-white mt-32 pt-24 pb-10 px-6 md:px-12">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
-        {/* Brand */}
-        <div>
-          <h3 className="text-3xl font-bold mb-2 tracking-tight">DevSync</h3>
-          <p className="text-sm text-slate-300">
-            Stay ahead. Stay synced. Stay Dev.
-          </p>
+    <footer className="w-full bg-gray-950 text-neutral-400 py-8 mt-auto">
+      <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+        <div className="mb-4 md:mb-0">
+          <h3 className="text-xl font-bold text-white mb-2">DevSync</h3>
+          <p className="text-sm">Your all-in-one developer productivity dashboard.</p>
         </div>
-
-        {/* Navigation */}
-        <div>
-          <h4 className="text-lg font-semibold mb-3">Navigate</h4>
-          <ul className="space-y-2 text-sm text-slate-300">
-            <li><Link to="/" className="hover:text-white">Home</Link></li>
-            <li><Link to="/features" className="hover:text-white">Features</Link></li>
-            <li><Link to="/about" className="hover:text-white">About</Link></li>
-            <li><Link to="/contact" className="hover:text-white">Contact</Link></li>
-          </ul>
-        </div>
-
-        {/* Resources */}
-        <div>
-          <h4 className="text-lg font-semibold mb-3">Resources</h4>
-          <ul className="space-y-2 text-sm text-slate-300">
-            <li><a href="#" className="hover:text-white">Documentation</a></li>
-            <li><a href="#" className="hover:text-white">API Reference</a></li>
-            <li><a href="#" className="hover:text-white">Community</a></li>
-            <li><a href="#" className="hover:text-white">Support</a></li>
-          </ul>
-        </div>
-
-        {/* Contact & Social */}
-        <div>
-          <h4 className="text-lg font-semibold mb-3">Connect</h4>
-          <div className="flex items-center gap-4 mt-2">
-            <a
-              href="https://github.com/devsync-org"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-blue-400"
-            >
-              <Github className="w-5 h-5" />
-            </a>
-            <a
-              href="mailto:hello@devsync.com"
-              className="hover:text-blue-400"
-            >
-              <Mail className="w-5 h-5" />
-            </a>
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-8">
+          <div className="flex flex-col items-center md:items-start">
+            <h4 className="text-lg font-semibold text-white mb-2">Quick Links</h4>
+            <a href="/" className="hover:text-white transition-colors duration-200">Home</a>
+            <a href="/about" className="hover:text-white transition-colors duration-200">About</a>
+            <a href="/features" className="hover:text-white transition-colors duration-200">Features</a>
+          </div>
+          <div className="flex flex-col items-center md:items-start">
+            <h4 className="text-lg font-semibold text-white mb-2">Connect</h4>
+            <a href="/contact" className="hover:text-white transition-colors duration-200">Contact Us</a>
+            <a href="https://github.com/dhanaraj02/DevSync" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-200">GitHub</a>
           </div>
         </div>
       </div>
-
-      {/* Bottom Bar */}
-      <div className="mt-12 pt-6 border-t border-slate-700 text-center text-sm text-slate-400">
-        © {new Date().getFullYear()} DevSync. All rights reserved.
+      <div className="mt-8 text-center text-sm border-t border-gray-800 pt-4">
+        &copy; {new Date().getFullYear()} DevSync. All rights reserved.
       </div>
     </footer>
   );
 };
 
-export default Footer;
+export default Footer; // Ensure this line is present and correct
