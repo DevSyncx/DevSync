@@ -53,10 +53,10 @@ const AdStrip = () => {
           <AnimatedWords text="Supercharge your dev flow with DevSync 🚀" />
         </h2>
 
-        {/* Paragraph */}
-        <p className="text-xl text-slate-700">
+        {/* Paragraph - FIXED: Changed from <p> to <div> */}
+        <div className="text-xl text-slate-700">
           <AnimatedWords text="All your productivity tools. One powerful dashboard. No context switching." />
-        </p>
+        </div>
 
         {/* CTA Button */}
         <PointerHighlight>
