@@ -1,5 +1,6 @@
 // src/App.jsx
 import React, { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import Hero from "./Components/Hero";
 import Navbar from "./Components/Navbar/Navbar";
 import About from "./Components/About";
@@ -10,6 +11,10 @@ import Footer from "./Components/footer";
 import ScrollRevealWrapper from "./Components/ui/ScrollRevealWrapper";
 import Loader from "./Components/ui/Loader"; // ✅ Import the Loader
 
+import Login from "./Components/auth/Login";
+import Register from "./Components/auth/Register";
+import Profile from "./Components/profile/Profile";
+import ProtectedRoute from "./Components/auth/ProtectedRoute";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -31,6 +36,9 @@ function App() {
     );
   }
 
+}
+// Home component that contains the main landing page content
+function Home() {
   return (
 
     <div className="min-h-screen w-full bg-gradient-to-b from-[#E4ECF1] to-[#D2DEE7] scroll-smooth overflow-hidden">
@@ -71,4 +79,21 @@ function App() {
   );
 }
 
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route 
+        path="/profile" 
+        element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        } 
+      />
+    </Routes>
+  );
+}
 export default App;

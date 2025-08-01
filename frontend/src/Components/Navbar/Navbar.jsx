@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Github, Home, Info, Sparkle } from "lucide-react";
+import { Github, Home, Info, Sparkle, LogIn, UserCircle } from "lucide-react";
 import { FloatingNav } from "../ui/floating-navbar";
 import { Phone } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const navItems = [
   {
     name: "Home",
     link: "#home",
+    link: "/",
     icon: <Home className="h-4 w-4" />,
   },
   {
@@ -44,6 +46,8 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const isAuthenticated = localStorage.getItem('token') !== null;
+
   return (
     <div className="w-full font-sans">
       {!showFloating && (
@@ -73,6 +77,43 @@ const Navbar = () => {
               >
                 Menu
               </button>
+            </div>
+            <Link to="/" className="text-decoration-none">
+              <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#2E3A59] to-[#2E3A59]">
+                DevSync
+              </h1>
+            </Link>
+            <div className="flex items-center gap-6">
+              <nav className="flex gap-6">
+                {navItems.map((item) => (
+                  <a
+                    key={item.name}
+                    href={item.link}
+                    className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                  >
+                    {item.icon}
+                    {item.name}
+                  </a>
+                ))}
+              </nav>
+              <div className="border-l border-[#C5D7E5] h-6 mx-2"></div>
+              {isAuthenticated ? (
+                <Link
+                  to="/profile"
+                  className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                >
+                  <UserCircle className="h-4 w-4" />
+                  Profile
+                </Link>
+              ) : (
+                <Link
+                  to="/login"
+                  className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                >
+                  <LogIn className="h-4 w-4" />
+                  Login
+                </Link>
+              )}
             </div>
           </div>
 
