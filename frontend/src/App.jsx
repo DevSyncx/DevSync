@@ -9,6 +9,7 @@ import { FeaturesSection } from "./Components/Features";
 import Footer from "./Components/footer";
 import ScrollRevealWrapper from "./Components/ui/ScrollRevealWrapper";
 import Loader from "./Components/ui/Loader"; // ✅ Import the Loader
+import Pomodoro from "./Components/Pomodoro";
 
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
           <About />
         </div>
         <ScrollRevealWrapper delay={0.2}>
+         
         <div id="contact">
        
           <Contact/>
