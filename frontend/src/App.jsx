@@ -33,7 +33,7 @@ function App() {
 
   return (
 
-    <div className="min-h-screen w-full bg-gradient-to-b from-[#E4ECF1] to-[#D2DEE7] scroll-smooth overflow-hidden">
+    <div className="min-h-screen w-full scroll-smooth overflow-hidden bg-background text-foreground">
       {/* Navbar */}
       <Navbar />
 

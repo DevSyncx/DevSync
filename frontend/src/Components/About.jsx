@@ -6,7 +6,6 @@ import { Users2 } from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import { TracingBeam } from "./ui/tracing-beam";
 
-
 const aboutPoints = [
   {
     badge: "Unified Dashboard",
@@ -32,27 +31,25 @@ const aboutPoints = [
 
 const About = () => {
   return (
-    <section id ="about "className="w-full mt-24 px-4">
+    <section id="about" className="w-full mt-24 px-4 bg-background text-foreground">
       <TracingBeam className="px-4 md:px-10">
         <div className="max-w-3xl mx-auto antialiased pt-4 relative">
-          {/* Section Header */}
           <div className="flex items-center gap-3 mb-10">
             <Users2 className="text-blue-600 w-6 h-6" />
-            <h2 className="text-4xl font-bold text-slate-900">About DevSync</h2>
+            <h2 className="text-4xl font-bold text-slate-900 dark:text-slate-100">About DevSync</h2>
           </div>
 
-          {/* Tracing Points */}
           {aboutPoints.map((item, index) => (
             <div key={index} className="mb-12">
-              <span className="bg-black text-white rounded-full text-xs px-3 py-1 mb-3 inline-block tracking-wider uppercase">
+              <span className="bg-black text-white dark:bg-white dark:text-black rounded-full text-xs px-3 py-1 mb-3 inline-block tracking-wider uppercase">
                 {item.badge}
               </span>
 
-              <p className={twMerge("text-xl font-semibold mb-2 text-slate-900")}>
+              <p className={twMerge("text-xl font-semibold mb-2 text-slate-900 dark:text-slate-100")}>
                 {item.title}
               </p>
 
-              <p className="text-sm text-slate-600 leading-relaxed prose dark:prose-invert">
+              <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed prose dark:prose-invert">
                 {item.description}
               </p>
             </div>

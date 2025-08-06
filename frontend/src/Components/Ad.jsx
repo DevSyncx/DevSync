@@ -1,4 +1,3 @@
-// src/Components/AdStrip.jsx
 import { motion } from "framer-motion";
 import { RocketIcon } from "lucide-react";
 import { Button } from "./ui/button";
@@ -42,19 +41,19 @@ const AdStrip = () => {
         
         {/* Top label */}
         <div className="flex items-center gap-3 justify-center">
-          <RocketIcon className="w-8 h-8 text-blue-950" />
-          <span className="uppercase text-sm tracking-wide text-blue-900">
+          <RocketIcon className="w-8 h-8 text-blue-950 dark:text-blue-300" />
+          <span className="uppercase text-sm tracking-wide text-blue-900 dark:text-blue-300">
             Built for Developers
           </span>
         </div>
 
         {/* Heading */}
-        <h2 className="text-4xl md:text-6xl font-bold leading-snug text-slate-900">
+        <h2 className="text-4xl md:text-6xl font-bold leading-snug text-slate-900 dark:text-slate-100">
           <AnimatedWords text="Supercharge your dev flow with DevSync 🚀" />
         </h2>
 
-        {/* Paragraph - FIXED: Changed from <p> to <div> */}
-        <div className="text-xl text-slate-700">
+        {/* Paragraph */}
+        <div className="text-xl text-slate-700 dark:text-slate-300">
           <AnimatedWords text="All your productivity tools. One powerful dashboard. No context switching." />
         </div>
 
