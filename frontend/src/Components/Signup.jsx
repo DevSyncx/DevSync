@@ -46,7 +46,6 @@ const Signup = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    
     const error = validateField(name, value);
     setErrors(prev => ({ ...prev, [name]: error }));
 
@@ -84,40 +83,35 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#A4C7E6] flex items-center justify-center p-4 relative">
-      {/* Back to Home Button - Positioned in left corner as requested */}
+    <div className="min-h-screen bg-[#A4C7E6] dark:bg-background flex items-center justify-center p-4 relative">
       <Link
         to="/"
-        className="fixed top-6 left-6 z-10 flex items-center gap-2 text-[#1D3557] hover:text-[#1D3557]/80 transition duration-200 bg-white/80 backdrop-blur-sm px-3 py-2 rounded-lg shadow-sm"
+        className="fixed top-6 left-6 z-10 flex items-center gap-2 text-[#1D3557] dark:text-foreground hover:opacity-80 transition duration-200 bg-white/80 dark:bg-muted backdrop-blur-sm px-3 py-2 rounded-lg shadow-sm"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to Home
       </Link>
 
       <div className="w-full max-w-md">
-        {/* Card using homepage styling */}
-        <div className="bg-card backdrop-blur-xl border border-border rounded-3xl shadow-xl p-8">
-          {/* Header - Using homepage text colors */}
+        <div className="bg-card dark:bg-card border border-border rounded-3xl shadow-xl p-8">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-extrabold text-[#1D3557] mb-2 tracking-tight">
+            <h1 className="text-4xl font-extrabold text-[#1D3557] dark:text-primary mb-2 tracking-tight">
               DevSync
             </h1>
-            <p className="text-sm text-[#1D3557]/80 mb-6">
+            <p className="text-sm text-[#1D3557]/80 dark:text-muted-foreground mb-6">
               Stay ahead. Stay synced. Stay Dev.
             </p>
-            <h2 className="text-2xl font-semibold text-[#1D3557] mb-2">
+            <h2 className="text-2xl font-semibold text-[#1D3557] dark:text-foreground mb-2">
               Create account
             </h2>
-            <p className="text-[#1D3557]/80">
+            <p className="text-[#1D3557]/80 dark:text-muted-foreground">
               Join thousands of developers already using DevSync
             </p>
           </div>
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Name Field */}
             <div className="space-y-2">
-              <Label htmlFor="name" className="text-[#1D3557]">Full Name</Label>
+              <Label htmlFor="name" className="text-[#1D3557] dark:text-foreground">Full Name</Label>
               <div className="relative">
                 <Input
                   id="name"
@@ -129,16 +123,13 @@ const Signup = () => {
                   className={`pl-10 bg-background border-border focus:border-ring ${errors.name ? 'border-destructive' : ''}`}
                   required
                 />
-                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1D3557]/50" />
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1D3557]/50 dark:text-muted-foreground" />
               </div>
-              {errors.name && (
-                <p className="text-sm text-destructive">{errors.name}</p>
-              )}
+              {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
             </div>
 
-            {/* Email Field */}
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-[#1D3557]">Email</Label>
+              <Label htmlFor="email" className="text-[#1D3557] dark:text-foreground">Email</Label>
               <div className="relative">
                 <Input
                   id="email"
@@ -150,16 +141,13 @@ const Signup = () => {
                   className={`pl-10 bg-background border-border focus:border-ring ${errors.email ? 'border-destructive' : ''}`}
                   required
                 />
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1D3557]/50" />
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1D3557]/50 dark:text-muted-foreground" />
               </div>
-              {errors.email && (
-                <p className="text-sm text-destructive">{errors.email}</p>
-              )}
+              {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
             </div>
 
-            {/* Password Field */}
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-[#1D3557]">Password</Label>
+              <Label htmlFor="password" className="text-[#1D3557] dark:text-foreground">Password</Label>
               <div className="relative">
                 <Input
                   id="password"
@@ -171,23 +159,20 @@ const Signup = () => {
                   className={`pl-10 pr-10 bg-background border-border focus:border-ring ${errors.password ? 'border-destructive' : ''}`}
                   required
                 />
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1D3557]/50" />
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1D3557]/50 dark:text-muted-foreground" />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1D3557]/50 hover:text-[#1D3557]"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1D3557]/50 dark:text-muted-foreground"
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
-              {errors.password && (
-                <p className="text-sm text-destructive">{errors.password}</p>
-              )}
+              {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
             </div>
 
-            {/* Confirm Password Field */}
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword" className="text-[#1D3557]">Confirm Password</Label>
+              <Label htmlFor="confirmPassword" className="text-[#1D3557] dark:text-foreground">Confirm Password</Label>
               <div className="relative">
                 <Input
                   id="confirmPassword"
@@ -199,43 +184,34 @@ const Signup = () => {
                   className={`pl-10 pr-10 bg-background border-border focus:border-ring ${errors.confirmPassword ? 'border-destructive' : ''}`}
                   required
                 />
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1D3557]/50" />
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1D3557]/50 dark:text-muted-foreground" />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1D3557]/50 hover:text-[#1D3557]"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1D3557]/50 dark:text-muted-foreground"
                 >
                   {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
-              {errors.confirmPassword && (
-                <p className="text-sm text-destructive">{errors.confirmPassword}</p>
-              )}
+              {errors.confirmPassword && <p className="text-sm text-destructive">{errors.confirmPassword}</p>}
             </div>
 
-            {/* Terms */}
             <div className="text-sm text-muted-foreground">
               By creating an account, you agree to our{' '}
-              <Link to="/terms" className="text-primary hover:text-primary/80 font-medium">
-                Terms of Service
-              </Link>{' '}
+              <Link to="/terms" className="text-primary font-medium hover:underline">Terms of Service</Link>{' '}
               and{' '}
-              <Link to="/privacy" className="text-primary hover:text-primary/80 font-medium">
-                Privacy Policy
-              </Link>
+              <Link to="/privacy" className="text-primary font-medium hover:underline">Privacy Policy</Link>
             </div>
 
-            {/* Sign Up Button - Using homepage button style */}
-            <Button 
-              type="submit" 
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90" 
+            <Button
+              type="submit"
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
               size="lg"
               disabled={isLoading}
             >
               {isLoading ? 'Creating account...' : 'Create account'}
             </Button>
 
-            {/* Divider */}
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t border-border" />
@@ -245,13 +221,12 @@ const Signup = () => {
               </div>
             </div>
 
-            {/* Social Login */}
             <div className="grid grid-cols-2 gap-3">
-              <Button variant="outline" size="lg" className="border-border text-[#1D3557] hover:bg-accent">
+              <Button variant="outline" size="lg" className="border-border text-[#1D3557] dark:text-foreground hover:bg-accent">
                 <Github className="h-4 w-4 mr-2" />
                 GitHub
               </Button>
-              <Button variant="outline" size="lg" className="border-border text-[#1D3557] hover:bg-accent">
+              <Button variant="outline" size="lg" className="border-border text-[#1D3557] dark:text-foreground hover:bg-accent">
                 <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24">
                   <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                   <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -262,13 +237,9 @@ const Signup = () => {
               </Button>
             </div>
 
-            {/* Sign In Link */}
             <div className="text-center">
               <span className="text-muted-foreground">Already have an account? </span>
-              <Link 
-                to="/login" 
-                className="text-primary hover:text-primary/80 font-medium"
-              >
+              <Link to="/login" className="text-primary font-medium hover:underline">
                 Sign in
               </Link>
             </div>
