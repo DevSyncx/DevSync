@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { z } from 'zod';
-import { Send, Cloud } from 'lucide-react';
+import { Send, Cloud } from 'lucide-react'; // Import Send and Cloud icons from Lucide
 
+// Zod schema for form validation
 const contactFormSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
   name: z.string().min(1, { message: "Name is required." }),
@@ -9,26 +10,42 @@ const contactFormSchema = z.object({
 });
 
 const Contact = () => {
-  const [formData, setFormData] = useState({ email: '', name: '', message: '' });
+  const [formData, setFormData] = useState({
+    email: '',
+    name: '',
+    message: '',
+  });
+
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: undefined }));
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+    // Clear error for the field as user types
+    if (errors[name]) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: undefined,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setErrors({});
+    setErrors({}); // Clear previous errors
 
     try {
       contactFormSchema.parse(formData);
+      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Replaced toast.success with alert
       alert('Message sent successfully!');
-      setFormData({ email: '', name: '', message: '' });
+      setFormData({ email: '', name: '', message: '' }); // Clear form
     } catch (error) {
       if (error instanceof z.ZodError) {
         const newErrors = {};
@@ -36,8 +53,10 @@ const Contact = () => {
           newErrors[err.path[0]] = err.message;
         });
         setErrors(newErrors);
+        // Replaced toast.error with alert
         alert('Please correct the errors in the form.');
       } else {
+        // Replaced toast.error with alert
         alert('An unexpected error occurred.');
       }
     } finally {
@@ -46,25 +65,67 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 font-inter rounded-3xl bg-background text-foreground">
+    <div className="min-h-screen flex items-center justify-center p-4 font-inter rounded-3xl" style={{ backgroundColor:'rgb(217,228,236)' }}>
+      {/* Removed Toaster component */}
+
+      {/* Define keyframes for animations */}
       <style>
         {`
-          @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-8px); } 100% { transform: translateY(0); } }
-          @keyframes drift { 0% { transform: translateX(0); opacity: 0.8; } 50% { transform: translateX(8px); opacity: 0.7; } 100% { transform: translateX(0); opacity: 0.8; } }
-          @keyframes fadeInScale { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-          .animate-float-icon { animation: float 3s ease-in-out infinite; }
-          .animate-drift-1 { animation: drift 10s ease-in-out infinite; }
-          .animate-drift-2 { animation: drift 12s ease-in-out infinite reverse; }
-          .animate-drift-3 { animation: drift 8s ease-in-out infinite; }
-          .animate-drift-4 { animation: drift 11s ease-in-out infinite reverse; }
-          .animate-drift-5 { animation: drift 9s ease-in-out infinite; }
-          .animate-form-entry { animation: fadeInScale 0.6s ease-out forwards; }
+        @keyframes float {
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-8px); }
+          100% { transform: translateY(0px); }
+        }
+
+        @keyframes drift {
+          0% { transform: translateX(0); opacity: 0.8; }
+          50% { transform: translateX(8px); opacity: 0.7; }
+          100% { transform: translateX(0); opacity: 0.8; }
+        }
+
+        @keyframes fadeInScale {
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        .animate-float-icon {
+          animation: float 3s ease-in-out infinite;
+        }
+
+        .animate-drift-1 {
+          animation: drift 10s ease-in-out infinite;
+        }
+        .animate-drift-2 {
+          animation: drift 12s ease-in-out infinite reverse;
+        }
+        .animate-drift-3 {
+          animation: drift 8s ease-in-out infinite;
+        }
+        .animate-drift-4 {
+          animation: drift 11s ease-in-out infinite reverse;
+        }
+        .animate-drift-5 {
+          animation: drift 9s ease-in-out infinite;
+        }
+
+        .animate-form-entry {
+          animation: fadeInScale 0.6s ease-out forwards;
+        }
         `}
       </style>
 
-      <div className="relative bg-white dark:bg-zinc-900 text-gray-800 dark:text-gray-100 rounded-xl shadow-lg p-8 md:p-10 w-full max-w-lg flex flex-col items-center overflow-hidden animate-form-entry">
+      <div className="relative bg-white rounded-xl shadow-lg p-8 md:p-10 w-full max-w-lg flex flex-col items-center overflow-hidden animate-form-entry">
+        {/* Decorative elements: Send icon and clouds */}
         <div className="absolute top-4 right-4 flex items-center space-x-2">
-          <Send className="w-10 h-10 text-blue-500 animate-float-icon" />
+          <Send
+            className="w-10 h-10 text-blue-500 animate-float-icon"
+          />
           <Cloud className="text-blue-200 w-8 h-8 animate-drift-1" style={{ opacity: '0.6', filter: 'blur(0.5px)' }} />
         </div>
         <div className="absolute bottom-4 left-4 flex items-center space-x-2">
@@ -78,15 +139,17 @@ const Contact = () => {
           <Cloud className="text-blue-200 w-11 h-11 animate-drift-5" style={{ opacity: '0.8', filter: 'blur(0.6px)' }} />
         </div>
 
+
+        {/* Form content */}
         <div className="text-center w-full z-10">
-          <h1 className="text-3xl font-bold mb-2">Get in Touch</h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">Get in Touch</h1>
+          <p className="text-gray-600 mb-8">
             We'd love to hear from you! Send us a message or reach out directly.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium mb-1 text-left">
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1 text-left">
                 Your Name
               </label>
               <input
@@ -95,7 +158,7 @@ const Contact = () => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                className={`w-full px-4 py-2 border ${errors.name ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'} rounded-lg focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-zinc-800 text-black dark:text-white`}
+                className={`w-full px-4 py-2 border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out`}
                 placeholder="Enter your name"
                 aria-invalid={errors.name ? "true" : "false"}
                 aria-describedby="name-error"
@@ -106,7 +169,7 @@ const Contact = () => {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium mb-1 text-left">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1 text-left">
                 Email Address
               </label>
               <input
@@ -115,7 +178,7 @@ const Contact = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className={`w-full px-4 py-2 border ${errors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'} rounded-lg focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-zinc-800 text-black dark:text-white`}
+                className={`w-full px-4 py-2 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out`}
                 placeholder="We will never share your email with anyone else"
                 aria-invalid={errors.email ? "true" : "false"}
                 aria-describedby="email-error"
@@ -126,7 +189,7 @@ const Contact = () => {
             </div>
 
             <div>
-              <label htmlFor="message" className="block text-sm font-medium mb-1 text-left">
+              <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1 text-left">
                 Your Message
               </label>
               <textarea
@@ -135,7 +198,7 @@ const Contact = () => {
                 value={formData.message}
                 onChange={handleChange}
                 rows="5"
-                className={`w-full px-4 py-2 border ${errors.message ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'} rounded-lg focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-zinc-800 text-black dark:text-white`}
+                className={`w-full px-4 py-2 border ${errors.message ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out`}
                 placeholder="Type your message here..."
                 aria-invalid={errors.message ? "true" : "false"}
                 aria-describedby="message-error"
@@ -153,8 +216,7 @@ const Contact = () => {
               {isSubmitting ? 'Sending...' : 'Send Message'}
             </button>
           </form>
-
-          <p className="text-gray-500 dark:text-gray-400 text-sm mt-6">
+          <p className="text-gray-500 text-sm mt-6">
             Alternatively, email us at <a href="mailto:info@example.com" className="text-blue-600 hover:underline">info@example.com</a>
           </p>
         </div>
