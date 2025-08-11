@@ -13,7 +13,10 @@ We welcome all kinds of contributions — from code improvements and documentati
 - [Requesting Features or Enhancements](#-requesting-features-or-enhancements)
 - [Improving Documentation](#-improving-documentation)
 - [Levels](#-labels-and-levels)
+- [Issue Completion Timelines](#-Issue-Completion-Timeline)
+- [Contributor Guidelines – Issue & PR Management](#-Contributor-Guidelines)
 - [Community Standards](#-Community-Standards)
+
 
 ---
 
@@ -127,13 +130,56 @@ All issues are tagged to help contributors choose wisely:
 | Level   | Suitable For        | Points |
 |---------|---------------------|--------|
 | `L-1`   | Beginners            | 3      |
-| `L-2`   | Intermediate tasks   | 5      |
+| `L-2`   | Intermediate tasks   | 7      |
 | `L-3`   | Advanced/complex     | 10     |
 
+## 🕒 Issue Completion Timeline
 
-**🗣️ To claim an issue**, comment:  
-`I want to work on this.`  
-We'll assign it to you if it's unclaimed!
+To ensure smooth progress and timely contributions during GSSoC, we’ve defined expected completion times for issues based on their difficulty levels:
+
+| Level | Difficulty    |Expected Completion Time |
+|-------|---------------|-------------------------|
+| Level 1 | Beginner    |       **2-3 days**      |
+| Level 2 | Intermediate|       **4-6 days**      |
+| Level 3 | Advanced    |       **7-10 days**     |
+
+## 📌 Contributor Guidelines
+
+### 🧑‍💻 Issue Assignment
+
+- 🟢 You can **only start working on an issue once it has been officially assigned to you**.
+- 🏃‍♀️ We follow a **first come, first serve** policy — the **first person to comment** on an issue will be assigned.
+- 🚫 **PRs for unassigned issues will not be accepted or merged.**
+- 🧠 If you're already assigned to an issue, you **must get your current PR at least approved** (even if not merged) **before claiming a new issue**.
+
+---
+
+### ⏳ Inactive Issues
+
+- 💤 If there is **no activity for 3 days** after assignment, the issue will be marked as **`stale`**.
+- 🔁 After being marked stale for **12 more hours**, the issue will be **unassigned and reassigned** to another contributor to ensure progress.
+
+---
+
+### 🕒 Requesting Extensions
+
+- 🗓️ If you require more time, please **inform a maintainer before the issue is marked stale**.
+- 🧍 We understand delays happen — just communicate and request an extension politely!
+
+---
+
+### 🔄 Pull Request (PR) Management
+
+#### ⚠️ Keeping PRs Up-to-Date
+
+- 🆕 Always ensure your PR is **up-to-date with the latest changes** from the `main` branch.
+- 💻 Run `git pull` regularly on your fork/branches to avoid merge conflicts or outdated changes.
+- 🧪 This helps maintainers test and review your changes smoothly without delays.
+
+#### 💤 Inactive Pull Requests
+
+- ⏸️ PRs with no activity for **3 days** will be **marked as stale**.
+- ❌ If no updates are made within the next **24 hours**, the PR will be **closed**, and the issue will be **unassigned**.
 
 ---
 
