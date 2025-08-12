@@ -41,7 +41,7 @@ const Component1 = () => (
           Your all-in-one productivity dashboard for developers 🚀
         </p>
 
-        <button className="relative  bg-cyan-500 w-fit p-3 text-xl font-bold text-black rounded-lg hover:scale-105 transition-all duration-150 cursor-pointer my-3 sm:my-10 overflow-hidden group">
+        <button className="relative  bg-green-400 w-fit p-3 text-xl font-bold text-black rounded-lg hover:scale-105 transition-all duration-150 cursor-pointer my-3 sm:my-10 overflow-hidden group">
           Get Started
           <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out"></span>
         </button>
@@ -61,38 +61,66 @@ const Component1 = () => (
   </section>
 );
 
+// const Component2 = () => (
+//   <section className="w-full min-h-[80vh] bg-[url(/heroImg3.jpg)] bg-cover bg-center rounded-md p-12 sm:py-10 ">
+//     <div className="flex flex-col sm:flex-row mx-auto gap-0 sm:gap-10 justify-end sm:justify-around  items-baseline p-3 sm:p-5 text-black border-2 w-fit  bg-white/10 backdrop-blur-sm">
+//       <div className="my-10 sm:mx-12 flex flex-col  ">
+//         <h2 className="font-bold text-3xl sm:text-5xl my-3 sm:my-10 font-mono capitalize">
+//           Collaborate Effortlessly
+//         </h2>
+//         <p className="text-xl font-bold sm:text-2xl font-mono">
+//           Real-time tools for teams to build, track, and ship faster.{" "}
+//         </p>
+
+//         <button className="relative block mx-auto bg-cyan-500 w-fit p-3 text-xl font-bold text-black rounded-lg hover:scale-105 transition-all duration-150 cursor-pointer my-3 sm:my-10 overflow-hidden group">
+//           Learn More
+//           <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out"></span>
+//         </button>
+//       </div>
+//       {/* <div>
+//         <img className="w-2xl sm:w-2xl" src="/heroImg2.jpg"></img> 
+//       </div> */}
+//     </div>
+//   </section>
+// );
+
 const Component2 = () => (
-  <section className="w-full min-h-[80vh] bg-[url(/heroImg3.jpg)] bg-cover bg-center rounded-md p-12 sm:py-10 ">
-    <div className="flex flex-col sm:flex-row mx-auto gap-0 sm:gap-10 justify-end sm:justify-around  items-baseline p-3 sm:p-5 text-black border-2 w-fit  bg-white/10 backdrop-blur-sm">
-      <div className="my-10 sm:mx-12 flex flex-col  ">
+  <section className="w-full min-h-[80vh] bg-slate-800 rounded-md">
+    <div className="flex flex-col-reverse sm:flex-row mx-auto gap-0 sm:gap-10 justify-center sm:justify-around  items-center p-10 text-white ">
+      <div>
+        <img
+          className="w-2xl sm:w-3xl border border-amber-500"
+          src="/heroImg7.jpg"
+        ></img>
+      </div>
+      <div className="my-10 sm:mx-12 flex flex-col ">
         <h2 className="font-bold text-3xl sm:text-5xl my-3 sm:my-10 font-mono capitalize">
           Collaborate Effortlessly
+          
         </h2>
-        <p className="text-xl font-bold sm:text-2xl font-mono">
-          Real-time tools for teams to build, track, and ship faster.{" "}
+        <p className="text-xl sm:text-2xl font-mono">
+          Real-time tools for teams to build, track, and ship faster.
         </p>
 
-        <button className="relative block mx-auto bg-cyan-500 w-fit p-3 text-xl font-bold text-black rounded-lg hover:scale-105 transition-all duration-150 cursor-pointer my-3 sm:my-10 overflow-hidden group">
+        <button className="relative bg-red-600  w-fit p-3 text-xl font-bold  rounded-lg hover:scale-105 transition-all duration-150 cursor-pointer my-5 sm:my-10 overflow-hidden group text-white">
           Learn More
           <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out"></span>
+          
         </button>
+        
       </div>
-      {/* <div>
-        <img className="w-2xl sm:w-2xl" src="/heroImg2.jpg"></img> 
-      </div> */}
+      
     </div>
   </section>
 );
 
+
+
+
 const Component3 = () => (
-  <section className="w-full min-h-[80vh] bg-gradient-to-l from-yellow-100 to-amber-500 rounded-md">
-    <div className="flex flex-col sm:flex-row mx-auto gap-0 sm:gap-10 justify-center sm:justify-around  items-center p-10 text-black ">
-      <div>
-        <img
-          className="w-2xl sm:w-3xl border border-amber-500"
-          src="/heroImg4.jpg"
-        ></img>
-      </div>
+  <section className="w-full min-h-[80vh] bg-slate-800 rounded-md">
+    <div className="flex flex-col sm:flex-row mx-auto gap-0 sm:gap-10 justify-center sm:justify-around  items-center p-10 text-white ">
+      
       <div className="my-10 sm:mx-12 flex flex-col ">
         <h2 className="font-bold text-3xl sm:text-5xl my-3 sm:my-10 font-mono capitalize">
           Built for Developers
@@ -109,6 +137,12 @@ const Component3 = () => (
         </button>
         
       </div>
+      <div>
+        <img
+          className="w-2xl sm:w-3xl "
+          src="/heroImg4.jpg"
+        ></img>
+      </div>
       
     </div>
   </section>
@@ -123,7 +157,7 @@ const Hero = () => {
         modules={[Autoplay, Pagination]}
         slidesPerView={1}
         loop={true}
-        autoplay={{ delay: 4000 }}
+        autoplay={{ delay: 5000 }}
         pagination={{ clickable: true }}
         navigation={{
           nextEl: ".swiper-button-next",
