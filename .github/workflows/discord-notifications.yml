@@ -188,241 +188,235 @@ jobs:
 
     - name: Send Discord Notification for Pull Requests
       if: github.event_name == 'pull_request' || github.event_name == 'pull_request_review'
-      uses: Ilshidur/action-discord@master
-      env:
-        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      with:
-        args: |
-          {
-            "embeds": [{
-              "title": "${{ steps.setup.outputs.TITLE }}",
-              "description": "**${{ github.event.pull_request.title || github.event.review.pull_request.title }}**\n\n${{ github.event.pull_request.body || github.event.review.body }}",
-              "color": ${{ steps.setup.outputs.COLOR }},
-              "author": {
-                "name": "${{ github.event.pull_request.user.login || github.event.review.user.login }}",
-                "icon_url": "${{ github.event.pull_request.user.avatar_url || github.event.review.user.avatar_url }}"
-              },
-              "fields": [
-                {
-                  "name": "Repository",
-                  "value": "${{ github.repository }}",
-                  "inline": true
-                },
-                {
-                  "name": "Branch",
-                  "value": "${{ github.event.pull_request.head.ref || github.event.review.pull_request.head.ref }}",
-                  "inline": true
-                },
-                {
-                  "name": "Base Branch",
-                  "value": "${{ github.event.pull_request.base.ref || github.event.review.pull_request.base.ref }}",
-                  "inline": true
-                }
-              ],
-              "url": "${{ github.event.pull_request.html_url || github.event.review.html_url }}",
-              "timestamp": "${{ github.event.pull_request.created_at || github.event.review.submitted_at }}",
-              "footer": {
-                "text": "DevSync • GitHub",
-                "icon_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-              }
-            }]
-          }
+      run: |
+        curl -H "Content-Type: application/json" \
+             -X POST \
+             -d '{
+               "embeds": [{
+                 "title": "${{ steps.setup.outputs.TITLE }}",
+                 "description": "**${{ github.event.pull_request.title || github.event.review.pull_request.title }}**\n\n${{ github.event.pull_request.body || github.event.review.body }}",
+                 "color": ${{ steps.setup.outputs.COLOR }},
+                 "author": {
+                   "name": "${{ github.event.pull_request.user.login || github.event.review.user.login }}",
+                   "icon_url": "${{ github.event.pull_request.user.avatar_url || github.event.review.user.avatar_url }}"
+                 },
+                 "fields": [
+                   {
+                     "name": "Repository",
+                     "value": "${{ github.repository }}",
+                     "inline": true
+                   },
+                   {
+                     "name": "Branch",
+                     "value": "${{ github.event.pull_request.head.ref || github.event.review.pull_request.head.ref }}",
+                     "inline": true
+                   },
+                   {
+                     "name": "Base Branch",
+                     "value": "${{ github.event.pull_request.base.ref || github.event.review.pull_request.base.ref }}",
+                     "inline": true
+                   }
+                 ],
+                 "url": "${{ github.event.pull_request.html_url || github.event.review.html_url }}",
+                 "timestamp": "${{ github.event.pull_request.created_at || github.event.review.submitted_at }}",
+                 "footer": {
+                   "text": "DevSync • GitHub",
+                   "icon_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+                 }
+               }]
+             }' \
+             "${{ secrets.DISCORD_WEBHOOK }}"
 
     - name: Send Discord Notification for Issues
       if: github.event_name == 'issues' || github.event_name == 'issue_comment'
-      uses: Ilshidur/action-discord@master
-      env:
-        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      with:
-        args: |
-          {
-            "embeds": [{
-              "title": "${{ steps.setup.outputs.TITLE }}",
-              "description": "**${{ github.event.issue.title }}**\n\n${{ github.event.issue.body || github.event.comment.body }}",
-              "color": ${{ steps.setup.outputs.COLOR }},
-              "author": {
-                "name": "${{ github.event.issue.user.login || github.event.comment.user.login }}",
-                "icon_url": "${{ github.event.issue.user.avatar_url || github.event.comment.user.avatar_url }}"
-              },
-              "fields": [
-                {
-                  "name": "Repository",
-                  "value": "${{ github.repository }}",
-                  "inline": true
-                },
-                {
-                  "name": "Issue #",
-                  "value": "#${{ github.event.issue.number }}",
-                  "inline": true
-                },
-                {
-                  "name": "State",
-                  "value": "${{ github.event.issue.state }}",
-                  "inline": true
-                }
-              ],
-              "url": "${{ github.event.issue.html_url || github.event.comment.html_url }}",
-              "timestamp": "${{ github.event.issue.created_at || github.event.comment.created_at }}",
-              "footer": {
-                "text": "DevSync • GitHub",
-                "icon_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-              }
-            }]
-          }
+      run: |
+        curl -H "Content-Type: application/json" \
+             -X POST \
+             -d '{
+               "embeds": [{
+                 "title": "${{ steps.setup.outputs.TITLE }}",
+                 "description": "**${{ github.event.issue.title }}**\n\n${{ github.event.issue.body || github.event.comment.body }}",
+                 "color": ${{ steps.setup.outputs.COLOR }},
+                 "author": {
+                   "name": "${{ github.event.issue.user.login || github.event.comment.user.login }}",
+                   "icon_url": "${{ github.event.issue.user.avatar_url || github.event.comment.user.avatar_url }}"
+                 },
+                 "fields": [
+                   {
+                     "name": "Repository",
+                     "value": "${{ github.repository }}",
+                     "inline": true
+                   },
+                   {
+                     "name": "Issue #",
+                     "value": "#${{ github.event.issue.number }}",
+                     "inline": true
+                   },
+                   {
+                     "name": "State",
+                     "value": "${{ github.event.issue.state }}",
+                     "inline": true
+                   }
+                 ],
+                 "url": "${{ github.event.issue.html_url || github.event.comment.html_url }}",
+                 "timestamp": "${{ github.event.issue.created_at || github.event.comment.created_at }}",
+                 "footer": {
+                   "text": "DevSync • GitHub",
+                   "icon_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+                 }
+               }]
+             }' \
+             "${{ secrets.DISCORD_WEBHOOK }}"
 
     - name: Send Discord Notification for Push Events
       if: github.event_name == 'push'
-      uses: Ilshidur/action-discord@master
-      env:
-        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      with:
-        args: |
-          {
-            "embeds": [{
-              "title": "${{ steps.setup.outputs.TITLE }}",
-              "description": "**${{ github.event.head_commit.message }}**\n\nNew commits pushed to `${{ github.ref_name }}`",
-              "color": ${{ steps.setup.outputs.COLOR }},
-              "author": {
-                "name": "${{ github.event.head_commit.author.name }}",
-                "icon_url": "https://github.com/${{ github.actor }}.png"
-              },
-              "fields": [
-                {
-                  "name": "Repository",
-                  "value": "${{ github.repository }}",
-                  "inline": true
-                },
-                {
-                  "name": "Branch",
-                  "value": "${{ github.ref_name }}",
-                  "inline": true
-                },
-                {
-                  "name": "Author",
-                  "value": "${{ github.event.head_commit.author.name }}",
-                  "inline": true
-                }
-              ],
-              "url": "${{ github.event.head_commit.url }}",
-              "timestamp": "${{ github.event.head_commit.timestamp }}",
-              "footer": {
-                "text": "DevSync • GitHub",
-                "icon_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-              }
-            }]
-          }
+      run: |
+        curl -H "Content-Type: application/json" \
+             -X POST \
+             -d '{
+               "embeds": [{
+                 "title": "${{ steps.setup.outputs.TITLE }}",
+                 "description": "**${{ github.event.head_commit.message }}**\n\nNew commits pushed to `${{ github.ref_name }}`",
+                 "color": ${{ steps.setup.outputs.COLOR }},
+                 "author": {
+                   "name": "${{ github.event.head_commit.author.name }}",
+                   "icon_url": "https://github.com/${{ github.actor }}.png"
+                 },
+                 "fields": [
+                   {
+                     "name": "Repository",
+                     "value": "${{ github.repository }}",
+                     "inline": true
+                   },
+                   {
+                     "name": "Branch",
+                     "value": "${{ github.ref_name }}",
+                     "inline": true
+                   },
+                   {
+                     "name": "Author",
+                     "value": "${{ github.event.head_commit.author.name }}",
+                     "inline": true
+                   }
+                 ],
+                 "url": "${{ github.event.head_commit.url }}",
+                 "timestamp": "${{ github.event.head_commit.timestamp }}",
+                 "footer": {
+                   "text": "DevSync • GitHub",
+                   "icon_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+                 }
+               }]
+             }' \
+             "${{ secrets.DISCORD_WEBHOOK }}"
 
     - name: Send Discord Notification for Releases
       if: github.event_name == 'release'
-      uses: Ilshidur/action-discord@master
-      env:
-        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      with:
-        args: |
-          {
-            "embeds": [{
-              "title": "${{ steps.setup.outputs.TITLE }}",
-              "description": "**${{ github.event.release.name }}**\n\n${{ github.event.release.body }}",
-              "color": ${{ steps.setup.outputs.COLOR }},
-              "author": {
-                "name": "${{ github.event.release.author.login }}",
-                "icon_url": "${{ github.event.release.author.avatar_url }}"
-              },
-              "fields": [
-                {
-                  "name": "Repository",
-                  "value": "${{ github.repository }}",
-                  "inline": true
-                },
-                {
-                  "name": "Tag",
-                  "value": "${{ github.event.release.tag_name }}",
-                  "inline": true
-                },
-                {
-                  "name": "Prerelease",
-                  "value": "${{ github.event.release.prerelease }}",
-                  "inline": true
-                }
-              ],
-              "url": "${{ github.event.release.html_url }}",
-              "timestamp": "${{ github.event.release.created_at }}",
-              "footer": {
-                "text": "DevSync • GitHub",
-                "icon_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-              }
-            }]
-          }
+      run: |
+        curl -H "Content-Type: application/json" \
+             -X POST \
+             -d '{
+               "embeds": [{
+                 "title": "${{ steps.setup.outputs.TITLE }}",
+                 "description": "**${{ github.event.release.name }}**\n\n${{ github.event.release.body }}",
+                 "color": ${{ steps.setup.outputs.COLOR }},
+                 "author": {
+                   "name": "${{ github.event.release.author.login }}",
+                   "icon_url": "${{ github.event.release.author.avatar_url }}"
+                 },
+                 "fields": [
+                   {
+                     "name": "Repository",
+                     "value": "${{ github.repository }}",
+                     "inline": true
+                   },
+                   {
+                     "name": "Tag",
+                     "value": "${{ github.event.release.tag_name }}",
+                     "inline": true
+                   },
+                   {
+                     "name": "Prerelease",
+                     "value": "${{ github.event.release.prerelease }}",
+                     "inline": true
+                   }
+                 ],
+                 "url": "${{ github.event.release.html_url }}",
+                 "timestamp": "${{ github.event.release.created_at }}",
+                 "footer": {
+                   "text": "DevSync • GitHub",
+                   "icon_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+                 }
+               }]
+             }' \
+             "${{ secrets.DISCORD_WEBHOOK }}"
 
     - name: Send Discord Notification for Stars and Forks
       if: github.event_name == 'watch' || github.event_name == 'fork'
-      uses: Ilshidur/action-discord@master
-      env:
-        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      with:
-        args: |
-          {
-            "embeds": [{
-              "title": "${{ steps.setup.outputs.TITLE }}",
-              "description": "Thank you for showing interest in our project! ${{ steps.setup.outputs.EMOJI }}",
-              "color": ${{ steps.setup.outputs.COLOR }},
-              "author": {
-                "name": "${{ github.event.sender.login }}",
-                "icon_url": "${{ github.event.sender.avatar_url }}"
-              },
-              "fields": [
-                {
-                  "name": "Repository",
-                  "value": "${{ github.repository }}",
-                  "inline": true
-                },
-                {
-                  "name": "User",
-                  "value": "[${{ github.event.sender.login }}](${{ github.event.sender.html_url }})",
-                  "inline": true
-                }
-              ],
-              "timestamp": "${{ github.event.repository.updated_at }}",
-              "footer": {
-                "text": "DevSync • GitHub",
-                "icon_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-              }
-            }]
-          }
+      run: |
+        curl -H "Content-Type: application/json" \
+             -X POST \
+             -d '{
+               "embeds": [{
+                 "title": "${{ steps.setup.outputs.TITLE }}",
+                 "description": "Thank you for showing interest in our project! ${{ steps.setup.outputs.EMOJI }}",
+                 "color": ${{ steps.setup.outputs.COLOR }},
+                 "author": {
+                   "name": "${{ github.event.sender.login }}",
+                   "icon_url": "${{ github.event.sender.avatar_url }}"
+                 },
+                 "fields": [
+                   {
+                     "name": "Repository",
+                     "value": "${{ github.repository }}",
+                     "inline": true
+                   },
+                   {
+                     "name": "User",
+                     "value": "[${{ github.event.sender.login }}](${{ github.event.sender.html_url }})",
+                     "inline": true
+                   }
+                 ],
+                 "timestamp": "${{ github.event.repository.updated_at }}",
+                 "footer": {
+                   "text": "DevSync • GitHub",
+                   "icon_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+                 }
+               }]
+             }' \
+             "${{ secrets.DISCORD_WEBHOOK }}"
 
     - name: Send Discord Notification for Discussions
       if: github.event_name == 'discussion' || github.event_name == 'discussion_comment'
-      uses: Ilshidur/action-discord@master
-      env:
-        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      with:
-        args: |
-          {
-            "embeds": [{
-              "title": "${{ steps.setup.outputs.TITLE }}",
-              "description": "**${{ github.event.discussion.title }}**\n\n${{ github.event.discussion.body || github.event.comment.body }}",
-              "color": ${{ steps.setup.outputs.COLOR }},
-              "author": {
-                "name": "${{ github.event.discussion.user.login || github.event.comment.user.login }}",
-                "icon_url": "${{ github.event.discussion.user.avatar_url || github.event.comment.user.avatar_url }}"
-              },
-              "fields": [
-                {
-                  "name": "Repository",
-                  "value": "${{ github.repository }}",
-                  "inline": true
-                },
-                {
-                  "name": "Category",
-                  "value": "${{ github.event.discussion.category.name }}",
-                  "inline": true
-                }
-              ],
-              "url": "${{ github.event.discussion.html_url || github.event.comment.html_url }}",
-              "timestamp": "${{ github.event.discussion.created_at || github.event.comment.created_at }}",
-              "footer": {
-                "text": "DevSync • GitHub",
-                "icon_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-              }
-            }]
-          }
+      run: |
+        curl -H "Content-Type: application/json" \
+             -X POST \
+             -d '{
+               "embeds": [{
+                 "title": "${{ steps.setup.outputs.TITLE }}",
+                 "description": "**${{ github.event.discussion.title }}**\n\n${{ github.event.discussion.body || github.event.comment.body }}",
+                 "color": ${{ steps.setup.outputs.COLOR }},
+                 "author": {
+                   "name": "${{ github.event.discussion.user.login || github.event.comment.user.login }}",
+                   "icon_url": "${{ github.event.discussion.user.avatar_url || github.event.comment.user.avatar_url }}"
+                 },
+                 "fields": [
+                   {
+                     "name": "Repository",
+                     "value": "${{ github.repository }}",
+                     "inline": true
+                   },
+                   {
+                     "name": "Category",
+                     "value": "${{ github.event.discussion.category.name }}",
+                     "inline": true
+                   }
+                 ],
+                 "url": "${{ github.event.discussion.html_url || github.event.comment.html_url }}",
+                 "timestamp": "${{ github.event.discussion.created_at || github.event.comment.created_at }}",
+                 "footer": {
+                   "text": "DevSync • GitHub",
+                   "icon_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+                 }
+               }]
+             }' \
+             "${{ secrets.DISCORD_WEBHOOK }}"
