@@ -1,0 +1,57 @@
+name: Request Issue Assignment
+description: Use this template to request to work on an issue
+title: "[TASK] <Short Title>"
+labels: ["level task", "needs assignment"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ✅ **Please read the following before submitting**:
+        - You can only be assigned one issue at a time.
+        - PR for unassigned issues will be **rejected**.
+        - You must get your current PR **approved** before claiming a new issue.
+
+  - type: input
+    id: discord
+    attributes:
+      label: 💬 Your Discord Username
+      placeholder: e.g. johndoe123
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ### 📌 Issue Level Information
+        | Level | Description |
+        |-------|-------------|
+        | **Level 1** | Beginner – 2-3 days |
+        | **Level 2** | Intermediate – 4-6 days |
+        | **Level 3** | Advanced – 7-10 days |
+
+  - type: dropdown
+    id: issue_type
+    attributes:
+      label: Issue Type
+      description: Select whether this is a bug or a feature request.
+      options:
+        - Bug
+        - Feature Request
+    validations:
+      required: true
+
+  - type: textarea
+    id: why-you
+    attributes:
+      label: 🔥 Why do you want to work on this?
+      description: Briefly tell us why you're interested or how you plan to solve it.
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        🕐 **You are expected to complete the issue in the specified time. If inactive for 3 days, it may be unassigned.**  
+        📩 Need more time? Please inform the maintainer *before* it’s marked stale.
+        🧩 In case of UI enhancement and bug, please share screenshots.
