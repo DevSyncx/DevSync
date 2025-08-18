@@ -4,6 +4,7 @@ Thumbs.db
 *.log
 *.env
 .env.*
+*.clienvy*
 node_modules/
 dist/
 build/

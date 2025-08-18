@@ -7,10 +7,14 @@
     "dev": "nodemon server.js"
   },
   "dependencies": {
-    "express": "^4.21.1",
-    "mongoose": "^8.7.1",
+    "bcrypt": "^6.0.0",
+    "clienvy": "^1.1.5",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.17.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.7"
