@@ -23,6 +23,8 @@ const generateAvatarUrl = (email, name) => {
 
 // Use a fallback JWT secret if env variable is missing
 const JWT_SECRET = process.env.JWT_SECRET || 'devsync_secure_jwt_secret_key_for_authentication';
+console.log("JWT_SECRET:", process.env.JWT_SECRET);
+
 
 // @route   POST api/auth/register
 // @desc    Register user
@@ -92,7 +94,6 @@ router.post('/login', [
   check('password', 'Password is required').exists()
 ], async (req, res) => {
   const errors = validationResult(req);
-  console.log("hlo")
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
