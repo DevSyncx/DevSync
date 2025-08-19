@@ -1,115 +1,150 @@
 name: Discord Notifications
 
 on:
-  pull_request:
-    types: [opened, closed, reopened, ready_for_review, review_requested, synchronize]
-
-  pull_request_review:
-    types: [submitted, edited, dismissed]
-
-  issues:
-    types: [opened, closed, reopened, assigned, unassigned, labeled, unlabeled]
-
-  issue_comment:
-    types: [created, edited, deleted]
-
   push:
-    branches: [main, develop]
-
+  pull_request:
+    types: [closed]
+  issues:
+    types: [opened]
   release:
-    types: [published, unpublished, created, edited, deleted, prereleased, released]
-
-  fork:
-
+    types: [published]
   watch:
     types: [started]
-
+  fork:
   discussion:
-    types: [created, edited, deleted, pinned, unpinned, locked, unlocked, transferred, answered, unanswered]
-
-  discussion_comment:
-    types: [created, edited, deleted]
+    types: [created]
 
 jobs:
-  notify-discord:
+  notify:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Set up notification content
-      id: setup
-      run: |
-        case "${{ github.event_name }}" in
-          "pull_request")
-            case "${{ github.event.action }}" in
-              "opened") EMOJI="🔀"; COLOR="3066993"; TITLE="New Pull Request Opened";;
-              "closed")
-                if [ "${{ github.event.pull_request.merged }}" == "true" ]; then
-                  EMOJI="✅"; COLOR="5763719"; TITLE="Pull Request Merged"
-                else
-                  EMOJI="❌"; COLOR="15158332"; TITLE="Pull Request Closed"
-                fi;;
-              "reopened") EMOJI="🔄"; COLOR="3066993"; TITLE="Pull Request Reopened";;
-              "ready_for_review") EMOJI="👀"; COLOR="3066993"; TITLE="Pull Request Ready for Review";;
-              "review_requested") EMOJI="🔍"; COLOR="15844367"; TITLE="Review Requested";;
-              "synchronize") EMOJI="🔄"; COLOR="3066993"; TITLE="Pull Request Updated";;
-            esac;;
-          "pull_request_review")
-            case "${{ github.event.action }}" in
-              "submitted")
-                case "${{ github.event.review.state }}" in
-                  "approved") EMOJI="✅"; COLOR="5763719"; TITLE="Pull Request Approved";;
-                  "changes_requested") EMOJI="🔄"; COLOR="15844367"; TITLE="Changes Requested";;
-                  "commented") EMOJI="💬"; COLOR="3066993"; TITLE="Review Comment Added";;
-                esac;;
-            esac;;
-          "issues")
-            case "${{ github.event.action }}" in
-              "opened") EMOJI="🐛"; COLOR="15158332"; TITLE="New Issue Opened";;
-              "closed") EMOJI="✅"; COLOR="5763719"; TITLE="Issue Closed";;
-              "reopened") EMOJI="🔄"; COLOR="15158332"; TITLE="Issue Reopened";;
-              "assigned") EMOJI="👤"; COLOR="3066993"; TITLE="Issue Assigned";;
-            esac;;
-          "issue_comment") EMOJI="💬"; COLOR="3066993"; TITLE="New Comment on Issue";;
-          "push") EMOJI="📝"; COLOR="7506394"; TITLE="New Commits Pushed";;
-          "release")
-            case "${{ github.event.action }}" in
-              "published") EMOJI="🎉"; COLOR="5763719"; TITLE="New Release Published";;
-              "prereleased") EMOJI="🚀"; COLOR="15844367"; TITLE="Pre-release Published";;
-            esac;;
-          "fork") EMOJI="🍴"; COLOR="3066993"; TITLE="Repository Forked";;
-          "watch") EMOJI="⭐"; COLOR="15844367"; TITLE="Repository Starred";;
-          "discussion")
-            case "${{ github.event.action }}" in
-              "created") EMOJI="💭"; COLOR="3066993"; TITLE="New Discussion Created";;
-              "answered") EMOJI="✅"; COLOR="5763719"; TITLE="Discussion Answered";;
-            esac;;
-          *) EMOJI="📢"; COLOR="3066993"; TITLE="GitHub Event";;
-        esac
+      - name: Push Notification
+        if: github.event_name == 'push'
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d '{
+                 "embeds": [{
+                   "title": "New Push to **${{ github.repository }}**",
+                   "description": "`${{ github.actor }}` pushed **${{ github.event.commits | length }} commit(s)** to `${{ github.ref_name }}`",
+                   "color": 3447003,
+                   "url": "https://github.com/${{ github.repository }}/commit/${{ github.sha }}",
+                   "footer": { "text": "DevSync • GitHub" }
+                 }]
+               }' \
+               "${{ secrets.DISCORD_WEBHOOK }}"
 
-        echo "EMOJI=$EMOJI" >> $GITHUB_OUTPUT
-        echo "COLOR=$COLOR" >> $GITHUB_OUTPUT
-        echo "TITLE=$TITLE" >> $GITHUB_OUTPUT
+      - name: PR Merged Notification
+        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d '{
+                 "embeds": [{
+                   "title": "Pull Request Merged",
+                   "description": "**${{ github.event.pull_request.title }}**\n\n${{ github.event.pull_request.body }}",
+                   "color": 5763719,
+                   "author": {
+                     "name": "${{ github.event.pull_request.user.login }}",
+                     "icon_url": "${{ github.event.pull_request.user.avatar_url }}"
+                   },
+                   "fields": [
+                     { "name": "Repository", "value": "${{ github.repository }}", "inline": true },
+                     { "name": "Branch", "value": "${{ github.event.pull_request.head.ref }}", "inline": true },
+                     { "name": "Base Branch", "value": "${{ github.event.pull_request.base.ref }}", "inline": true }
+                   ],
+                   "url": "${{ github.event.pull_request.html_url }}",
+                   "timestamp": "${{ github.event.pull_request.merged_at }}",
+                   "footer": { "text": "DevSync • GitHub" }
+                 }]
+               }' \
+               "${{ secrets.DISCORD_WEBHOOK }}"
 
-    - name: Send Discord Notification
-      run: |
-        jq -n --arg title "${{ steps.setup.outputs.TITLE }}" \
-              --arg desc "${{ github.event.pull_request.title || github.event.issue.title || github.event.head_commit.message || github.event.release.name || github.event.discussion.title }}" \
-              --arg body "${{ github.event.pull_request.body || github.event.issue.body || github.event.comment.body || github.event.review.body || github.event.release.body || github.event.discussion.body }}" \
-              --arg repo "${{ github.repository }}" \
-              --arg url "${{ github.event.pull_request.html_url || github.event.issue.html_url || github.event.comment.html_url || github.event.head_commit.url || github.event.release.html_url || github.event.discussion.html_url }}" \
-              --argjson color ${{ steps.setup.outputs.COLOR }} \
-              '{
-                "embeds": [{
-                  "title": $title,
-                  "description": ($desc + "\n\n" + $body),
-                  "color": $color,
-                  "fields": [{
-                    "name": "Repository", "value": $repo, "inline": true
-                  }],
-                  "url": $url,
-                  "footer": {
-                    "text": "DevSync • GitHub",
-                    "icon_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
-                  }
-                }]
-              }' | curl -H "Content-Type: application/json" -X POST -d @- "${{ secrets.DISCORD_WEBHOOK }}"
+      - name: Issue Opened Notification
+        if: github.event_name == 'issues' && github.event.action == 'opened'
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d '{
+                 "embeds": [{
+                   "title": "New Issue Opened",
+                   "description": "**${{ github.event.issue.title }}**\n\n${{ github.event.issue.body }}",
+                   "color": 15105570,
+                   "author": {
+                     "name": "${{ github.event.issue.user.login }}",
+                     "icon_url": "${{ github.event.issue.user.avatar_url }}"
+                   },
+                   "url": "${{ github.event.issue.html_url }}",
+                   "footer": { "text": "DevSync • GitHub" }
+                 }]
+               }' \
+               "${{ secrets.DISCORD_WEBHOOK }}"
+
+      - name: Release Published Notification
+        if: github.event_name == 'release' && github.event.action == 'published'
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d '{
+                 "embeds": [{
+                   "title": "New Release: ${{ github.event.release.tag_name }}",
+                   "description": "${{ github.event.release.body }}",
+                   "color": 8311585,
+                   "url": "${{ github.event.release.html_url }}",
+                   "footer": { "text": "DevSync • GitHub" }
+                 }]
+               }' \
+               "${{ secrets.DISCORD_WEBHOOK }}"
+
+      - name: Star Added Notification
+        if: github.event_name == 'watch' && github.event.action == 'started'
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d '{
+                 "embeds": [{
+                   "title": "⭐ New Star on Repo!",
+                   "description": "${{ github.actor }} starred **${{ github.repository }}**",
+                   "color": 16776960,
+                   "url": "https://github.com/${{ github.repository }}",
+                   "footer": { "text": "DevSync • GitHub" }
+                 }]
+               }' \
+               "${{ secrets.DISCORD_WEBHOOK }}"
+
+      - name: Fork Created Notification
+        if: github.event_name == 'fork'
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d '{
+                 "embeds": [{
+                   "title": "🍴 Repository Forked!",
+                   "description": "${{ github.actor }} forked **${{ github.repository }}**",
+                   "color": 10181046,
+                   "url": "https://github.com/${{ github.repository }}",
+                   "footer": { "text": "DevSync • GitHub" }
+                 }]
+               }' \
+               "${{ secrets.DISCORD_WEBHOOK }}"
+
+      - name: Discussion Created Notification
+        if: github.event_name == 'discussion' && github.event.action == 'created'
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d '{
+                 "embeds": [{
+                   "title": "💬 New Discussion Started",
+                   "description": "**${{ github.event.discussion.title }}**\n\n${{ github.event.discussion.body }}",
+                   "color": 15277667,
+                   "author": {
+                     "name": "${{ github.event.discussion.user.login }}",
+                     "icon_url": "${{ github.event.discussion.user.avatar_url }}"
+                   },
+                   "url": "${{ github.event.discussion.html_url }}",
+                   "footer": { "text": "DevSync • GitHub" }
+                 }]
+               }' \
+               "${{ secrets.DISCORD_WEBHOOK }}"
