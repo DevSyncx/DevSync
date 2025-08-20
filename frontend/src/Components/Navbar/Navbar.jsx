@@ -89,7 +89,7 @@ const Navbar = () => {
                       Login
                     </Link>
                     <Link
-                      to="/signup"
+                      to="/register"
                       className="flex items-center gap-2 px-6 py-2 bg-[#2E3A59] text-white rounded-lg hover:bg-[#6366f1] transition duration-200"
                     >
                       <UserPlus className="h-4 w-4" />
@@ -143,7 +143,7 @@ const Navbar = () => {
                       Login
                     </Link>
                     <Link
-                      to="/signup"
+                      to="/register"
                       className="flex items-center gap-2 px-4 py-2 bg-[#2E3A59] text-white rounded-lg hover:bg-[#6366f1] transition duration-200 w-fit"
                     >
                       <UserPlus className="h-4 w-4" />
