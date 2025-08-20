@@ -55,7 +55,10 @@ const AdStrip = () => {
 
         {/* Paragraph - FIXED: Changed from <p> to <div> */}
         <div className="text-xl text-slate-700">
+        {/* Paragraph */}
+        <div className="text-xl text-slate-700">
           <AnimatedWords text="All your productivity tools. One powerful dashboard. No context switching." />
+        </div>
         </div>
 
         {/* CTA Button */}

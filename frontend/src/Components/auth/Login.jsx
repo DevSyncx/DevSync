@@ -102,14 +102,9 @@ const Login = () => {
               <label htmlFor="password" className="block text-sm font-medium text-[#1D3557]">
                 Password
               </label>
-              <button
-                type="button"
-                className="text-sm text-[#457B9D] hover:underline bg-transparent border-none p-0 cursor-pointer"
-                aria-label="Forgot password?"
-                onClick={() => {/* TODO: Add forgot password logic or navigation here */}}
-              >
+              <a href="#" className="text-sm text-[#457B9D] hover:underline">
                 Forgot password?
-              </button>
+              </a>
             </div>
             <input
               id="password"
