@@ -23,7 +23,7 @@ const generateAvatarUrl = (email, name) => {
 
 // Use a fallback JWT secret if env variable is missing
 const JWT_SECRET = process.env.JWT_SECRET || 'devsync_secure_jwt_secret_key_for_authentication';
-console.log("JWT_SECRET:", process.env.JWT_SECRET);
+
 
 
 // @route   POST api/auth/register
