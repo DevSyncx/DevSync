@@ -238,10 +238,9 @@ const Register = () => {
               {/* Google Button */}
   <button
     type="button"
-    onClick={() => {
-      // Redirect to your backend Google Auth route
-      window.location.href = "http://localhost:5000/auth/google";
-    }}
+     onClick={() => {
+    window.location.href = "http://localhost:5000/api/auth/google";
+  }}
     className="flex items-center justify-center py-3 border border-border rounded-lg text-[#1D3557] hover:bg-accent"
   >
     <img

@@ -1,3 +1,4 @@
+//server.js
 // Entry point of the backend server
 require('dotenv').config();
 const dbconnection = require('./db/connection');
@@ -25,29 +26,12 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 // Serve uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Define routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/profile', require('./routes/profile'));
-
-// 🔑 Google Auth Route
-app.get(
-  "/auth/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
-
-// 🔑 Google Callback
-app.get(
-  "/auth/google/callback",
-  passport.authenticate("google", { failureRedirect: "/login" }),
-  (req, res) => {
-    // Redirect back to frontend (React) after successful login
-    res.redirect(`${process.env.CLIENT_URL}/dashboard`);
-  }
-);
 
 // Route to display the initial message on browser
 app.get('/', (req, res) => {
