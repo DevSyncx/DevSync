@@ -53,13 +53,13 @@ const Navbar = () => {
           <div className="mx-auto flex max-w-7xl items-center justify-between">
             {/* Logo */}
             <Link to="/">
-              <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#2E3A59] to-[#2E3A59]">
+              <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#2E3A59] to-[#2E3A59] hove00er-50">
                 DevSync
               </h1>
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex space-x-8 items-center">
+            <nav className="hidden md:flex items-center justify-between w-full px-6">
               {navItems.map((item) => (
                 <a
                   key={item.name}
@@ -81,20 +81,22 @@ const Navbar = () => {
                   </Link>
                 ) : (
                   <>
+                  <div className="flex items-center gap-6">
                     <Link
                       to="/login"
-                      className="flex items-center gap-2 px-4 py-2 text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                      className="flex items-center gap-2 px-4 py-2 bg-[#2E3A59]  text-white rounded-lg hover:text-[#6366f1] hover:bg-amber-50 transition duration-200"
                     >
                       <LogIn className="h-4 w-4" />
                       Login
                     </Link>
                     <Link
                       to="/register"
-                      className="flex items-center gap-2 px-6 py-2 bg-[#2E3A59] text-white rounded-lg hover:bg-[#6366f1] transition duration-200"
+                      className="flex items-center gap-2 px-6 py-2 bg-[#2E3A59] text-white rounded-lg hover:text-[#6366f1]  hover:bg-amber-50 transition duration-200"
                     >
                       <UserPlus className="h-4 w-4" />
                       Sign Up
                     </Link>
+                    </div>
                   </>
                 )}
               </div>
@@ -137,7 +139,7 @@ const Navbar = () => {
                   <>
                     <Link
                       to="/login"
-                      className="flex items-center gap-2 text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                      className="flex items-center gap-4 bg-[#2E3A59] hover:bg-[#6366f1] text-white rounded-lg transition duration-200 w-fit"
                     >
                       <LogIn className="h-4 w-4" />
                       Login
