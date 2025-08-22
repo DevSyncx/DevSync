@@ -1,36 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Github, Home, Info, Sparkle, LogIn, UserPlus, UserCircle } from "lucide-react";
+import { Github, Home, Info, Sparkle, LogIn, UserPlus, UserCircle, Phone } from "lucide-react";
 import { FloatingNav } from "../ui/floating-navbar";
-import { Phone } from "lucide-react";
 import { Link } from "react-router-dom";
-
-const navItems = [
-  {
-    name: "Home",
-    link: "/",
-    icon: <Home className="h-4 w-4" />,
-  },
-  {
-    name: "Features",
-    link: "#features",
-    icon: <Sparkle className="h-4 w-4" />,
-  },
-  {
-    name: "About us",
-    link: "#about",
-    icon: <Info className="h-4 w-4" />,
-  },
-  {
-    name: "Github",
-    link: "https://github.com/DevSyncx/DevSync.git",
-    icon: <Github className="h-4 w-4" />,
-  },
-  {
-    name: "Contact Us",
-    link: "#contact",
-    icon: <Phone className="h-4 w-4" />,
-  },
-];
 
 const Navbar = () => {
   const [showFloating, setShowFloating] = useState(false);
@@ -46,6 +17,41 @@ const Navbar = () => {
 
   const isAuthenticated = localStorage.getItem('token') !== null;
 
+  // Nav items including auth-based links
+  const navItems = [
+    {
+      name: "Home",
+      link: "/",
+      icon: <Home className="h-4 w-4" />,
+    },
+    {
+      name: "Features",
+      link: "#features",
+      icon: <Sparkle className="h-4 w-4" />,
+    },
+    {
+      name: "About us",
+      link: "#about",
+      icon: <Info className="h-4 w-4" />,
+    },
+    {
+      name: "Github",
+      link: "https://github.com/DevSyncx/DevSync.git",
+      icon: <Github className="h-4 w-4" />,
+    },
+    {
+      name: "Contact Us",
+      link: "#contact",
+      icon: <Phone className="h-4 w-4" />,
+    },
+    ...(isAuthenticated
+      ? [{ name: "Profile", link: "/profile", icon: <UserCircle className="h-4 w-4" /> }]
+      : [
+          { name: "Login", link: "/login", icon: <LogIn className="h-4 w-4" /> },
+          { name: "Sign Up", link: "/register", icon: <UserPlus className="h-4 w-4" />, isButton: true },
+        ]),
+  ];
+
   return (
     <div className="w-full font-sans">
       {!showFloating && (
@@ -53,53 +59,34 @@ const Navbar = () => {
           <div className="mx-auto flex max-w-7xl items-center justify-between">
             {/* Logo */}
             <Link to="/">
-              <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#2E3A59] to-[#2E3A59] hove00er-50">
+              <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#2E3A59] to-[#2E3A59]">
                 DevSync
               </h1>
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center justify-between w-full px-6">
-              {navItems.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.link}
-                  className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
-                >
-                  {item.icon}
-                  {item.name}
-                </a>
-              ))}
-              <div className="flex items-center gap-3 ml-4">
-                {isAuthenticated ? (
+            <nav className="hidden md:flex space-x-8 items-center">
+              {navItems.map((item) =>
+                item.isButton ? (
                   <Link
-                    to="/profile"
-                    className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                    key={item.name}
+                    to={item.link}
+                    className="flex items-center gap-2 px-6 py-2 bg-[#2E3A59] text-white rounded-lg hover:bg-[#6366f1] transition duration-200"
                   >
-                    <UserCircle className="h-4 w-4" />
-                    Profile
+                    {item.icon}
+                    {item.name}
                   </Link>
                 ) : (
-                  <>
-                  <div className="flex items-center gap-6">
-                    <Link
-                      to="/login"
-                      className="flex items-center gap-2 px-4 py-2 bg-[#2E3A59]  text-white rounded-lg hover:text-[#6366f1] hover:bg-amber-50 transition duration-200"
-                    >
-                      <LogIn className="h-4 w-4" />
-                      Login
-                    </Link>
-                    <Link
-                      to="/register"
-                      className="flex items-center gap-2 px-6 py-2 bg-[#2E3A59] text-white rounded-lg hover:text-[#6366f1]  hover:bg-amber-50 transition duration-200"
-                    >
-                      <UserPlus className="h-4 w-4" />
-                      Sign Up
-                    </Link>
-                    </div>
-                  </>
-                )}
-              </div>
+                  <Link
+                    key={item.name}
+                    to={item.link}
+                    className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                  >
+                    {item.icon}
+                    {item.name}
+                  </Link>
+                )
+              )}
             </nav>
 
             {/* Mobile Menu Button */}
@@ -116,44 +103,27 @@ const Navbar = () => {
           {/* Mobile Navigation */}
           {menuOpen && (
             <div className="md:hidden mt-4 flex flex-col gap-3 px-4 pb-4">
-              {navItems.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.link}
-                  className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
-                >
-                  {item.icon}
-                  {item.name}
-                </a>
-              ))}
-              <div className="flex flex-col gap-2 mt-3 pt-3 border-t border-[#C5D7E5]">
-                {isAuthenticated ? (
+              {navItems.map((item) =>
+                item.isButton ? (
                   <Link
-                    to="/profile"
-                    className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                    key={item.name}
+                    to={item.link}
+                    className="flex items-center gap-2 px-4 py-2 bg-[#2E3A59] text-white rounded-lg hover:bg-[#6366f1] transition duration-200 w-fit"
                   >
-                    <UserCircle className="h-4 w-4" />
-                    Profile
+                    {item.icon}
+                    {item.name}
                   </Link>
                 ) : (
-                  <>
-                    <Link
-                      to="/login"
-                      className="flex items-center gap-4 bg-[#2E3A59] hover:bg-[#6366f1] text-white rounded-lg transition duration-200 w-fit"
-                    >
-                      <LogIn className="h-4 w-4" />
-                      Login
-                    </Link>
-                    <Link
-                      to="/register"
-                      className="flex items-center gap-2 px-4 py-2 bg-[#2E3A59] text-white rounded-lg hover:bg-[#6366f1] transition duration-200 w-fit"
-                    >
-                      <UserPlus className="h-4 w-4" />
-                      Sign Up
-                    </Link>
-                  </>
-                )}
-              </div>
+                  <Link
+                    key={item.name}
+                    to={item.link}
+                    className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                  >
+                    {item.icon}
+                    {item.name}
+                  </Link>
+                )
+              )}
             </div>
           )}
         </header>
@@ -165,3 +135,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
