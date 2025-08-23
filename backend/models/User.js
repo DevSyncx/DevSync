@@ -2,9 +2,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
+   googleId: {
+    type: String,
+    unique: true,
+    sparse: true, // multiple nulls allowed
+  },
   name: {
     type: String,
-    required: true
+    required: true, 
   },
   email: {
     type: String,
@@ -13,7 +18,9 @@ const UserSchema = new Schema({
   },
   password: {
     type: String,
-    required: true
+     required: function () {
+      return !this.googleId;
+     },
   },
   avatar: {
     type: String,

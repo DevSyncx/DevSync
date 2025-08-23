@@ -7,6 +7,7 @@ const auth = require('../middleware/auth');
 const User = require('../models/User');
 const crypto = require('crypto');
 require('dotenv').config();
+const passport = require("passport");
 
 // Helper function to generate avatar URL from email or name
 const generateAvatarUrl = (email, name) => {
@@ -25,6 +26,25 @@ const generateAvatarUrl = (email, name) => {
 const JWT_SECRET = process.env.JWT_SECRET || 'devsync_secure_jwt_secret_key_for_authentication';
 
 
+// Start Google OAuth flow
+router.get(
+  "/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+// Handle callback from Google
+router.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: "/login",   // if auth fails → go to login
+    session: true,
+  }),
+  (req, res) => {
+    // ✅ Successful authentication → redirect to frontend home page
+    res.redirect("http://localhost:5173/"); 
+    // ⬆️ change port if your React app runs elsewhere
+  }
+);
 
 // @route   POST api/auth/register
 // @desc    Register user
@@ -147,5 +167,15 @@ router.get('/', auth, async (req, res) => {
     res.status(500).json({ errors: [{ msg: 'Server Error' }] });
   }
 });
+
+// in routes/auth.js
+router.get("/me", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.json(req.user);
+  } else {
+    res.status(401).json({ message: "Not logged in" });
+  }
+});
+
 
 module.exports = router;

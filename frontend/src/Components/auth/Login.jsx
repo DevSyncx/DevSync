@@ -57,6 +57,10 @@ const Login = () => {
     }
   };
 
+  const handleGoogleLogin = () => {
+  window.location.href = "http://localhost:5000/api/auth/google";
+};
+
   return (
     <div className="min-h-screen bg-[#A4C7E6] flex items-center justify-center p-4 relative">
       {/* Back to Home */}
@@ -218,7 +222,7 @@ const Login = () => {
             >
               <Github className="h-4 w-4 mr-2" /> GitHub
             </button>
-            <button
+            <button  onClick={handleGoogleLogin}
               type="button"
               className="border border-[#C5D7E5] text-[#1D3557] hover:bg-accent py-3 rounded-lg flex justify-center items-center"
             >
