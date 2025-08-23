@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Github, Home, Info, Sparkle, LogIn, UserPlus, UserCircle } from "lucide-react";
+import { Github, Home, Info, Sparkle, LogIn, UserPlus, UserCircle, Clock } from "lucide-react";
 import { FloatingNav } from "../ui/floating-navbar";
 import { Phone } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -9,26 +9,37 @@ const navItems = [
     name: "Home",
     link: "/",
     icon: <Home className="h-4 w-4" />,
+    internal: true,
   },
   {
     name: "Features",
     link: "#features",
     icon: <Sparkle className="h-4 w-4" />,
+    internal: false,
   },
   {
     name: "About us",
     link: "#about",
     icon: <Info className="h-4 w-4" />,
+    internal: false,
+  },
+  {
+    name: "Pomodoro", 
+    link: "/pomodoro",
+    icon: <Clock className="h-4 w-4" />,
+    internal: true,
   },
   {
     name: "Github",
     link: "https://github.com/DevSyncx/DevSync.git",
     icon: <Github className="h-4 w-4" />,
+    internal: false,
   },
   {
     name: "Contact Us",
     link: "#contact",
     icon: <Phone className="h-4 w-4" />,
+    internal: false,
   },
 ];
 
@@ -60,16 +71,31 @@ const Navbar = () => {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex space-x-8 items-center">
-              {navItems.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.link}
-                  className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
-                >
-                  {item.icon}
-                  {item.name}
-                </a>
-              ))}
+              {navItems.map((item) =>
+                item.internal ? (
+                  <Link
+                    key={item.name}
+                    to={item.link}
+                    className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                  >
+                    {item.icon}
+                    {item.name}
+                  </Link>
+                ) : (
+                  <a
+                    key={item.name}
+                    href={item.link}
+                    className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                    target={item.link.startsWith("http") ? "_blank" : "_self"}
+                    rel="noopener noreferrer"
+                  >
+                    {item.icon}
+                    {item.name}
+                  </a>
+                )
+              )}
+
+              {/* Auth links */}
               <div className="flex items-center gap-3 ml-4">
                 {isAuthenticated ? (
                   <Link
@@ -114,16 +140,31 @@ const Navbar = () => {
           {/* Mobile Navigation */}
           {menuOpen && (
             <div className="md:hidden mt-4 flex flex-col gap-3 px-4 pb-4">
-              {navItems.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.link}
-                  className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
-                >
-                  {item.icon}
-                  {item.name}
-                </a>
-              ))}
+              {navItems.map((item) =>
+                item.internal ? (
+                  <Link
+                    key={item.name}
+                    to={item.link}
+                    className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                  >
+                    {item.icon}
+                    {item.name}
+                  </Link>
+                ) : (
+                  <a
+                    key={item.name}
+                    href={item.link}
+                    className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                    target={item.link.startsWith("http") ? "_blank" : "_self"}
+                    rel="noopener noreferrer"
+                  >
+                    {item.icon}
+                    {item.name}
+                  </a>
+                )
+              )}
+
+              {/* Auth links mobile */}
               <div className="flex flex-col gap-2 mt-3 pt-3 border-t border-[#C5D7E5]">
                 {isAuthenticated ? (
                   <Link
@@ -137,7 +178,7 @@ const Navbar = () => {
                   <>
                     <Link
                       to="/login"
-                      className="flex items-center gap-2 text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                      className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
                     >
                       <LogIn className="h-4 w-4" />
                       Login
@@ -163,3 +204,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
