@@ -20,7 +20,7 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative w-full min-h-[78vh] px-6 py-20 flex items-center justify-center overflow-hidden rounded-3xl border border-white/50 bg-gradient-to-b from-[#A4C7E6] to-blue-300 shadow-2xl"
+      className="relative w-full min-h-[78vh] px-6 py-20 flex items-center justify-center overflow-hidden rounded-3xl border border-white/50 bg-gradient-to-b from-white to-sky-50 shadow-2xl"
     >
       {/* subtle corner accents */}
       <div className="pointer-events-none absolute inset-0">
