@@ -1,4 +1,4 @@
-import { Github, Mail } from "lucide-react";
+import { Github, Mail,Facebook ,Linkedin,Twitter} from "lucide-react";
 import { Link } from "react-router-dom"; // or use `next/link` if using Next.js
 
 const Footer = () => {
@@ -52,6 +52,31 @@ const Footer = () => {
               className="hover:text-blue-400"
             >
               <Mail className="w-5 h-5" />
+            </a>
+            
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-400"
+            >
+              <Facebook className="w-5 h-5" />
+            </a>
+            <a
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-400"
+            >
+              <Linkedin className="w-5 h-5" />
+            </a>
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-400"
+            >
+              <Twitter className="w-5 h-5" />
             </a>
           </div>
         </div>
