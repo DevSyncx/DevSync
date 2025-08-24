@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Github, Home, Info, Sparkle, LogIn, UserPlus, UserCircle, Clock } from "lucide-react";
+import { Github, Home, Info, Sparkle, LogIn, UserPlus, UserCircle } from "lucide-react";
 import { FloatingNav } from "../ui/floating-navbar";
 import { Phone } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -22,12 +22,6 @@ const navItems = [
     link: "#about",
     icon: <Info className="h-4 w-4" />,
     internal: false,
-  },
-  {
-    name: "Pomodoro", 
-    link: "/pomodoro",
-    icon: <Clock className="h-4 w-4" />,
-    internal: true,
   },
   {
     name: "Github",
