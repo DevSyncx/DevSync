@@ -38,7 +38,7 @@ const Footer = () => {
         {/* Contact & Social */}
         <div>
           <h4 className="text-lg font-semibold mb-3">Connect</h4>
-          <div className="flex items-center  gap-4 ml-0 mr-0">
+          <div className="flex items-center gap-4 mt-2">
             <a
               href="https://github.com/devsync-org"
               target="_blank"
