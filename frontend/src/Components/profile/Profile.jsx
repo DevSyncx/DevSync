@@ -35,16 +35,7 @@ const Profile = () => {
   const [avatarPreview, setAvatarPreview] = useState(null);
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
-  // const [editData, setEditData] = useState({...profileData});
-  // const [isSaving, setIsSaving] = useState(false);
-  // const [currentSkill, setCurrentSkill] = useState("");
-  // const [isLoading, setIsLoading] = useState(true);
-  // const [error, setError] = useState(null);
-  // const [avatarFile, setAvatarFile] = useState(null);
-  // const [avatarPreview, setAvatarPreview] = useState(null);
-  // const fileInputRef = useRef(null);
-  // const navigate = useNavigate();
-  
+
   useEffect(() => {
     // Fetch user profile data from the backend
     const fetchProfile = async () => {
@@ -55,7 +46,7 @@ const Profile = () => {
           return;
         }
         
-        const response = await fetch('http://localhost:5000/api/profile', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
           headers: {
             'x-auth-token': token
           }
@@ -126,7 +117,7 @@ const Profile = () => {
           throw new Error('Authentication required');
         }
         
-        const response = await fetch('http://localhost:5000/api/profile/generate-avatar', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/profile/generate-avatar`, {
           method: 'POST',
           headers: {
             'x-auth-token': token
@@ -175,7 +166,7 @@ const Profile = () => {
         const formData = new FormData();
         formData.append('avatar', avatarFile);
         
-        const avatarResponse = await fetch('http://localhost:5000/api/profile/avatar', {
+        const avatarResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/profile/avatar`, {
           method: 'POST',
           headers: {
             'x-auth-token': token
@@ -212,7 +203,7 @@ const Profile = () => {
       };
       
       // Send update request to backend
-      const response = await fetch('http://localhost:5000/api/profile', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -349,7 +340,7 @@ const Profile = () => {
                     onClick={handleAvatarClick}
                   >
                     <img 
-                      src={avatarPreview || (profileData.avatar.startsWith('http') ? profileData.avatar : `http://localhost:5000${profileData.avatar}`)} 
+                      src={avatarPreview || (profileData.avatar.startsWith('http') ? profileData.avatar : `${import.meta.env.VITE_API_URL}${profileData.avatar}`)} 
                       alt={profileData.name}
                       className="w-full h-full object-cover"
                       onError={(e) => {

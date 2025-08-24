@@ -1,10 +1,10 @@
 // Entry point of the backend server
-require('dotenv').config();
-const dbconnection = require('./db/connection');
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const path = require('path');
+require("dotenv").config();
+const dbconnection = require("./db/connection");
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const path = require("path");
 const contactRouter = require("./routes/contact.route");
 const passport = require("passport"); // import actual passport
 require("./config/passport"); // just execute the strategy config
@@ -17,7 +17,10 @@ const session = require("express-session");
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: process.env.CLIENT_URL|| "http://localhost:5173", // frontend URL for local dev
+  credentials: true
+}));
 
 
 
@@ -40,16 +43,6 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/profile", require("./routes/profile"));
 app.use("/api/contact", contactRouter);
-
-// Serve static assets in production
-if (process.env.NODE_ENV === "production") {
-  // Set static folder
-  app.use(express.static(path.join(__dirname, "../client/build")));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
-  });
-}
 
 // Route to display the initial message on browser
 app.get("/", (req, res) => {
