@@ -15,7 +15,19 @@ const Register = () => {
   const [passwordMatch, setPasswordMatch] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0);
   const navigate = useNavigate();
+
+  // Password strength checker — returns score from 0 to 4
+  const getPasswordStrength = (password) => {
+    let score = 0;
+    if (!password) return score;
+    if (password.length >= 8) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password)) score++;
+    return score;
+  };
 
   // Handle input change
   const handleChange = (e) => {
@@ -24,6 +36,10 @@ const Register = () => {
       ...formData,
       [name]: value,
     });
+
+    if (name === "password") {
+      setPasswordStrength(getPasswordStrength(value));
+    }
 
     if (name === "password" || name === "confirmPassword") {
       if (name === "confirmPassword" && value !== formData.password) {
@@ -178,6 +194,26 @@ const Register = () => {
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
+
+              {/* Password Strength Indicator — initially hidden if password empty */}
+              {formData.password && (
+                <div className="mt-1">
+                  <div className="h-2 w-full rounded bg-gray-300">
+                    <div
+                      className={`h-2 rounded ${
+                        passwordStrength === 0 ? "w-1/4 bg-red-500" :
+                        passwordStrength === 1 ? "w-1/4 bg-red-500" :
+                        passwordStrength === 2 ? "w-2/4 bg-yellow-400" :
+                        passwordStrength === 3 ? "w-3/4 bg-blue-500" :
+                        "w-full bg-green-500"
+                      } transition-all duration-300`}
+                    />
+                  </div>
+                  <p className="text-sm mt-1 font-medium text-[#1D3557]">
+                    {["Too weak", "Weak", "Fair", "Good", "Strong"][passwordStrength]}
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Confirm Password */}
