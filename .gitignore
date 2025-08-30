@@ -14,6 +14,49 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# Node.js dependencies
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Build output
+dist/
+build/
+.cache/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs
+*.log
+debug.log
+*.out
+*.pid
+*.seed
+*.gz
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+
+# MongoDB database files
+backend/db/
+*.lock
+*.wt
+*.turtle
+
+# Coverage reports
+coverage/
+
+
 # === Editor / IDE === #
 .vscode/
 .idea/

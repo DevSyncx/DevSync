@@ -49,7 +49,7 @@ const Login = () => {
       }
 
       localStorage.setItem("token", data.token);
-      navigate("/profile");
+      navigate("/dashboard");
     } catch (err) {
       setError(err.message || "Invalid email or password. Please try again.");
     } finally {

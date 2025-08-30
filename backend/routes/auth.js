@@ -41,7 +41,8 @@ router.get(
   }),
   (req, res) => {
     // ✅ Successful authentication → redirect to frontend home page
-    res.redirect(process.env.CLIENT_URL || "http://localhost:5173"); 
+    res.redirect(`${process.env.CLIENT_URL}/dashboard`);
+
     // ⬆️ change port if your React app runs elsewhere
   }
 );

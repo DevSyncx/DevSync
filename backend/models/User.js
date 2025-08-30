@@ -67,6 +67,25 @@ const UserSchema = new Schema({
       }
     }
   ],
+
+  // ✅ New fields for dashboard
+  streak: {
+    type: Number,
+    default: 0
+  },
+  timeSpent: {
+    type: String,
+    default: "0 minutes"
+  },
+  activity: {
+    type: [Object], // e.g. [{ date: '2025-08-27', count: 3 }]
+    default: []
+  },
+  goals: {
+    type: [String], // or [{ text: String, done: Boolean }] if you want tracking
+    default: []
+  },
+
   date: {
     type: Date,
     default: Date.now

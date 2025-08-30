@@ -15,6 +15,7 @@ import Login from "./Components/auth/Login";
 import Register from "./Components/auth/Register";
 import Profile from "./Components/profile/Profile";
 import ProtectedRoute from "./Components/auth/ProtectedRoute";
+import Dashboard from "./Components/Dashboard";
 
 
 // Home component that contains the main landing page content
@@ -93,6 +94,7 @@ function App() {
           </ProtectedRoute>
         } 
       />
+      <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
   );
 }

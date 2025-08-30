@@ -7,6 +7,7 @@ import NotFound from './Components/ui/NotFound.jsx';
 import Register from './Components/auth/Register';
 import Profile from './Components/profile/Profile';
 import Login from './Components/auth/Login';
+import Dashboard from './Components/Dashboard';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -16,6 +17,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

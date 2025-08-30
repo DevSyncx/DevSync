@@ -270,4 +270,75 @@ router.delete('/projects/:proj_id', auth, async (req, res) => {
   }
 });
 
+// @route   PUT api/profile/goals
+// @desc    Update user goals
+// @access  Private
+router.put('/goals', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ msg: 'User not found' });
+
+    user.goals = req.body.goals || [];
+    await user.save();
+    res.json(user.goals);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// @route   PUT api/profile/notes
+// @desc    Update user notes
+// @access  Private
+router.put('/notes', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ msg: 'User not found' });
+
+    user.notes = req.body.notes || "";
+    await user.save();
+    res.json(user.notes);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// @route   PUT api/profile/activity
+// @desc    Update activity log (for heatmap)
+// @access  Private
+router.put('/activity', auth, async (req, res) => {
+  try {
+    const { date } = req.body; // expects YYYY-MM-DD or timestamp
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ msg: 'User not found' });
+
+    user.activity.push(date);
+    await user.save();
+    res.json(user.activity);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// @route   PUT api/profile/time
+// @desc    Update time spent
+// @access  Private
+router.put('/time', auth, async (req, res) => {
+  try {
+    const { timeSpent } = req.body; // e.g. "2h 30m"
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ msg: 'User not found' });
+
+    user.timeSpent = timeSpent;
+    await user.save();
+    res.json(user.timeSpent);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+
 module.exports = router;
