@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Mail, Lock, Eye, EyeOff, Github, ArrowLeft } from "lucide-react";
+import EmailVerification from "./EmailVerification"; // Import the verification component
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,8 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showVerification, setShowVerification] = useState(false);
+  const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,6 +26,8 @@ const Login = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+     // Clear error when user starts typing
+    if (error) setError(null);
   };
 
   const handleSubmit = async (e) => {
@@ -44,10 +49,17 @@ const Login = () => {
         throw new Error("Invalid server response");
       }
 
-      if (!response.ok) {
-        throw new Error(data.errors?.[0]?.msg || "Invalid credentials");
+      if (response.ok) {
+         // Check if user needs email verification
+        if (data.requiresVerification) {
+          setUserId(data.userId);
+          setShowVerification(true); // Don't throw error, show verification instead
+          return; 
+        }
+      }else{
+         throw new Error(data.errors?.[0]?.msg || "Invalid credentials")
       }
-
+      // Successful login
       localStorage.setItem("token", data.token);
       navigate("/dashboard");
     } catch (err) {
@@ -57,10 +69,25 @@ const Login = () => {
     }
   };
 
+   const handleVerificationSuccess = (user) => {
+    navigate("/dashboard");
+  };
+  
+
   const handleGoogleLogin = () => {
   window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`
-
 };
+
+  // Show verification component if user needs to verify email
+  if (showVerification) {
+    return (
+      <EmailVerification
+        userId={userId}
+        email={formData.email}
+        onVerificationSuccess={handleVerificationSuccess}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#A4C7E6] flex items-center justify-center p-4 relative">
@@ -95,9 +122,11 @@ const Login = () => {
 
         {/* Error */}
         {error && (
-          <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+           <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }} className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
             {error}
-          </div>
+          </motion.div>
         )}
 
         {/* Form */}
@@ -171,9 +200,10 @@ const Login = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3 px-4 bg-[#457B9D] text-white font-medium rounded-lg hover:bg-[#2E5E82] transition duration-300 flex justify-center"
+            className="w-full py-3 px-4 bg-[#457B9D] text-white font-medium rounded-lg hover:bg-[#2E5E82] transition duration-300 flex justify-center items-center gap-2"
           >
             {isLoading ? (
+              <>
               <svg
                 className="animate-spin h-5 w-5 text-white"
                 xmlns="http://www.w3.org/2000/svg"
@@ -198,6 +228,8 @@ const Login = () => {
                     5.824 3 7.938l3-2.647z"
                 ></path>
               </svg>
+                Signing In...
+              </>
             ) : (
               "Sign In"
             )}
