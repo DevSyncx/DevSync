@@ -19,9 +19,29 @@ import Dashboard from "./Components/Dashboard";
 
 
 // Home component that contains the main landing page content
-function Home() {
-  return (
+import { ArrowUp } from "lucide-react"; // <-- icon for back to top
 
+function Home() {
+  const [showTop, setShowTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowTop(true);
+      } else {
+        setShowTop(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  return (
     <div className="min-h-screen w-full bg-gradient-to-b from-[#E4ECF1] to-[#D2DEE7] scroll-smooth overflow-hidden">
       {/* Navbar */}
       <Navbar />
@@ -48,14 +68,25 @@ function Home() {
           <About />
         </div>
         <ScrollRevealWrapper delay={0.2}>
-        <div id="contact">
-       
-          <Contact/>
-        </div>
+          <div id="contact">
+            <Contact />
+          </div>
         </ScrollRevealWrapper>
 
         <Footer />
       </main>
+
+      {/* ✅ Back to Top Button */}
+  
+{showTop && (
+  <button
+    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+    className="fixed bottom-6 right-6 p-3 rounded-full bg-blue-500 text-white shadow-lg hover:bg-blue-700 transition-all duration-300 z-50"
+  >
+    <ArrowUp size={20} />
+  </button>
+)}
+
     </div>
   );
 }
