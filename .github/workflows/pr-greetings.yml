@@ -1,0 +1,24 @@
+name: PR Greetings
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Add greeting comment
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🙌 Thanks @${context.payload.pull_request.user.login} for raising this PR!  
+Our team will review it soon ⏳ — meanwhile, please make sure your PR follows our contributing guidelines 👉 [Contributing Guidelines](https://github.com/DevSyncx/DevSync/blob/main/CONTRIBUTING.md) 🎉`
+            })
