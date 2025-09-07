@@ -17,6 +17,8 @@ on:
 jobs:
   notify:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Push Notification
@@ -24,15 +26,15 @@ jobs:
         run: |
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d '{
-                 "embeds": [{
-                   "title": "New Push to **${{ github.repository }}**",
-                   "description": "`${{ github.actor }}` pushed **${{ github.event.commits | length }} commit(s)** to `${{ github.ref_name }}`",
-                   "color": 3447003,
-                   "url": "https://github.com/${{ github.repository }}/commit/${{ github.sha }}",
-                   "footer": { "text": "DevSync • GitHub" }
+               -d "{
+                 \"embeds\": [{
+                   \"title\": \"New Push to **${{ github.repository }}**\",
+                   \"description\": \"${{ github.actor }} pushed commits to \`${{ github.ref_name }}\`\",
+                   \"color\": 3447003,
+                   \"url\": \"https://github.com/${{ github.repository }}/commit/${{ github.sha }}\",
+                   \"footer\": { \"text\": \"DevSync • GitHub\" }
                  }]
-               }' \
+               }" \
                "${{ secrets.DISCORD_WEBHOOK }}"
 
       - name: PR Merged Notification
@@ -40,25 +42,25 @@ jobs:
         run: |
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d '{
-                 "embeds": [{
-                   "title": "Pull Request Merged",
-                   "description": "**${{ github.event.pull_request.title }}**\n\n${{ github.event.pull_request.body }}",
-                   "color": 5763719,
-                   "author": {
-                     "name": "${{ github.event.pull_request.user.login }}",
-                     "icon_url": "${{ github.event.pull_request.user.avatar_url }}"
+               -d "{
+                 \"embeds\": [{
+                   \"title\": \"Pull Request Merged\",
+                   \"description\": \"**${{ github.event.pull_request.title }}**\n\n${{ github.event.pull_request.body }}\",
+                   \"color\": 5763719,
+                   \"author\": {
+                     \"name\": \"${{ github.event.pull_request.user.login }}\",
+                     \"icon_url\": \"${{ github.event.pull_request.user.avatar_url }}\"
                    },
-                   "fields": [
-                     { "name": "Repository", "value": "${{ github.repository }}", "inline": true },
-                     { "name": "Branch", "value": "${{ github.event.pull_request.head.ref }}", "inline": true },
-                     { "name": "Base Branch", "value": "${{ github.event.pull_request.base.ref }}", "inline": true }
+                   \"fields\": [
+                     { \"name\": \"Repository\", \"value\": \"${{ github.repository }}\", \"inline\": true },
+                     { \"name\": \"Branch\", \"value\": \"${{ github.event.pull_request.head.ref }}\", \"inline\": true },
+                     { \"name\": \"Base Branch\", \"value\": \"${{ github.event.pull_request.base.ref }}\", \"inline\": true }
                    ],
-                   "url": "${{ github.event.pull_request.html_url }}",
-                   "timestamp": "${{ github.event.pull_request.merged_at }}",
-                   "footer": { "text": "DevSync • GitHub" }
+                   \"url\": \"${{ github.event.pull_request.html_url }}\",
+                   \"timestamp\": \"${{ github.event.pull_request.merged_at }}\",
+                   \"footer\": { \"text\": \"DevSync • GitHub\" }
                  }]
-               }' \
+               }" \
                "${{ secrets.DISCORD_WEBHOOK }}"
 
       - name: Issue Opened Notification
@@ -66,19 +68,19 @@ jobs:
         run: |
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d '{
-                 "embeds": [{
-                   "title": "New Issue Opened",
-                   "description": "**${{ github.event.issue.title }}**\n\n${{ github.event.issue.body }}",
-                   "color": 15105570,
-                   "author": {
-                     "name": "${{ github.event.issue.user.login }}",
-                     "icon_url": "${{ github.event.issue.user.avatar_url }}"
+               -d "{
+                 \"embeds\": [{
+                   \"title\": \"New Issue Opened\",
+                   \"description\": \"**${{ github.event.issue.title }}**\n\n${{ github.event.issue.body }}\",
+                   \"color\": 15105570,
+                   \"author\": {
+                     \"name\": \"${{ github.event.issue.user.login }}\",
+                     \"icon_url\": \"${{ github.event.issue.user.avatar_url }}\"
                    },
-                   "url": "${{ github.event.issue.html_url }}",
-                   "footer": { "text": "DevSync • GitHub" }
+                   \"url\": \"${{ github.event.issue.html_url }}\",
+                   \"footer\": { \"text\": \"DevSync • GitHub\" }
                  }]
-               }' \
+               }" \
                "${{ secrets.DISCORD_WEBHOOK }}"
 
       - name: Release Published Notification
@@ -86,15 +88,15 @@ jobs:
         run: |
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d '{
-                 "embeds": [{
-                   "title": "New Release: ${{ github.event.release.tag_name }}",
-                   "description": "${{ github.event.release.body }}",
-                   "color": 8311585,
-                   "url": "${{ github.event.release.html_url }}",
-                   "footer": { "text": "DevSync • GitHub" }
+               -d "{
+                 \"embeds\": [{
+                   \"title\": \"New Release: ${{ github.event.release.tag_name }}\",
+                   \"description\": \"${{ github.event.release.body }}\",
+                   \"color\": 8311585,
+                   \"url\": \"${{ github.event.release.html_url }}\",
+                   \"footer\": { \"text\": \"DevSync • GitHub\" }
                  }]
-               }' \
+               }" \
                "${{ secrets.DISCORD_WEBHOOK }}"
 
       - name: Star Added Notification
@@ -102,15 +104,15 @@ jobs:
         run: |
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d '{
-                 "embeds": [{
-                   "title": "⭐ New Star on Repo!",
-                   "description": "${{ github.actor }} starred **${{ github.repository }}**",
-                   "color": 16776960,
-                   "url": "https://github.com/${{ github.repository }}",
-                   "footer": { "text": "DevSync • GitHub" }
+               -d "{
+                 \"embeds\": [{
+                   \"title\": \"⭐ New Star on Repo!\",
+                   \"description\": \"${{ github.actor }} starred **${{ github.repository }}**\",
+                   \"color\": 16776960,
+                   \"url\": \"https://github.com/${{ github.repository }}\",
+                   \"footer\": { \"text\": \"DevSync • GitHub\" }
                  }]
-               }' \
+               }" \
                "${{ secrets.DISCORD_WEBHOOK }}"
 
       - name: Fork Created Notification
@@ -118,15 +120,15 @@ jobs:
         run: |
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d '{
-                 "embeds": [{
-                   "title": "🍴 Repository Forked!",
-                   "description": "${{ github.actor }} forked **${{ github.repository }}**",
-                   "color": 10181046,
-                   "url": "https://github.com/${{ github.repository }}",
-                   "footer": { "text": "DevSync • GitHub" }
+               -d "{
+                 \"embeds\": [{
+                   \"title\": \"🍴 Repository Forked!\",
+                   \"description\": \"${{ github.actor }} forked **${{ github.repository }}**\",
+                   \"color\": 10181046,
+                   \"url\": \"https://github.com/${{ github.repository }}\",
+                   \"footer\": { \"text\": \"DevSync • GitHub\" }
                  }]
-               }' \
+               }" \
                "${{ secrets.DISCORD_WEBHOOK }}"
 
       - name: Discussion Created Notification
@@ -134,17 +136,17 @@ jobs:
         run: |
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d '{
-                 "embeds": [{
-                   "title": "💬 New Discussion Started",
-                   "description": "**${{ github.event.discussion.title }}**\n\n${{ github.event.discussion.body }}",
-                   "color": 15277667,
-                   "author": {
-                     "name": "${{ github.event.discussion.user.login }}",
-                     "icon_url": "${{ github.event.discussion.user.avatar_url }}"
+               -d "{
+                 \"embeds\": [{
+                   \"title\": \"💬 New Discussion Started\",
+                   \"description\": \"**${{ github.event.discussion.title }}**\n\n${{ github.event.discussion.body }}\",
+                   \"color\": 15277667,
+                   \"author\": {
+                     \"name\": \"${{ github.event.discussion.user.login }}\",
+                     \"icon_url\": \"${{ github.event.discussion.user.avatar_url }}\"
                    },
-                   "url": "${{ github.event.discussion.html_url }}",
-                   "footer": { "text": "DevSync • GitHub" }
+                   \"url\": \"${{ github.event.discussion.html_url }}\",
+                   \"footer\": { \"text\": \"DevSync • GitHub\" }
                  }]
-               }' \
+               }" \
                "${{ secrets.DISCORD_WEBHOOK }}"
