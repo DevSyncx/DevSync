@@ -11,11 +11,13 @@ import Footer from "./Components/footer";
 import ScrollRevealWrapper from "./Components/ui/ScrollRevealWrapper";
 import Loader from "./Components/ui/Loader"; // ✅ Import the Loader
 
+
 import Login from "./Components/auth/Login";
 import Register from "./Components/auth/Register";
 import Profile from "./Components/profile/Profile";
 import ProtectedRoute from "./Components/auth/ProtectedRoute";
 import Dashboard from "./Components/Dashboard";
+import PageWithBackButton from "./Components/layout/PageWithBackButton";
 
 
 // Home component that contains the main landing page content
@@ -114,18 +116,19 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      
+      <Route path="/login" element={<PageWithBackButton><Login /></PageWithBackButton>} />
+      <Route path="/register" element={<PageWithBackButton><Register /></PageWithBackButton>} />
       <Route 
         path="/profile" 
         element={
-          <ProtectedRoute>
-            <Profile />
-          </ProtectedRoute>
+          <PageWithBackButton>
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          </PageWithBackButton>
         } 
       />
-      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/dashboard" element={<PageWithBackButton><Dashboard /></PageWithBackButton>} />
     </Routes>
   );
 }
