@@ -23,6 +23,7 @@
     "openai": "^5.19.1",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
+    "rate-limiter-flexible": "^7.3.0",
     "resend": "^6.0.1"
   },
   "devDependencies": {

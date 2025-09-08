@@ -87,7 +87,7 @@ const Register = () => {
       }
 
       localStorage.setItem("token", data.token);
-      navigate("/profile");
+      navigate("/dashboard");
     } catch (err) {
       setError(err.message || "Registration failed. Please try again.");
     } finally {
