@@ -3,8 +3,8 @@ import { ResponsiveCalendar } from "@nivo/calendar";
 
 export default function ActivityHeatmap({ activityData, className = "" }) {
   return (
-    <div className={`bg-white rounded-xl shadow p-4 w-full ${className}`}>
-      <h3 className="text-lg font-semibold text-center">Activity</h3>
+  <div className={`bg-[var(--card)] rounded-xl shadow p-4 w-full ${className}`}>
+  <h3 className="text-lg font-semibold text-center text-[var(--primary)]">Activity</h3>
       <div className="h-64 min-h-[40px] w-full overflow-x-auto">
         <div className="min-w-[700px] h-full">
         <ResponsiveCalendar

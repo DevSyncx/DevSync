@@ -37,22 +37,22 @@ const About = () => {
         <div className="max-w-3xl mx-auto antialiased pt-4 relative">
           {/* Section Header */}
           <div className="flex items-center gap-3 mb-10">
-            <Users2 className="text-blue-600 w-6 h-6" />
-            <h2 className="text-4xl font-bold text-slate-900">About DevSync</h2>
+              <Users2 style={{ color: "var(--primary)" }} className="w-6 h-6" />
+              <h2 className="text-4xl font-bold" style={{ color: "var(--foreground)" }}>About DevSync</h2>
           </div>
 
           {/* Tracing Points */}
           {aboutPoints.map((item, index) => (
             <div key={index} className="mb-12">
               <span className="bg-black text-white rounded-full text-xs px-3 py-1 mb-3 inline-block tracking-wider uppercase">
-                {item.badge}
+                  {item.badge}
               </span>
 
-              <p className={twMerge("text-xl font-semibold mb-2 text-slate-900")}>
+              <p className={twMerge("text-xl font-semibold mb-2")} style={{ color: "var(--foreground)" }}>
                 {item.title}
               </p>
 
-              <p className="text-sm text-slate-600 leading-relaxed prose dark:prose-invert">
+              <p className="text-sm leading-relaxed prose" style={{ color: "var(--muted-foreground)" }}>
                 {item.description}
               </p>
             </div>

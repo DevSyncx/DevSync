@@ -52,7 +52,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 font-inter bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+  <div className="min-h-screen flex items-center justify-center px-4 font-inter bg-[var(--background)]">
       <div className="grid md:grid-cols-2 gap-10 w-full max-w-6xl items-center">
         <motion.div
           initial={{ opacity: 0, x: -40 }}
@@ -60,31 +60,27 @@ const Contact = () => {
           transition={{ duration: 0.6 }}
           className="space-y-6"
         >
-          <div className="bg-white shadow-md rounded-xl p-6 flex items-center space-x-4">
-            <Mail className="w-10 h-10 text-blue-600" />
+          <div className="shadow-md rounded-xl p-6 flex items-center space-x-4 bg-[var(--card)]">
+            <Mail className="w-10 h-10 text-[var(--primary)]" />
             <div>
-              <h3 className="text-lg font-semibold text-gray-800">Email Us</h3>
-              <p className="text-gray-600">info@example.com</p>
+              <h3 className="text-lg font-semibold text-[var(--card-foreground)]">Email Us</h3>
+              <p className="text-[var(--muted-foreground)]">info@example.com</p>
             </div>
           </div>
 
-          <div className="bg-white shadow-md rounded-xl p-6 flex items-center space-x-4">
-            <Clock className="w-10 h-10 text-green-600" />
+          <div className="shadow-md rounded-xl p-6 flex items-center space-x-4 bg-[var(--card)]">
+            <Clock className="w-10 h-10 text-[var(--accent)]" />
             <div>
-              <h3 className="text-lg font-semibold text-gray-800">
-                Response Time
-              </h3>
-              <p className="text-gray-600">Within 24 hours</p>
+              <h3 className="text-lg font-semibold text-[var(--card-foreground)]">Response Time</h3>
+              <p className="text-[var(--muted-foreground)]">Within 24 hours</p>
             </div>
           </div>
 
-          <div className="bg-white shadow-md rounded-xl p-6 flex items-center space-x-4">
-            <Headphones className="w-10 h-10 text-purple-600" />
+          <div className="shadow-md rounded-xl p-6 flex items-center space-x-4 bg-[var(--card)]">
+            <Headphones className="w-10 h-10 text-[var(--accent)]" />
             <div>
-              <h3 className="text-lg font-semibold text-gray-800">
-                24x7 Online Support
-              </h3>
-              <p className="text-gray-600">Always here to help you</p>
+              <h3 className="text-lg font-semibold text-[var(--card-foreground)]">24x7 Online Support</h3>
+              <p className="text-[var(--muted-foreground)]">Always here to help you</p>
             </div>
           </div>
         </motion.div>
@@ -93,7 +89,7 @@ const Contact = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="relative bg-white rounded-2xl shadow-xl p-8 md:p-10 w-full z-10"
+          className="relative bg-[var(--card)] rounded-2xl shadow-xl p-8 md:p-10 w-full z-10"
         >
           <div className="flex items-center justify-center mb-6 space-x-2">
             <MessageCircle className="w-10 h-10 text-blue-600 animate-bounce" />
