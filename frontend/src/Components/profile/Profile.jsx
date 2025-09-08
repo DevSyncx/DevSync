@@ -294,6 +294,7 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-[#E4ECF1] to-[#D2DEE7]">
+      {/* Back Button handled globally by layout */}
       {/* Navbar */}
       <Navbar />
 
