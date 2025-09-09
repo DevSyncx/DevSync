@@ -99,7 +99,6 @@ const Register = () => {
       // Check if user needs verification or already exists and is verified
       if (data.needsVerification) {
         // Store userId and show verification component
-        throw new Error("Unexpected response from server");
         setUserId(data.userId);
         setShowVerification(true);
       } else if (data.token) {
