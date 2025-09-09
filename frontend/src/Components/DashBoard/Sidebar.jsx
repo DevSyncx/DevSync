@@ -15,7 +15,7 @@ export default function Sidebar() {
   return (
     <>
       {/* Hamburger for small screens */}
-      <div className="sm:hidden p-2 bg-blue-300">
+  <div className="sm:hidden p-2 bg-[var(--sidebar)]">
         <button onClick={() => setOpen(!open)}>
           <Menu size={28} />
         </button>
@@ -23,16 +23,16 @@ export default function Sidebar() {
 
       {/* Sidebar */}
       <aside
-        className={`${
+        className={`$
           open ? "block" : "hidden"
-        } sm:block w-40 bg-blue-300 flex flex-col p-4`}
+        } sm:block w-40 bg-[var(--sidebar)] flex flex-col p-4`}
       >
         <nav className="flex flex-col gap-6">
           {menuItems.map(({ icon: Icon, label, path }) => (
             <button
               key={label}
               onClick={() => navigate(path)}
-              className="flex items-center gap-3 text-lg font-medium text-black hover:text-white transition-colors"
+              className="flex items-center gap-3 text-lg font-medium text-[var(--sidebar-foreground)] hover:text-[var(--primary)] transition-colors"
             >
               <Icon size={20} />
               {label}

@@ -42,19 +42,19 @@ const AdStrip = () => {
         
         {/* Top label */}
         <div className="flex items-center gap-3 justify-center">
-          <RocketIcon className="w-8 h-8 text-blue-950" />
-          <span className="uppercase text-sm tracking-wide text-blue-900">
+          <RocketIcon className="w-8 h-8" style={{ color: "var(--primary)" }} />
+          <span className="uppercase text-sm tracking-wide" style={{ color: "var(--primary)" }}>
             Built for Developers
           </span>
         </div>
 
         {/* Heading */}
-        <h2 className="text-4xl md:text-6xl font-bold leading-snug text-slate-900">
+  <h2 className="text-4xl md:text-6xl font-bold leading-snug" style={{ color: "var(--foreground)" }}>
           <AnimatedWords text="Supercharge your dev flow with DevSync 🚀" />
         </h2>
 
         {/* Paragraph - FIXED: Changed from <p> to <div> */}
-        <div className="text-xl text-slate-700">
+  <div className="text-xl" style={{ color: "var(--muted-foreground)" }}>
         {/* Paragraph */}
         <div className="text-xl text-slate-700">
           <AnimatedWords text="All your productivity tools. One powerful dashboard. No context switching." />
@@ -63,7 +63,7 @@ const AdStrip = () => {
 
         {/* CTA Button */}
         <PointerHighlight>
-          <Button className="text-white bg-cyan-500 hover:bg-cyan-600 px-6 py-3 text-base rounded-xl shadow-lg transition">
+          <Button style={{ background: "var(--primary)", color: "var(--primary-foreground)" }} className="px-6 py-3 text-base rounded-xl shadow-lg transition">
             Sign Up
           </Button>
         </PointerHighlight>

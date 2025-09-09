@@ -3,42 +3,42 @@ import { Link } from "react-router-dom"; // or use `next/link` if using Next.js
 
 const Footer = () => {
   return (
-    <footer className="bg-slate-900 rounded-lg text-white mt-32 pt-24 pb-10 px-6 md:px-12">
+  <footer className="rounded-lg mt-32 pt-24 pb-10 px-6 md:px-12" style={{ background: "var(--card)", color: "var(--card-foreground)" }}>
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
         {/* Brand */}
         <div>
-          <h3 className="text-3xl font-bold mb-2 tracking-tight">DevSync</h3>
-          <p className="text-sm text-slate-300">
+          <h3 className="text-3xl font-bold mb-2 tracking-tight" style={{ color: "var(--primary)" }}>DevSync</h3>
+          <p className="text-sm" style={{ color: "var(--muted-foreground)" }}>
             Stay ahead. Stay synced. Stay Dev.
           </p>
         </div>
 
         {/* Navigation */}
         <div>
-          <h4 className="text-lg font-semibold mb-3">Navigate</h4>
-          <ul className="space-y-2 text-sm text-slate-300">
-            <li><a href="#home" className="hover:text-white">Home</a></li>
-            <li><a href="#features" className="hover:text-white">Features</a></li>
-            <li><a href="#about" className="hover:text-white">About</a></li>
-            <li><a href="#contact" className="hover:text-white">Contact</a></li>
+          <h4 className="text-lg font-semibold mb-3" style={{ color: "var(--primary)" }}>Navigate</h4>
+          <ul className="space-y-2 text-sm" style={{ color: "var(--muted-foreground)" }}>
+            <li><a href="#home" style={{ color: "var(--card-foreground)" }}>Home</a></li>
+            <li><a href="#features" style={{ color: "var(--card-foreground)" }}>Features</a></li>
+            <li><a href="#about" style={{ color: "var(--card-foreground)" }}>About</a></li>
+            <li><a href="#contact" style={{ color: "var(--card-foreground)" }}>Contact</a></li>
           </ul>
         </div>
 
         {/* Resources */}
         <div>
-          <h4 className="text-lg font-semibold mb-3">Resources</h4>
-          <ul className="space-y-2 text-sm text-slate-300">
-            <li><a href="#" className="hover:text-white">Documentation</a></li>
-            <li><a href="#" className="hover:text-white">API Reference</a></li>
-            <li><a href="#" className="hover:text-white">Community</a></li>
-            <li><a href="#" className="hover:text-white">Support</a></li>
+          <h4 className="text-lg font-semibold mb-3" style={{ color: "var(--primary)" }}>Resources</h4>
+          <ul className="space-y-2 text-sm" style={{ color: "var(--muted-foreground)" }}>
+            <li><a href="#" style={{ color: "var(--card-foreground)" }}>Documentation</a></li>
+            <li><a href="#" style={{ color: "var(--card-foreground)" }}>API Reference</a></li>
+            <li><a href="#" style={{ color: "var(--card-foreground)" }}>Community</a></li>
+            <li><a href="#" style={{ color: "var(--card-foreground)" }}>Support</a></li>
           </ul>
         </div>
 
         {/* Contact & Social */}
         <div>
-          <h4 className="text-lg font-semibold mb-3">Connect</h4>
-          <div className="flex items-center gap-4 mt-2">
+          <h4 className="text-lg font-semibold mb-3" style={{ color: "var(--primary)" }}>Connect</h4>
+          <div className="flex items-center gap-4 mt-2" style={{ color: "var(--primary)" }}>
             <a
               href="https://github.com/devsync-org"
               target="_blank"
@@ -83,7 +83,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="mt-12 pt-6 border-t border-slate-700 text-center text-sm text-slate-400">
+      <div className="mt-12 pt-6 text-center text-sm" style={{ borderTop: "1px solid var(--border)", color: "var(--muted-foreground)" }}>
         © {new Date().getFullYear()} DevSync. All rights reserved.
       </div>
     </footer>

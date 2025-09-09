@@ -4,6 +4,8 @@ import { FloatingNav } from "../ui/floating-navbar";
 import { Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 
+import DarkModeToggle from "../ui/DarkModeToggle";
+
 const navItems = [
   {
     name: "Home",
@@ -49,11 +51,12 @@ const Navbar = () => {
   return (
     <div className="w-full font-sans">
       {!showFloating && (
-        <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-[#E4ECF1]/80 to-[#D2DEE7]/80 backdrop-blur-xl border-b border-[#C5D7E5] px-6 py-4 shadow-md">
+        <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b px-6 py-4 shadow-md"
+          style={{ background: "var(--card)", borderColor: "var(--border)" }}>
           <div className="mx-auto flex max-w-7xl items-center justify-between">
             {/* Logo */}
             <Link to="/">
-              <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#2E3A59] to-[#2E3A59]">
+              <h1 className="text-4xl font-extrabold" style={{ color: "var(--primary)" }}>
                 DevSync
               </h1>
             </Link>
@@ -64,7 +67,8 @@ const Navbar = () => {
                 <a
                   key={item.name}
                   href={item.link}
-                  className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                  className="flex items-center gap-2 text-[17px] font-medium transition duration-200"
+                  style={{ color: "var(--card-foreground)" }}
                 >
                   {item.icon}
                   {item.name}
@@ -74,7 +78,8 @@ const Navbar = () => {
                 {isAuthenticated ? (
                   <Link
                     to="/profile"
-                    className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                    className="flex items-center gap-2 text-[17px] font-medium transition duration-200"
+                    style={{ color: "var(--primary)" }}
                   >
                     <UserCircle className="h-4 w-4" />
                     Profile
@@ -83,20 +88,23 @@ const Navbar = () => {
                   <>
                     <Link
                       to="/login"
-                      className="flex items-center gap-2 px-4 py-2 text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                      className="flex items-center gap-2 px-4 py-2 transition duration-200"
+                      style={{ color: "var(--primary)" }}
                     >
                       <LogIn className="h-4 w-4" />
                       Login
                     </Link>
                     <Link
                       to="/register"
-                      className="flex items-center gap-2 px-6 py-2 bg-[#2E3A59] text-white rounded-lg hover:bg-[#6366f1] transition duration-200"
+                      className="flex items-center gap-2 px-6 py-2 rounded-lg transition duration-200"
+                      style={{ background: "var(--primary)", color: "var(--primary-foreground)" }}
                     >
                       <UserPlus className="h-4 w-4" />
                       Sign Up
                     </Link>
                   </>
                 )}
+                  <DarkModeToggle />
               </div>
             </nav>
 
@@ -104,7 +112,8 @@ const Navbar = () => {
             <div className="md:hidden">
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="text-[#2E3A59] font-semibold text-base"
+                className="font-semibold text-base"
+                style={{ color: "var(--primary)" }}
               >
                 Menu
               </button>
@@ -118,17 +127,19 @@ const Navbar = () => {
                 <a
                   key={item.name}
                   href={item.link}
-                  className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                  className="flex items-center gap-2 text-[17px] font-medium transition duration-200"
+                  style={{ color: "var(--card-foreground)" }}
                 >
                   {item.icon}
                   {item.name}
                 </a>
               ))}
-              <div className="flex flex-col gap-2 mt-3 pt-3 border-t border-[#C5D7E5]">
+              <div className="flex flex-col gap-2 mt-3 pt-3 border-t" style={{ borderColor: "var(--border)" }}>
                 {isAuthenticated ? (
                   <Link
                     to="/profile"
-                    className="flex items-center gap-2 text-[17px] font-medium text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                    className="flex items-center gap-2 text-[17px] font-medium transition duration-200"
+                    style={{ color: "var(--primary)" }}
                   >
                     <UserCircle className="h-4 w-4" />
                     Profile
@@ -137,14 +148,16 @@ const Navbar = () => {
                   <>
                     <Link
                       to="/login"
-                      className="flex items-center gap-2 text-[#2E3A59] hover:text-[#6366f1] transition duration-200"
+                      className="flex items-center gap-2 transition duration-200"
+                      style={{ color: "var(--primary)" }}
                     >
                       <LogIn className="h-4 w-4" />
                       Login
                     </Link>
                     <Link
                       to="/register"
-                      className="flex items-center gap-2 px-4 py-2 bg-[#2E3A59] text-white rounded-lg hover:bg-[#6366f1] transition duration-200 w-fit"
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg transition duration-200 w-fit"
+                      style={{ background: "var(--primary)", color: "var(--primary-foreground)" }}
                     >
                       <UserPlus className="h-4 w-4" />
                       Sign Up

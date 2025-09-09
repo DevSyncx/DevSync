@@ -1,7 +1,7 @@
 name: PR Greetings
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened]
 
 jobs:
@@ -9,13 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
+      issues: write
     steps:
       - name: Add greeting comment
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            github.rest.issues.createComment({
+            await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,

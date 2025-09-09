@@ -21,6 +21,7 @@ const Hero = () => {
     <section
       id="home"
       className="relative w-full min-h-[78vh] px-6 py-20 flex items-center justify-center overflow-hidden rounded-3xl border border-white/50 bg-gradient-to-b from-white to-sky-50 shadow-2xl"
+    style={{ background: "var(--background)", color: "var(--foreground)" }}
     >
       {/* subtle corner accents */}
       <div className="pointer-events-none absolute inset-0">
@@ -42,13 +43,14 @@ const Hero = () => {
           initial={{ scale: 0.95, opacity: 0 }}
           whileInView={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.05, duration: 0.4 }}
-          className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-sky-200/80 bg-white/80 px-4 py-1.5 text-xs font-semibold tracking-wide text-[#215A96] shadow-sm backdrop-blur"
+          className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold tracking-wide shadow-sm backdrop-blur"
+          style={{ borderColor: "var(--border)", background: "var(--card)", color: "var(--primary)" }}
         >
-          <span className="size-2 rounded-full bg-blue-500" /> Productivity Platform
+          <span className="size-2 rounded-full" style={{ background: "var(--primary)" }} /> Productivity Platform
         </motion.div>
 
         {/* Headline */}
-        <h1 className="text-balance font-extrabold tracking-tight text-[#071221]">
+  <h1 className="text-balance font-extrabold tracking-tight" style={{ color: "var(--foreground)" }}>
           <span className="block text-5xl md:text-7xl">Welcome to</span>
           <motion.div 
             ref={textRef}
@@ -92,7 +94,7 @@ const Hero = () => {
           </motion.div>
         </h1>
 
-        <p className="mx-auto mt-8 max-w-3xl text-lg md:text-2xl text-slate-600">
+        <p className="mx-auto mt-8 max-w-3xl text-lg md:text-2xl" style={{ color: "var(--muted-foreground)" }}>
           Your all-in-one productivity dashboard for developers 🚀
         </p>
 

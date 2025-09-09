@@ -1,5 +1,5 @@
 // src/App.jsx
-import ChatLauncher from "./Components/ChatLauncher";  // 👈 import at top
+import ChatLauncher from "./Components/ChatLauncher";  // 👈 Chatbot
 
 import React, { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
@@ -35,10 +35,12 @@ function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-b from-[#E4ECF1] to-[#D2DEE7] scroll-smooth overflow-hidden">
+    <div className="min-h-screen w-full bg-[var(--background)] scroll-smooth overflow-hidden">
+      {/* Navbar */}
       <Navbar />
 
-      <main className="relative z-10 px-4 py-24">
+      {/* Main Content */}
+      <main className="relative z-10 px-4 py-24 text-[var(--foreground)]">
         <ScrollRevealWrapper>
           <div id="home">
             <Hero />
@@ -58,6 +60,7 @@ function Home() {
         <div id="about">
           <About />
         </div>
+
         <ScrollRevealWrapper delay={0.2}>
           <div id="contact">
             <Contact />
@@ -71,7 +74,7 @@ function Home() {
       {showTop && (
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-6 right-6 p-3 rounded-full bg-blue-500 text-white shadow-lg hover:bg-blue-700 transition-all duration-300 z-50"
+          className="fixed bottom-6 right-6 p-3 rounded-full shadow-lg transition-all duration-300 z-50 bg-[var(--primary)] text-[var(--primary-foreground)] hover:bg-[var(--accent)]"
         >
           <ArrowUp size={20} />
         </button>
@@ -90,7 +93,7 @@ function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#E4ECF1]">
+      <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
         <Loader size="lg" />
       </div>
     );
