@@ -48,10 +48,10 @@ export default function PomodoroTimer() {
   // Session switch logic
   useEffect(() => {
     if (timeLeft <= 0) {
-      if (isWork) {
-        const nextSessionCount = sessions + 1;
-        setSessions(nextSessionCount);
+      const nextSessionCount = isWork ? sessions + 1 : sessions;
+      setSessions(nextSessionCount);
 
+      if (isWork) {
         if (nextSessionCount % SESSIONS_BEFORE_LONG_BREAK === 0) {
           setTimeLeft(longBreak);
         } else {
@@ -62,7 +62,6 @@ export default function PomodoroTimer() {
       }
       setIsWork(!isWork);
 
-      // Notification
       if ("Notification" in window && Notification.permission === "granted") {
         new Notification(
           isWork
@@ -73,7 +72,6 @@ export default function PomodoroTimer() {
     }
   }, [timeLeft, isWork, sessions, workTime, shortBreak, longBreak]);
 
-  // Request notification permission
   useEffect(() => {
     if ("Notification" in window && Notification.permission !== "granted") {
       Notification.requestPermission();
@@ -105,9 +103,11 @@ export default function PomodoroTimer() {
 
   return (
     <div
-      className={`min-h-screen flex flex-col transition-colors duration-500 ${
-        isDarkMode ? "bg-[#101e35] text-white" : "bg-gradient-to-br from-blue-100 to-white text-black"
-      }`}
+      className="min-h-screen flex flex-col transition-colors duration-500"
+      style={{
+        backgroundColor: "var(--background)",
+        color: "var(--foreground)",
+      }}
     >
       <Navbar />
 
@@ -122,7 +122,7 @@ export default function PomodoroTimer() {
         <div className="relative w-56 h-56 mb-6">
           <svg className="w-full h-full rotate-[-90deg]">
             <circle
-              className={`stroke-gray-400 ${isDarkMode ? "stroke-gray-700" : ""}`}
+              stroke="var(--muted)"
               strokeWidth="8"
               fill="transparent"
               r="100"
@@ -130,9 +130,7 @@ export default function PomodoroTimer() {
               cy="112"
             />
             <circle
-              className={`transition-all duration-500 ${
-                isWork ? "stroke-red-500" : "stroke-green-500"
-              }`}
+              stroke={isWork ? "var(--destructive)" : "var(--accent)"}
               strokeWidth="8"
               strokeDasharray={2 * Math.PI * 100}
               strokeDashoffset={2 * Math.PI * 100 * (1 - progress / 100)}
@@ -150,7 +148,8 @@ export default function PomodoroTimer() {
 
         {/* Duration Inputs */}
         <div
-          className={`flex flex-col md:flex-row gap-6 mb-6 w-full max-w-xl justify-center p-6 rounded-xl 0`}
+          className="flex flex-col md:flex-row gap-6 mb-6 w-full max-w-xl justify-center p-6 rounded-xl"
+          style={{ backgroundColor: "var(--card)" }}
         >
           {[
             { label: "Work", value: Math.floor(workTime / 60), onChange: handleWorkTimeChange },
@@ -159,15 +158,24 @@ export default function PomodoroTimer() {
           ].map((input) => (
             <div
               key={input.label}
-              className="flex flex-col items-center bg-white dark:bg-gray-700 p-4 rounded-lg shadow-inner w-28 transition-colors duration-300"
+              className="flex flex-col items-center p-4 rounded-lg shadow-inner w-28 transition-colors duration-300"
+              style={{
+                backgroundColor: "var(--card)",
+                color: "var(--card-foreground)"
+              }}
             >
-              <label className="text-sm mb-2 text-gray-800 dark:text-gray-200 font-medium">{input.label} (min)</label>
+              <label className="text-sm mb-2 font-medium">{input.label} (min)</label>
               <input
                 type="number"
                 min="1"
                 value={input.value}
                 onChange={input.onChange}
-                className="w-full text-center px-2 py-1 rounded-md border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300 text-black dark:text-white"
+                className="w-full text-center px-2 py-1 rounded-md border focus:outline-none focus:ring-2 transition-all duration-300"
+                style={{
+                  borderColor: "var(--border)",
+                  color: "var(--foreground)",
+                  backgroundColor: "var(--input)"
+                }}
               />
             </div>
           ))}
@@ -175,30 +183,23 @@ export default function PomodoroTimer() {
 
         {/* Control Buttons */}
         <div className="flex gap-4 mb-6">
-          {!isRunning ? (
-            <button
-              onClick={startTimer}
-              className={`px-6 py-2 rounded-full font-semibold shadow-lg transform transition-transform hover:scale-105 ${
-                isDarkMode ? "bg-blue-600 hover:bg-blue-700" : "bg-blue-400 hover:bg-blue-500 text-black"
-              }`}
-            >
-              Start
-            </button>
-          ) : (
-            <button
-              onClick={pauseTimer}
-              className={`px-6 py-2 rounded-full font-semibold shadow-lg transform transition-transform hover:scale-105 ${
-                isDarkMode ? "bg-yellow-500 hover:bg-yellow-600" : "bg-yellow-300 hover:bg-yellow-400 text-black"
-              }`}
-            >
-              Pause
-            </button>
-          )}
+          <button
+            onClick={isRunning ? pauseTimer : startTimer}
+            className="px-6 py-2 rounded-full font-semibold shadow-lg transform transition-transform hover:scale-105"
+            style={{
+              backgroundColor: isRunning ? "var(--accent)" : "var(--primary)",
+              color: "var(--primary-foreground)"
+            }}
+          >
+            {isRunning ? "Pause" : "Start"}
+          </button>
           <button
             onClick={resetTimer}
-            className={`px-6 py-2 rounded-full font-semibold shadow-lg transform transition-transform hover:scale-105 ${
-              isDarkMode ? "bg-red-600 hover:bg-red-700" : "bg-red-400 hover:bg-red-500 text-black"
-            }`}
+            className="px-6 py-2 rounded-full font-semibold shadow-lg transform transition-transform hover:scale-105"
+            style={{
+              backgroundColor: "var(--destructive)",
+              color: "var(--primary-foreground)"
+            }}
           >
             Reset
           </button>
@@ -209,18 +210,18 @@ export default function PomodoroTimer() {
           {[...Array(SESSIONS_BEFORE_LONG_BREAK)].map((_, i) => (
             <div
               key={i}
-              className={`w-5 h-5 rounded-full transition-colors duration-500 ${
-                i < (sessions % SESSIONS_BEFORE_LONG_BREAK) && isWork
-                  ? "bg-green-400"
-                  : isDarkMode
-                  ? "bg-gray-600"
-                  : "bg-gray-400"
-              }`}
+              className="w-5 h-5 rounded-full transition-colors duration-500"
+              style={{
+                backgroundColor:
+                  i < sessions % SESSIONS_BEFORE_LONG_BREAK
+                    ? "var(--accent)"
+                    : "var(--muted)"
+              }}
             />
           ))}
         </div>
 
-        <p className={`text-sm ${isDarkMode ? "text-gray-300" : "text-gray-700"} transition-colors duration-500`}>
+        <p className="text-sm transition-colors duration-500">
           Session {sessions + 1} {isWork ? "(Work)" : "(Break)"}
         </p>
       </div>
