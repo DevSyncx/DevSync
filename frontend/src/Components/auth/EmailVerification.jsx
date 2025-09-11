@@ -130,11 +130,11 @@ const EmailVerification = ({ userId, email, onVerificationSuccess }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#A4C7E6] flex items-center justify-center p-4 relative">
+    <div className="min-h-screen bg-[var(--background)] flex items-center justify-center p-4 relative">
       {/* Back to Home */}
       <Link
         to="/"
-        className="fixed top-6 left-6 z-10 flex items-center gap-2 text-[#1D3557] hover:text-[#1D3557]/80 transition duration-200 bg-white/80 backdrop-blur-sm px-3 py-2 rounded-lg shadow-sm"
+        className="fixed top-6 left-6 z-10 flex items-center gap-2 text-[var(--primary)] hover:text-[var(--primary)]/80 transition duration-200 bg-[var(--card)]/80 backdrop-blur-sm px-3 py-2 rounded-lg shadow-sm"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to Home
@@ -144,25 +144,25 @@ const EmailVerification = ({ userId, email, onVerificationSuccess }) => {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="w-full max-w-md p-8 bg-card backdrop-blur-xl border border-border rounded-3xl shadow-xl"
+        className="w-full max-w-md p-8 bg-[var(--card)] backdrop-blur-xl border border-[var(--border)] rounded-3xl shadow-xl"
       >
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="mx-auto w-16 h-16 bg-[#457B9D] rounded-full flex items-center justify-center mb-4">
-            <Mail className="h-8 w-8 text-white" />
+          <div className="mx-auto w-16 h-16 bg-[var(--primary)] rounded-full flex items-center justify-center mb-4">
+            <Mail className="h-8 w-8 text-[var(--primary-foreground)]" />
           </div>
-          <h1 className="text-2xl font-bold text-[#1D3557] mb-2">
+          <h1 className="text-2xl font-bold text-[var(--primary)] mb-2">
             Verify Your Email
           </h1>
-          <p className="text-[#1D3557]/80 text-sm">
+          <p className="text-[var(--primary)]/80 text-sm">
             We've sent a 6-digit verification code to
           </p>
-          <p className="font-medium text-[#1D3557] mt-1">{email}</p>
+          <p className="font-medium text-[var(--primary)] mt-1">{email}</p>
         </div>
 
         {/* Timer */}
         <div className="text-center mb-6">
-          <div className="flex items-center justify-center gap-2 text-[#1D3557]/70 text-sm">
+          <div className="flex items-center justify-center gap-2 text-[var(--primary)]/70 text-sm">
             <Clock className="h-4 w-4" />
             <span>Code expires in {formatTime(timeLeft)}</span>
           </div>
@@ -173,7 +173,7 @@ const EmailVerification = ({ userId, email, onVerificationSuccess }) => {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg flex items-center gap-2"
+            className="mb-6 p-4 bg-[var(--success)]/20 border border-[var(--success)] text-[var(--success)] rounded-lg flex items-center gap-2"
           >
             <CheckCircle className="h-4 w-4" />
             {message}
@@ -185,7 +185,7 @@ const EmailVerification = ({ userId, email, onVerificationSuccess }) => {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg"
+            className="mb-6 p-4 bg-[var(--destructive)]/20 border border-[var(--destructive)] text-[var(--destructive)] rounded-lg"
           >
             {error}
           </motion.div>
@@ -196,7 +196,7 @@ const EmailVerification = ({ userId, email, onVerificationSuccess }) => {
           <div>
             <label 
               htmlFor="verification-input" 
-              className="block text-sm font-medium text-[#1D3557] mb-3 text-center"
+              className="block text-sm font-medium text-[var(--primary)] mb-3 text-center"
             >
               Enter verification code
             </label>
@@ -207,10 +207,10 @@ const EmailVerification = ({ userId, email, onVerificationSuccess }) => {
               onChange={handleInputChange}
               placeholder="000000"
               maxLength={6}
-              className="w-full text-center text-2xl font-mono tracking-widest py-4 px-4 bg-white/70 border border-[#C5D7E5] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#457B9D] placeholder-[#1D3557]/30"
+              className="w-full text-center text-2xl font-mono tracking-widest py-4 px-4 bg-[var(--card)]/70 border border-[var(--input)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] placeholder-[var(--primary)]/30"
               autoComplete="off"
             />
-            <p className="text-xs text-[#1D3557]/60 text-center mt-2">
+            <p className="text-xs text-[var(--primary)]/60 text-center mt-2">
               Enter the 6-digit code from your email
             </p>
           </div>
@@ -218,12 +218,12 @@ const EmailVerification = ({ userId, email, onVerificationSuccess }) => {
           <button
             type="submit"
             disabled={isLoading || verificationCode.length !== 6}
-            className="w-full py-3 px-4 bg-[#457B9D] text-white font-medium rounded-lg hover:bg-[#2E5E82] transition duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center gap-2"
+            className="w-full py-3 px-4 bg-[var(--primary)] text-[var(--primary-foreground)] font-medium rounded-lg hover:bg-[var(--accent)] transition duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center gap-2"
           >
             {isLoading ? (
               <>
                 <svg
-                  className="animate-spin h-5 w-5 text-white"
+                  className="animate-spin h-5 w-5 text-[var(--primary-foreground)]"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -252,13 +252,13 @@ const EmailVerification = ({ userId, email, onVerificationSuccess }) => {
 
         {/* Resend Section */}
         <div className="mt-8 text-center">
-          <p className="text-sm text-[#1D3557]/70 mb-3">
+          <p className="text-sm text-[var(--primary)]/70 mb-3">
             Didn't receive the code?
           </p>
           <button
             onClick={handleResend}
             disabled={isResending || timeLeft > 840} // Disable for first 60 seconds
-            className="text-[#457B9D] hover:text-[#2E5E82] font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mx-auto"
+            className="text-[var(--primary)] hover:text-[var(--accent)] font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mx-auto"
           >
             {isResending ? (
               <>
@@ -273,16 +273,16 @@ const EmailVerification = ({ userId, email, onVerificationSuccess }) => {
             )}
           </button>
           {timeLeft > 840 && (
-            <p className="text-xs text-[#1D3557]/50 mt-1">
+            <p className="text-xs text-[var(--primary)]/50 mt-1">
               Please wait {Math.ceil((timeLeft - 840) / 60)} minute(s) before requesting a new code
             </p>
           )}
         </div>
 
         {/* Help Text */}
-        <div className="mt-6 text-center text-xs text-[#1D3557]/60">
+        <div className="mt-6 text-center text-xs text-[var(--primary)]/60">
           <p>Check your spam folder if you don't see the email.</p>
-          <p className="mt-1">Need help? <Link to="/contact" className="text-[#457B9D] hover:underline">Contact support</Link></p>
+          <p className="mt-1">Need help? <Link to="/contact" className="text-[var(--primary)] hover:underline">Contact support</Link></p>
         </div>
       </motion.div>
     </div>

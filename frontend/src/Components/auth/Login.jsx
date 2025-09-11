@@ -26,7 +26,7 @@ const Login = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
-     // Clear error when user starts typing
+    // Clear error when user starts typing
     if (error) setError(null);
   };
 
@@ -50,14 +50,14 @@ const Login = () => {
       }
 
       if (response.ok) {
-         // Check if user needs email verification
+        // Check if user needs email verification
         if (data.requiresVerification) {
           setUserId(data.userId);
           setShowVerification(true); // Don't throw error, show verification instead
-          return; 
+          return;
         }
-      }else{
-         throw new Error(data.errors?.[0]?.msg || "Invalid credentials")
+      } else {
+        throw new Error(data.errors?.[0]?.msg || "Invalid credentials");
       }
       // Successful login
       localStorage.setItem("token", data.token);
@@ -69,14 +69,13 @@ const Login = () => {
     }
   };
 
-   const handleVerificationSuccess = (user) => {
+  const handleVerificationSuccess = (user) => {
     navigate("/dashboard");
   };
-  
 
   const handleGoogleLogin = () => {
-  window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`
-};
+    window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`;
+  };
 
   // Show verification component if user needs to verify email
   if (showVerification) {
@@ -90,11 +89,11 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#A4C7E6] flex items-center justify-center p-4 relative">
+    <div className="min-h-screen bg-[var(--background)] flex items-center justify-center p-4 relative">
       {/* Back to Home */}
       <Link
         to="/"
-        className="fixed top-6 left-6 z-10 flex items-center gap-2 text-[#1D3557] hover:text-[#1D3557]/80 transition duration-200 bg-white/80 backdrop-blur-sm px-3 py-2 rounded-lg shadow-sm"
+        className="fixed top-6 left-6 z-10 flex items-center gap-2 text-[var(--primary)] hover:text-[var(--primary)]/80 transition duration-200 bg-[var(--card)]/80 backdrop-blur-sm px-3 py-2 rounded-lg shadow-sm"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to Home
@@ -104,29 +103,21 @@ const Login = () => {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="w-full max-w-md p-8 bg-card backdrop-blur-xl border border-border rounded-3xl shadow-xl"
+        className="w-full max-w-md p-8 bg-[var(--card)] backdrop-blur-xl border border-[var(--border)] rounded-3xl shadow-xl"
       >
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-extrabold text-[#1D3557] mb-2 tracking-tight">
-            DevSync
-          </h1>
-          <p className="text-sm text-[#1D3557]/80 mb-6">
-            Stay ahead. Stay synced. Stay Dev.
-          </p>
-          <h2 className="text-2xl font-semibold text-[#1D3557] mb-2">
-            Welcome back
-          </h2>
-          <p className="text-[#1D3557]/80">Sign in to your account to continue</p>
+          <h1 className="text-4xl font-extrabold text-[var(--primary)] mb-2 tracking-tight">DevSync</h1>
+          <p className="text-sm text-[var(--muted-foreground)] mb-6">Stay ahead. Stay synced. Stay Dev.</p>
+          <h2 className="text-2xl font-semibold text-[var(--primary)] mb-2">Welcome back</h2>
+          <p className="text-[var(--muted-foreground)]">Sign in to your account to continue</p>
         </div>
 
         {/* Error */}
         {error && (
-           <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }} className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+          <div className="mb-6 p-4 bg-[var(--destructive)]/20 border border-[var(--destructive)] text-[var(--destructive)] rounded-lg">
             {error}
-          </motion.div>
+          </div>
         )}
 
         {/* Form */}
@@ -135,7 +126,7 @@ const Login = () => {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-[#1D3557] mb-1"
+              className="block text-sm font-medium text-[var(--primary)] mb-1"
             >
               Email
             </label>
@@ -147,10 +138,10 @@ const Login = () => {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full px-4 py-3 pl-10 bg-white/70 border border-[#C5D7E5] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#457B9D]"
+                className="w-full px-4 py-3 pl-10 bg-[var(--card)] border border-[var(--input)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] text-[var(--card-foreground)]"
                 placeholder="Enter your email"
               />
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1D3557]/50" />
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]" />
             </div>
           </div>
 
@@ -159,13 +150,13 @@ const Login = () => {
             <div className="flex justify-between items-center mb-1">
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-[#1D3557]"
+                className="block text-sm font-medium text-[var(--primary)]"
               >
                 Password
               </label>
               <Link
                 to="/forgot-password"
-                className="text-sm text-[#457B9D] hover:underline"
+                className="text-sm text-[var(--primary)] hover:underline"
               >
                 Forgot password?
               </Link>
@@ -178,14 +169,14 @@ const Login = () => {
                 required
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full px-4 py-3 pl-10 pr-10 bg-white/70 border border-[#C5D7E5] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#457B9D]"
+                className="w-full px-4 py-3 pl-10 pr-10 bg-[var(--card)] border border-[var(--input)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] text-[var(--card-foreground)]"
                 placeholder="Enter your password"
               />
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1D3557]/50" />
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]" />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[#1D3557]/50 hover:text-[#1D3557]"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)] hover:text-[var(--primary)]"
               >
                 {showPassword ? (
                   <EyeOff className="h-4 w-4" />
@@ -200,34 +191,34 @@ const Login = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3 px-4 bg-[#457B9D] text-white font-medium rounded-lg hover:bg-[#2E5E82] transition duration-300 flex justify-center items-center gap-2"
+            className="w-full py-3 px-4 bg-[var(--primary)] text-[var(--primary-foreground)] font-medium rounded-lg hover:bg-[var(--accent)] transition duration-300 flex justify-center"
           >
             {isLoading ? (
               <>
-              <svg
-                className="animate-spin h-5 w-5 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 
-                    0 0 5.373 0 12h4zm2 
-                    5.291A7.962 7.962 0 
-                    014 12H0c0 3.042 1.135 
-                    5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
+                <svg
+                  className="animate-spin h-5 w-5 text-[var(--primary-foreground)]"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 
+                      0 0 5.373 0 12h4zm2 
+                      5.291A7.962 7.962 0 
+                      014 12H0c0 3.042 1.135 
+                      5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
                 Signing In...
               </>
             ) : (
@@ -238,10 +229,10 @@ const Login = () => {
           {/* Divider */}
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-border" />
+              <span className="w-full border-t border-[var(--border)]" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">
+              <span className="bg-[var(--card)] px-2 text-[var(--muted-foreground)]">
                 Or continue with
               </span>
             </div>
@@ -251,13 +242,13 @@ const Login = () => {
           <div className="grid grid-cols-2 gap-3">
             <button
               type="button"
-              className="border border-[#C5D7E5] text-[#1D3557] hover:bg-accent py-3 rounded-lg flex justify-center items-center"
+              className="border border-[var(--input)] text-[var(--primary)] hover:bg-[var(--accent)] py-3 rounded-lg flex justify-center items-center"
             >
               <Github className="h-4 w-4 mr-2" /> GitHub
             </button>
-            <button  onClick={handleGoogleLogin}
+            <button onClick={handleGoogleLogin}
               type="button"
-              className="border border-[#C5D7E5] text-[#1D3557] hover:bg-accent py-3 rounded-lg flex justify-center items-center"
+              className="border border-[var(--input)] text-[var(--primary)] hover:bg-[var(--accent)] py-3 rounded-lg flex justify-center items-center"
             >
               <svg
                 className="h-4 w-4 mr-2"
@@ -286,12 +277,12 @@ const Login = () => {
 
           {/* Signup */}
           <div className="text-center">
-            <span className="text-muted-foreground">
+            <span className="text-[var(--muted-foreground)]">
               Don&apos;t have an account?{" "}
             </span>
             <Link
               to="/register"
-              className="text-primary hover:text-primary/80 font-medium"
+              className="text-[var(--primary)] hover:text-[var(--primary)]/80 font-medium"
             >
               Sign up
             </Link>

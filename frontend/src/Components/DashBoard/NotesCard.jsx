@@ -37,7 +37,7 @@ export default function NotesCard({ notes = [], onNotesChange }) {
       <h3 className="font-semibold mb-2">Notes</h3>
 
       {notes.length > 0 ? (
-        <ul className="space-y-2 text-sm text-gray-700">
+  <ul className="space-y-2 text-sm text-[var(--card-foreground)]">
           {notes.map((note, i) => (
             <li key={i} className="flex justify-between items-center gap-2">
               {editingIndex === i ? (
@@ -46,18 +46,18 @@ export default function NotesCard({ notes = [], onNotesChange }) {
                     type="text"
                     value={editingValue}
                     onChange={(e) => setEditingValue(e.target.value)}
-                    className="border rounded px-2 py-1 text-sm flex-1"
+                    className="border border-[var(--input)] rounded px-2 py-1 text-sm flex-1 bg-[var(--card)] text-[var(--card-foreground)]"
                     autoFocus
                   />
                   <button
                     onClick={() => saveEdit(i)}
-                    className="text-green-600 text-xs"
+                    className="text-[var(--accent)] text-xs"
                   >
                     Save
                   </button>
                   <button
                     onClick={() => setEditingIndex(null)}
-                    className="text-gray-500 text-xs"
+                    className="text-[var(--muted-foreground)] text-xs"
                   >
                     Cancel
                   </button>
@@ -71,7 +71,7 @@ export default function NotesCard({ notes = [], onNotesChange }) {
                     {note}
                   </span>
                   <button
-                    className="text-red-500 text-xs"
+                    className="text-[var(--destructive)] text-xs"
                     onClick={() => removeNote(i)}
                   >
                     ✕
@@ -82,7 +82,7 @@ export default function NotesCard({ notes = [], onNotesChange }) {
           ))}
         </ul>
       ) : (
-        <p className="text-gray-500 text-sm italic">No notes yet.</p>
+  <p className="text-[var(--muted-foreground)] text-sm italic">No notes yet.</p>
       )}
 
       {/* Add new note */}
@@ -92,11 +92,11 @@ export default function NotesCard({ notes = [], onNotesChange }) {
     value={newNote}
     onChange={(e) => setNewNote(e.target.value)}
     placeholder="Add a new note..."
-    className="border rounded px-1 h-8 text-sm flex-1"
+    className="border border-[var(--input)] rounded px-1 h-8 text-sm flex-1 bg-[var(--card)] text-[var(--card-foreground)]"
   />
   <button
     onClick={addNote}
-    className="bg-blue-500 text-white px-2 md:px-4 h-8 rounded text-sm"
+    className="bg-[var(--primary)] text-[var(--primary-foreground)] px-2 md:px-4 h-8 rounded text-sm"
   >
     Add
   </button>

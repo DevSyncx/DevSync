@@ -135,11 +135,11 @@ const Register = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#A4C7E6] flex items-center justify-center p-4 relative">
+  <div className="min-h-screen bg-[var(--background)] flex items-center justify-center p-4 relative">
       {/* Back to Home */}
       <Link
         to="/"
-        className="fixed top-6 left-6 z-10 flex items-center gap-2 text-[#1D3557] hover:text-[#1D3557]/80 transition duration-200 bg-white/80 backdrop-blur-sm px-3 py-2 rounded-lg shadow-sm"
+        className="fixed top-6 left-6 z-10 flex items-center gap-2 text-[var(--primary)] hover:text-[var(--primary)]/80 transition duration-200 bg-[var(--card)]/80 backdrop-blur-sm px-3 py-2 rounded-lg shadow-sm"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to Home
@@ -151,23 +151,17 @@ const Register = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="w-full max-w-md"
       >
-        <div className="bg-card backdrop-blur-xl border border-border rounded-3xl shadow-xl p-8">
+  <div className="bg-[var(--card)] backdrop-blur-xl border border-[var(--border)] rounded-3xl shadow-xl p-8">
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-extrabold text-[#1D3557] mb-2 tracking-tight">
-              DevSync
-            </h1>
-            <p className="text-sm text-[#1D3557]/80 mb-6">
-              Stay ahead. Stay synced. Stay Dev.
-            </p>
-            <h2 className="text-2xl font-semibold text-[#1D3557] mb-2">
-              Create account
-            </h2>
+            <h1 className="text-4xl font-extrabold text-[var(--primary)] mb-2 tracking-tight">DevSync</h1>
+            <p className="text-sm text-[var(--muted-foreground)] mb-6">Stay ahead. Stay synced. Stay Dev.</p>
+            <h2 className="text-2xl font-semibold text-[var(--primary)] mb-2">Create account</h2>
           </div>
 
           {/* Error Alert */}
           {error && (
-            <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+            <div className="mb-6 p-4 bg-[var(--destructive)]/20 border border-[var(--destructive)] text-[var(--destructive)] rounded-lg">
               {error}
             </div>
           )}
@@ -176,9 +170,7 @@ const Register = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Name */}
             <div className="space-y-2">
-              <label htmlFor="name" className="text-[#1D3557]">
-                Full Name
-              </label>
+              <label htmlFor="name" className="text-[var(--primary)]">Full Name</label>
               <div className="relative">
                 <input
                   id="name"
@@ -188,17 +180,15 @@ const Register = () => {
                   onChange={handleChange}
                   placeholder="Enter your full name"
                   required
-                  className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#457B9D]"
+                  className="w-full pl-10 pr-4 py-3 bg-[var(--card)] border border-[var(--input)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] text-[var(--card-foreground)]"
                 />
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1D3557]/50" />
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]" />
               </div>
             </div>
 
             {/* Email */}
             <div className="space-y-2">
-              <label htmlFor="email" className="text-[#1D3557]">
-                Email
-              </label>
+              <label htmlFor="email" className="text-[var(--primary)]">Email</label>
               <div className="relative">
                 <input
                   id="email"
@@ -208,17 +198,15 @@ const Register = () => {
                   onChange={handleChange}
                   placeholder="Enter your email"
                   required
-                  className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#457B9D]"
+                  className="w-full pl-10 pr-4 py-3 bg-[var(--card)] border border-[var(--input)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] text-[var(--card-foreground)]"
                 />
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1D3557]/50" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]" />
               </div>
             </div>
 
             {/* Password */}
             <div className="space-y-2">
-              <label htmlFor="password" className="text-[#1D3557]">
-                Password
-              </label>
+              <label htmlFor="password" className="text-[var(--primary)]">Password</label>
               <div className="relative">
                 <input
                   id="password"
@@ -228,13 +216,13 @@ const Register = () => {
                   onChange={handleChange}
                   placeholder="Create a password"
                   required
-                  className="w-full pl-10 pr-10 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#457B9D]"
+                  className="w-full pl-10 pr-10 py-3 bg-[var(--card)] border border-[var(--input)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] text-[var(--card-foreground)]"
                 />
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1D3557]/50" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]" />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#1D3557]/50 hover:text-[#1D3557]"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--muted-foreground)] hover:text-[var(--primary)]"
                 >
                   {showPassword ? (
                     <EyeOff className="h-4 w-4" />
@@ -247,7 +235,7 @@ const Register = () => {
               {/* Password Strength Indicator — initially hidden if password empty */}
               {formData.password && (
                 <div className="mt-1">
-                  <div className="h-2 w-full rounded bg-gray-300">
+                  <div className="h-2 w-full rounded bg-[var(--muted)]">
                     <div
                       className={`h-2 rounded ${
                         passwordStrength === 0
@@ -262,12 +250,8 @@ const Register = () => {
                       } transition-all duration-300`}
                     />
                   </div>
-                  <p className="text-sm mt-1 font-medium text-[#1D3557]">
-                    {
-                      ["Too weak", "Weak", "Fair", "Good", "Strong"][
-                        passwordStrength
-                      ]
-                    }
+                  <p className="text-sm mt-1 font-medium text-[var(--primary)]">
+                    {["Too weak", "Weak", "Fair", "Good", "Strong"][passwordStrength]}
                   </p>
                 </div>
               )}
@@ -275,9 +259,7 @@ const Register = () => {
 
             {/* Confirm Password */}
             <div className="space-y-2">
-              <label htmlFor="confirmPassword" className="text-[#1D3557]">
-                Confirm Password
-              </label>
+              <label htmlFor="confirmPassword" className="text-[var(--primary)]">Confirm Password</label>
               <div className="relative">
                 <input
                   id="confirmPassword"
@@ -287,15 +269,14 @@ const Register = () => {
                   onChange={handleChange}
                   placeholder="Confirm your password"
                   required
-                  className={`w-full pl-10 pr-10 py-3 bg-background border ${
-                    passwordMatch ? "border-border" : "border-red-500"
-                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-[#457B9D]`}
+                  className={`w-full pl-10 pr-10 py-3 bg-[var(--card)] border ${passwordMatch ? "border-[var(--input)]" : "border-red-500"
+                    } rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] text-[var(--card-foreground)]`}
                 />
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#1D3557]/50" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]" />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#1D3557]/50 hover:text-[#1D3557]"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--muted-foreground)] hover:text-[var(--primary)]"
                 >
                   {showConfirmPassword ? (
                     <EyeOff className="h-4 w-4" />
@@ -313,7 +294,7 @@ const Register = () => {
             <button
               type="submit"
               disabled={isLoading || !passwordMatch}
-              className="w-full py-3 px-4 mt-2 bg-[#457B9D] text-white font-medium rounded-lg hover:bg-[#2E5E82] transition duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex justify-center"
+              className="w-full py-3 px-4 mt-2 bg-[var(--primary)] text-[var(--primary-foreground)] font-medium rounded-lg hover:bg-[var(--accent)] transition duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex justify-center"
             >
               {isLoading ? "Creating account..." : "Create account"}
             </button>
@@ -332,10 +313,7 @@ const Register = () => {
 
             {/* Social Login */}
             <div className="grid grid-cols-2 gap-3">
-              <button
-                type="button"
-                className="flex items-center justify-center py-3 border border-border rounded-lg text-[#1D3557] hover:bg-accent"
-              >
+              <button type="button" className="flex items-center justify-center py-3 border border-[var(--input)] rounded-lg text-[var(--primary)] hover:bg-[var(--accent)]">
                 <Github className="h-4 w-4 mr-2" />
                 GitHub
               </button>
@@ -346,8 +324,7 @@ const Register = () => {
                   }/api/auth/google`;
                 }}
                 type="button"
-                className="flex items-center justify-center py-3 border border-border rounded-lg text-[#1D3557] hover:bg-accent"
-              >
+                className="flex items-center justify-center py-3 border border-[var(--input)] rounded-lg text-[var(--primary)] hover:bg-[var(--accent)]">
                 <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24">
                   <path
                     fill="currentColor"
@@ -372,13 +349,8 @@ const Register = () => {
 
             {/* Sign in link */}
             <div className="text-center">
-              <span className="text-muted-foreground">
-                Already have an account?{" "}
-              </span>
-              <Link
-                to="/login"
-                className="text-primary hover:text-primary/80 font-medium"
-              >
+              <span className="text-[var(--muted-foreground)]">Already have an account? </span>
+              <Link to="/login" className="text-[var(--primary)] hover:text-[var(--primary)]/80 font-medium">
                 Sign in
               </Link>
             </div>

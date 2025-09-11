@@ -25,9 +25,9 @@ export default function GoalsCard({ goals = [], onGoalsChange }) {
 
   return (
     <CardWrapper className="p-6">
-      <h3 className="font-semibold mb-2">Goals</h3>
+  <h3 className="font-semibold mb-2 text-[var(--primary)]">Goals</h3>
 
-      <ul className="space-y-2 text-sm text-gray-700">
+  <ul className="space-y-2 text-sm text-[var(--card-foreground)]">
         {goals.map((goal, i) => (
           <li key={i}>
             {editingIndex === i ? (
@@ -38,7 +38,7 @@ export default function GoalsCard({ goals = [], onGoalsChange }) {
                 onBlur={() => saveEdit(i)}
                 onKeyDown={(e) => e.key === "Enter" && saveEdit(i)}
                 autoFocus
-                className="border rounded px-2 py-1 text-sm w-full"
+                className="border border-[var(--input)] rounded px-2 py-1 text-sm w-full bg-[var(--card)] text-[var(--card-foreground)]"
               />
             ) : (
               <span
@@ -61,13 +61,13 @@ export default function GoalsCard({ goals = [], onGoalsChange }) {
           onBlur={() => saveEdit(goals.length)}
           onKeyDown={(e) => e.key === "Enter" && saveEdit(goals.length)}
           autoFocus
-          className="border rounded px-2 py-1 text-sm w-full mt-2"
+          className="border border-[var(--input)] rounded px-2 py-1 text-sm w-full mt-2 bg-[var(--card)] text-[var(--card-foreground)]"
           placeholder="New goal..."
         />
       ) : (
         <button
           onClick={() => startEditing(goals.length, "")}
-          className="text-blue-600 text-sm mt-2 hover:underline"
+          className="text-[var(--primary)] text-sm mt-2 hover:underline"
         >
           + Add Goal
         </button>
