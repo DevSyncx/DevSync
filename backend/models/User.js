@@ -16,6 +16,11 @@ const UserSchema = new Schema({
     required: true,
     unique: true
   },
+  isEmailVerified: {
+    type: Boolean,
+  },
+  emailVerificationToken: String,
+  emailVerificationExpires: Date,
   password: {
     type: String,
      required: function () {

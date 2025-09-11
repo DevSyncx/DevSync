@@ -9,7 +9,7 @@ exports.authMiddleware = (req, res, next) => {
 }
 
 exports.generalMiddleware = (req, res, next) => {
-    generalLimiter.consumer(req.ip).then(() => next()).catch(() => {
+    generalLimiter.consume(req.ip).then(() => next()).catch(() => {
         res.status(429).json({ message: "Too many requests, please slow down." });
     })
 }

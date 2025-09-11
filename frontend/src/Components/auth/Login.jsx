@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Mail, Lock, Eye, EyeOff, Github, ArrowLeft } from "lucide-react";
+import EmailVerification from "./EmailVerification"; // Import the verification component
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,8 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showVerification, setShowVerification] = useState(false);
+  const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,6 +26,8 @@ const Login = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+    // Clear error when user starts typing
+    if (error) setError(null);
   };
 
   const handleSubmit = async (e) => {
@@ -44,10 +49,17 @@ const Login = () => {
         throw new Error("Invalid server response");
       }
 
-      if (!response.ok) {
+      if (response.ok) {
+        // Check if user needs email verification
+        if (data.requiresVerification) {
+          setUserId(data.userId);
+          setShowVerification(true); // Don't throw error, show verification instead
+          return;
+        }
+      } else {
         throw new Error(data.errors?.[0]?.msg || "Invalid credentials");
       }
-
+      // Successful login
       localStorage.setItem("token", data.token);
       navigate("/dashboard");
     } catch (err) {
@@ -57,13 +69,27 @@ const Login = () => {
     }
   };
 
-  const handleGoogleLogin = () => {
-  window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`
+  const handleVerificationSuccess = (user) => {
+    navigate("/dashboard");
+  };
 
-};
+  const handleGoogleLogin = () => {
+    window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`;
+  };
+
+  // Show verification component if user needs to verify email
+  if (showVerification) {
+    return (
+      <EmailVerification
+        userId={userId}
+        email={formData.email}
+        onVerificationSuccess={handleVerificationSuccess}
+      />
+    );
+  }
 
   return (
-  <div className="min-h-screen bg-[var(--background)] flex items-center justify-center p-4 relative">
+    <div className="min-h-screen bg-[var(--background)] flex items-center justify-center p-4 relative">
       {/* Back to Home */}
       <Link
         to="/"
@@ -77,7 +103,7 @@ const Login = () => {
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-  className="w-full max-w-md p-8 bg-[var(--card)] backdrop-blur-xl border border-[var(--border)] rounded-3xl shadow-xl"
+        className="w-full max-w-md p-8 bg-[var(--card)] backdrop-blur-xl border border-[var(--border)] rounded-3xl shadow-xl"
       >
         {/* Header */}
         <div className="text-center mb-8">
@@ -95,7 +121,7 @@ const Login = () => {
         )}
 
         {/* Form */}
-  <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           {/* Email */}
           <div>
             <label
@@ -168,30 +194,33 @@ const Login = () => {
             className="w-full py-3 px-4 bg-[var(--primary)] text-[var(--primary-foreground)] font-medium rounded-lg hover:bg-[var(--accent)] transition duration-300 flex justify-center"
           >
             {isLoading ? (
-              <svg
-                className="animate-spin h-5 w-5 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 
-                    0 0 5.373 0 12h4zm2 
-                    5.291A7.962 7.962 0 
-                    014 12H0c0 3.042 1.135 
-                    5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
+              <>
+                <svg
+                  className="animate-spin h-5 w-5 text-[var(--primary-foreground)]"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 
+                      0 0 5.373 0 12h4zm2 
+                      5.291A7.962 7.962 0 
+                      014 12H0c0 3.042 1.135 
+                      5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                Signing In...
+              </>
             ) : (
               "Sign In"
             )}
@@ -200,10 +229,10 @@ const Login = () => {
           {/* Divider */}
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-border" />
+              <span className="w-full border-t border-[var(--border)]" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">
+              <span className="bg-[var(--card)] px-2 text-[var(--muted-foreground)]">
                 Or continue with
               </span>
             </div>
@@ -217,7 +246,7 @@ const Login = () => {
             >
               <Github className="h-4 w-4 mr-2" /> GitHub
             </button>
-            <button  onClick={handleGoogleLogin}
+            <button onClick={handleGoogleLogin}
               type="button"
               className="border border-[var(--input)] text-[var(--primary)] hover:bg-[var(--accent)] py-3 rounded-lg flex justify-center items-center"
             >
