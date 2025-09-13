@@ -1,66 +1,70 @@
-// Entry point of the backend server
-require("dotenv").config();
-const dbconnection = require("./db/connection");
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const path = require("path");
-const contactRouter = require("./routes/contact.route");
-const passport = require("passport"); // import actual passport
-require("./config/passport"); // just execute the strategy config
-const session = require("express-session");
+// backend/server.js
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import dotenv from "dotenv";
+import path from "path";
+import session from "express-session";
+import passport from "passport";
+import { fileURLToPath } from "url";
 
+import feedbackRoutes from "./routes/feedback.route.js";
+import contactRouter from "./routes/contact.route.js";
+import profileRoutes from "./routes/profile.js";
+// import authRoutes from "./routes/auth.js"; // enable when ready
 
-// Importing Rate Limiter Middlewares
+import { generalMiddleware, authMiddleware } from "./middleware/rateLimit/index.js";
+import "./config/passport.js"; // configure passport strategies
 
-const { generalMiddleware, authMiddleware } = require("./middleware/rateLimit/index")
-
-
-
-// Initialize express
+dotenv.config();
 const app = express();
 
+// Middleware
 app.use(express.json());
-app.use(cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173", // frontend URL for local dev
-    credentials: true
-}));
-
-
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173", // frontend URL
+    credentials: true,
+  })
+);
 
 app.use(
-    session({
-        secret: process.env.SESSION_SECRET || "devsync_session_secret",
-        resave: false,
-        saveUninitialized: false,
-        cookie: { secure: false } // set true if using HTTPS
-    })
+  session({
+    secret: process.env.SESSION_SECRET || "devsync_session_secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false }, // set true if using HTTPS
+  })
 );
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Serve uploaded files
+// Fix __dirname in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve static uploads
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Define routes
-
-// app.use("/api/auth", require("./routes/auth"));
-app.use("/api/auth", authMiddleware, require("./routes/auth"));
-
-// app.use("/api/profile", require("./routes/profile"));
-app.use("/api/profile", generalMiddleware, require("./routes/profile"));
-
-// app.use("/api/contact",contactRouter);
+// Routes
+app.use("/api/feedback", feedbackRoutes);
+// app.use("/api/auth", authMiddleware, authRoutes); // enable when ready
+app.use("/api/profile", generalMiddleware, profileRoutes);
 app.use("/api/contact", generalMiddleware, contactRouter);
 
-
-// Route to display the initial message on browser
+// Root route
 app.get("/", (req, res) => {
-    res.send("DEVSYNC BACKEND API");
+  res.send("DEVSYNC BACKEND API");
 });
+
+// Connect DB and start server
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch((err) => console.error("❌ DB error:", err));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Server is up and running at http://localhost:${PORT} 🚀`);
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
