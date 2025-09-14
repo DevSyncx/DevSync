@@ -51,7 +51,7 @@ const GoalPage = () => {
         <ProgressTracker title="Current Streak" value={currentStreak} />
         <ProgressTracker title="Best Streak" value={bestStreak} />
         <ProgressTracker title="Total Completed" value={totalCompleted} />
-        <ProgressTracker title="Weekly Progress" value={weeklyProgress} isProgressBar={true} />
+        <ProgressTracker title="Weekly Progress" value={weeklyProgress} isProgress={true} />
       </div>
 
       {/* Activity Overview */}
