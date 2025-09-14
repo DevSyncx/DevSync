@@ -28,20 +28,20 @@ ehthumbs.db
 Thumbs.db
 Desktop.ini
 
-# === Client (React) === #
-client/node_modules/
-client/build/
-client/dist/
-client/.env
-client/.next/
-client/.turbo/
-client/.vercel/
+# === Frontend (React) === #
+frontend/node_modules/
+frontend/build/
+frontend/dist/
+frontend/.env
+frontend/.next/
+frontend/.turbo/
+frontend/.vercel/
 
-# === Server (Node.js) === #
-server/node_modules/
-server/build/
-server/dist/
-server/.env
+# === Backend (Node.js) === #
+backend/node_modules/
+backend/build/
+backend/dist/
+backend/.env
 
 # === Logs === #
 logs/

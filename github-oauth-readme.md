@@ -7,11 +7,13 @@ This guide explains how to set up GitHub OAuth authentication for DevSync withou
 ### 1. Run the Setup Script
 
 For Windows (PowerShell):
+
 ```powershell
 .\setup-github-oauth.ps1
 ```
 
 For Linux/Mac (Bash):
+
 ```bash
 chmod +x setup-github-oauth.sh
 ./setup-github-oauth.sh
@@ -29,12 +31,14 @@ If you want to add the AuthCallback route to your frontend, you need to update y
 ### 3. Understanding What's Implemented
 
 #### Backend
+
 - **Authentication Routes**: `/auth/github`, `/auth/github/callback`, `/auth/verify`
 - **Passport Strategy**: GitHub OAuth 2.0
 - **JWT Authentication**: Tokens generated after successful OAuth
 - **Protected Routes**: Middleware for securing API endpoints
 
 #### Frontend
+
 - **GitHub Buttons**: Connected to backend OAuth endpoints
 - **AuthContext**: React context for managing auth state
 - **AuthCallback**: Component to handle OAuth redirects
@@ -53,6 +57,7 @@ curl "http://localhost:5174/auth-callback?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpX
 ```
 
 This JWT token contains:
+
 ```json
 {
   "id": "12345",

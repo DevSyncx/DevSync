@@ -1,6 +1,7 @@
 # GitHub OAuth Implementation
 
 ## Step 1: Install necessary packages
+
 Run this command in the backend directory:
 
 ```bash
@@ -8,6 +9,7 @@ npm install passport passport-github2 express-session jsonwebtoken cors cookie-p
 ```
 
 ## Step 2: Create a .env file with PLACEHOLDER values
+
 Create a file named `.env` in the backend directory with these PLACEHOLDER values:
 
 ```
@@ -22,7 +24,9 @@ FRONTEND_URL=http://localhost:5174
 > **Note**: Replace the placeholder values with actual GitHub OAuth credentials when you're ready to test with a real GitHub account.
 
 ## Step 3: Create directory structure
+
 Create these folders in your backend directory:
+
 - middleware
 - routes
 - config

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import config from '../config';
 
 // Simple Error Boundary component
 class ErrorBoundary extends React.Component {
@@ -54,7 +55,7 @@ export const AuthProvider = ({ children }) => {
       
       if (token) {
         try {
-          const response = await fetch('http://localhost:5000/auth/verify', {
+          const response = await fetch(`${config.apiUrl}/auth/verify`, {
             headers: {
               'Authorization': `Bearer ${token}`
             }
@@ -92,7 +93,7 @@ export const AuthProvider = ({ children }) => {
         window.history.replaceState({}, document.title, window.location.pathname);
         
         // Fetch user data
-        fetch('http://localhost:5000/auth/verify', {
+        fetch(`${config.apiUrl}/auth/verify`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

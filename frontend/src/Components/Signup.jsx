@@ -4,6 +4,7 @@ import { User, Mail, Lock, Eye, EyeOff, Github, ArrowLeft } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
+import config from '../config';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -252,7 +253,12 @@ const Signup = () => {
                 size="lg" 
                 className="border-border text-[#1D3557] hover:bg-accent"
                 onClick={() => {
-                  alert("GitHub authentication requires valid GitHub OAuth credentials. Please use the regular signup form for now.");
+                  // Use config to get the API URL
+                  const githubAuthUrl = `${config.apiUrl}/auth/github`;
+                  console.log('GitHub auth URL:', githubAuthUrl);
+                  
+                  // Redirect to GitHub auth
+                  window.location.href = githubAuthUrl;
                 }}
               >
                 <Github className="h-4 w-4 mr-2" />
