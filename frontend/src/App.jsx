@@ -16,10 +16,11 @@ import Register from "./Components/auth/Register";
 import Profile from "./Components/profile/Profile";
 import ProtectedRoute from "./Components/auth/ProtectedRoute";
 import Dashboard from "./Components/Dashboard";
-
+import Goal from './Components/goals/GoalPage';
 
 // Home component that contains the main landing page content
 import { ArrowUp } from "lucide-react"; // <-- icon for back to top
+
 
 function Home() {
   const [showTop, setShowTop] = useState(false);
@@ -69,6 +70,13 @@ function Home() {
         <div id="about">
           <About />
         </div>
+
+        <ScrollRevealWrapper delay={0.2}>
+          <div id="goal">
+            <Goal />
+          </div>
+        </ScrollRevealWrapper>
+
         <ScrollRevealWrapper delay={0.2}>
           <div id="contact">
             <Contact />
