@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import ProgressTracker from './ProgressTracker';
 import ActivityOverview from './ActivityOverview.jsx';
 import Challenge from './Challenge.jsx';
+import { TracingBeam } from "../ui/tracing-beam";
 
 const GoalPage = () => {
   // Example state for challenges and progress
@@ -41,7 +42,8 @@ const GoalPage = () => {
   };
 
   return (
-    <div className="goals-page p-6 max-w-4xl mx-auto">
+    <TracingBeam className="px-4 md:px-10">
+      <div className="goals-page p-6 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold mb-6 text-indigo-600">DevSync Challenges</h1>
 
       {/* Progress Cards */}
@@ -69,6 +71,8 @@ const GoalPage = () => {
         <Challenge challenge={weeklyChallenge} />
       </div>
     </div>
+    </TracingBeam>
+    
   );
 };
 
