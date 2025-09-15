@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Github, Home, Info, Sparkle, LogIn, UserPlus, UserCircle } from "lucide-react";
+import { Github, Home, Info, Sparkle, LogIn, UserPlus, UserCircle, Phone } from "lucide-react";
 import { FloatingNav } from "../ui/floating-navbar";
-import { Phone } from "lucide-react";
 import { Link } from "react-router-dom";
+import FeedbackModal from "../ui/FeedbackModal";
 
 import DarkModeToggle from "../ui/DarkModeToggle";
 
@@ -46,7 +46,8 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const isAuthenticated = localStorage.getItem('token') !== null;
+  const isAuthenticated = localStorage.getItem("token") !== null;
+  const userId = localStorage.getItem("userId");
 
   return (
     <div className="w-full font-sans">
@@ -54,14 +55,12 @@ const Navbar = () => {
         <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b px-6 py-4 shadow-md"
           style={{ background: "var(--card)", borderColor: "var(--border)" }}>
           <div className="mx-auto flex max-w-7xl items-center justify-between">
-            {/* Logo */}
             <Link to="/">
               <h1 className="text-4xl font-extrabold" style={{ color: "var(--primary)" }}>
                 DevSync
               </h1>
             </Link>
 
-            {/* Desktop Navigation */}
             <nav className="hidden md:flex space-x-8 items-center">
               {navItems.map((item) => (
                 <a
@@ -108,7 +107,6 @@ const Navbar = () => {
               </div>
             </nav>
 
-            {/* Mobile Menu Button */}
             <div className="md:hidden">
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
@@ -120,7 +118,6 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Mobile Navigation */}
           {menuOpen && (
             <div className="md:hidden mt-4 flex flex-col gap-3 px-4 pb-4">
               {navItems.map((item) => (
@@ -171,6 +168,8 @@ const Navbar = () => {
       )}
 
       {showFloating && <FloatingNav navItems={navItems} />}
+
+      <FeedbackModal userId={userId} justLoggedIn={isAuthenticated} />
     </div>
   );
 };

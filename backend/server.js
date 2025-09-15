@@ -61,6 +61,13 @@ app.get("/", (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server is up and running at http://localhost:${PORT} 🚀`);
-});
+dbconnection()
+    .then(() => {
+        app.listen(PORT, () => {
+            console.log(`Server is up and running at http://localhost:${PORT} 🚀`);
+        });
+    })
+    .catch((err) => {
+        console.error("❌ Failed to connect to MongoDB:", err.message);
+        process.exit(1); // stop server if DB fails
+    });
