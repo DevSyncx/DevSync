@@ -44,7 +44,7 @@ const GoalPage = () => {
   return (
     <TracingBeam className="px-4 md:px-10">
       <div className="goals-page p-6 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-indigo-600">DevSync Challenges</h1>
+      <h1 className="text-4xl font-bold mb-6 text-white">DevSync Challenges</h1>
 
       {/* Progress Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -59,7 +59,7 @@ const GoalPage = () => {
 
       {/* Today's Challenges */}
       <div className="mt-8">
-        <h2 className="text-2xl font-semibold mb-4 text-indigo-600">Today's Challenges</h2>
+        <h2 className="text-3xl font-semibold mb-4 text-white">Today's Challenges</h2>
         {todaysChallenges.map((challenge) => (
           <Challenge key={challenge.id} challenge={challenge} />
         ))}
@@ -67,7 +67,7 @@ const GoalPage = () => {
 
       {/* This Week's Challenge */}
       <div className="mt-8">
-        <h2 className="text-2xl font-semibold mb-4 text-indigo-600">This Week's Challenge</h2>
+        <h2 className="text-3xl font-semibold mb-4 text-white">This Week's Challenge</h2>
         <Challenge challenge={weeklyChallenge} />
       </div>
     </div>
