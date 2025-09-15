@@ -10,6 +10,7 @@ import Login from './Components/auth/Login';
 import Dashboard from './Components/Dashboard';
 import TestDashboardPage from './Components/DashBoard/Test';
 import { ThemeProvider } from './Components/ui/theme-provider';
+import GoalsPage from './Components/goals/GoalPage.jsx';
 
 
 
@@ -28,6 +29,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/profile" element={<Profile />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/test" element={<TestDashboardPage />} />
+          <Route path="/goal" element={<GoalsPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
