@@ -10,7 +10,7 @@ import { FeaturesSection } from "./Components/Features";
 import Footer from "./Components/footer";
 import ScrollRevealWrapper from "./Components/ui/ScrollRevealWrapper";
 import Loader from "./Components/ui/Loader"; // ✅ Import the Loader
-
+import Pomodoro from "./Components/DashBoard/Pomodoro";
 import Login from "./Components/auth/Login";
 import Register from "./Components/auth/Register";
 import Profile from "./Components/profile/Profile";
@@ -129,6 +129,7 @@ function App() {
         } 
       />
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/pomodoro" element={<Pomodoro />} />
     </Routes>
   );
 }
