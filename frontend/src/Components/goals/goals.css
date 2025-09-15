@@ -1,0 +1,16 @@
+:root {
+  --background: #fff;
+  --foreground: #18181b;
+  --divColor : #1a2b47;
+  --progressText :#fff;
+  --buttonBack:#fff;
+  --buttonText:#000;
+}
+.dark {
+  --background: #18181b;
+  --foreground: #fafafa;
+  --divColor : #1a2b47;
+  --progressText:#fff;
+  --buttonBack:#fff;
+  --buttonText:#000;
+}

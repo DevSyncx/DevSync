@@ -4,8 +4,12 @@ import ProgressTracker from './ProgressTracker';
 import ActivityOverview from './ActivityOverview.jsx';
 import Challenge from './Challenge.jsx';
 import { TracingBeam } from "../ui/tracing-beam";
+import { useContext } from "react";
+import ThemeContext from "../ui/theme-provider.jsx"; 
+import { Bold, Weight } from 'lucide-react';
 
 const GoalPage = () => {
+  const theme = useContext(ThemeContext);
   // Example state for challenges and progress
   const [currentStreak, setCurrentStreak] = useState(7);
   const [bestStreak, setBestStreak] = useState(12);
@@ -44,7 +48,7 @@ const GoalPage = () => {
   return (
     <TracingBeam className="px-4 md:px-10">
       <div className="goals-page p-6 max-w-4xl mx-auto">
-      <h1 className="text-4xl font-bold mb-6 text-white">DevSync Challenges</h1>
+        <h1 className={`text-4xl font-bold mb-6`} style={{color:"var(--foreground)"}}>DevSync Challenges</h1>
 
       {/* Progress Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -59,7 +63,7 @@ const GoalPage = () => {
 
       {/* Today's Challenges */}
       <div className="mt-8">
-        <h2 className="text-3xl font-semibold mb-4 text-white">Today's Challenges</h2>
+        <h2 className="text-2xl font-bold mb-4" style={{color:"var(--foreground)"}}>Today's Challenges</h2>
         {todaysChallenges.map((challenge) => (
           <Challenge key={challenge.id} challenge={challenge} />
         ))}
@@ -67,7 +71,7 @@ const GoalPage = () => {
 
       {/* This Week's Challenge */}
       <div className="mt-8">
-        <h2 className="text-3xl font-semibold mb-4 text-white">This Week's Challenge</h2>
+        <h2 className="text-2xl font-bold mb-4" style={{color:"var(--foreground)"}}>This Week's Challenge</h2>
         <Challenge challenge={weeklyChallenge} />
       </div>
     </div>
