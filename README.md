@@ -61,6 +61,7 @@ Stay ahead. Stay synced. stay **DevSynced**
 - [🤝 Contributing](#-contributing)
 - [📜 License](#-license)
 - [📄 Code of Conduct](#-code-of-conduct)
+- [📄 Docs](#-setup-guides)
 - [👩‍💻 Maintainers](#-maintainers)
 - [⭐ Support This Project](#-support-this-project)
 
@@ -177,7 +178,12 @@ This project is licensed under the [MIT License](./LICENSE).
 
 We enforce a [Code of Conduct](./CODE_OF_CONDUCT.md) to maintain a safe, inclusive, and welcoming environment. Please read it before contributing.
 
+## 📚 Setup Guides
 
+For detailed setup instructions, please follow the full documentation here:  
+[📄 DevSync Setup Docs](./docs)
+
+ 
 ## 👩‍💻 Maintainers
 
 * **Annanya Tiwary** – [GitHub](https://github.com/Annanyatiwary4)

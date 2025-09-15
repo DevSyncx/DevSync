@@ -8,20 +8,22 @@ import GoalsCard from "./DashBoard/GoalsCard";
 import TimeSpentCard from "./DashBoard/TimeSpentCard";
 import ActivityHeatmap from "./DashBoard/ActivityHeatMap";
 import NotesCard from "./DashBoard/NotesCard";
-import Pomodoro from "./DashBoard/Pomodoro";  // ✅ Import Pomodoro
+import Pomodoro from "./DashBoard/Pomodoro";  // ✅ Keep Pomodoro
+import { useNavigate } from "react-router-dom"; // ✅ Keep useNavigate
 
 export default function Dashboard() {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [goals, setGoals] = useState([]); // stateful goals
+  const [goals, setGoals] = useState([]); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("token");
         if (!token) {
-          setError("No token found. Please log in.");
+          navigate("/login");
           setLoading(false);
           return;
         }
@@ -34,7 +36,7 @@ export default function Dashboard() {
         if (!res.ok) throw new Error(data.errors?.[0]?.msg || "Failed to load profile");
 
         setProfile(data);
-        setGoals(data.goals || []); // ✅ sync backend goals into state
+        setGoals(data.goals || []); 
       } catch (err) {
         setError(err.message);
       } finally {

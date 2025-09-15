@@ -1,0 +1,40 @@
+name: Update Leaderboard
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [closed, labeled]
+  issues:
+    types: [closed, labeled]
+  schedule:
+    - cron: "0 0 * * *"   # runs once daily at midnight
+  workflow_dispatch:       # manual trigger
+
+jobs:
+  leaderboard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install deps
+        run: npm install @actions/core @actions/github googleapis
+
+      - name: Set up Google credentials
+        run: |
+          echo '${{ secrets.GOOGLE_CREDENTIALS }}' > ${{ github.workspace }}/credentials.json
+
+
+      - name: Run leaderboard script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO: ${{ github.repository }}
+          GOOGLE_CREDENTIALS: ${{ github.workspace }}/credentials.json
+          GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+        run: node .github/scripts/updateLeaderboard.js

@@ -42,7 +42,9 @@ function Home() {
   };
 
   return (
+
   <div className="min-h-screen w-full bg-[var(--background)] scroll-smooth overflow-hidden">
+
       {/* Navbar */}
       <Navbar />
 
@@ -82,6 +84,7 @@ function Home() {
   <button
     onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
     className="fixed bottom-6 right-6 p-3 rounded-full shadow-lg transition-all duration-300 z-50 bg-[var(--primary)] text-[var(--primary-foreground)] hover:bg-[var(--accent)]"
+
   >
     <ArrowUp size={20} />
   </button>
