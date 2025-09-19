@@ -11,26 +11,31 @@ const navItems = [
     name: "Home",
     link: "/",
     icon: <Home className="h-4 w-4" />,
+    internal: true,
   },
   {
     name: "Features",
     link: "#features",
     icon: <Sparkle className="h-4 w-4" />,
+    internal: false,
   },
   {
     name: "About us",
     link: "#about",
     icon: <Info className="h-4 w-4" />,
+    internal: false,
   },
   {
     name: "Github",
     link: "https://github.com/DevSyncx/DevSync.git",
     icon: <Github className="h-4 w-4" />,
+    internal: false,
   },
   {
     name: "Contact Us",
     link: "#contact",
     icon: <Phone className="h-4 w-4" />,
+    internal: false,
   },
 ];
 
@@ -176,3 +181,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

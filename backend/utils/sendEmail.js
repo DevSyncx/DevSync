@@ -1,13 +1,15 @@
 const { Resend } = require("resend");
-
+const dotenv = require("dotenv");
+dotenv.config();
 const sendEmail = async (name, email, message) => {
-  const RESEND_API_KEY = process.env.RESEND_API_KEY;
-  const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
-  const FRONTEND_PRODUCTION_URL = process.env.FRONTEND_PRODUCTION_URL;
-  const resend = new Resend(RESEND_API_KEY);
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const CLIENT_URL = process.env.CLIENT_URL;
+const resend = new Resend(RESEND_API_KEY);
+
   await resend.emails.send({
-    from: "Acme <onboarding@resend.dev>",
-    to: [ADMIN_EMAIL],
+    from: 'onboarding@resend.dev',
+    to: ADMIN_EMAIL,
     subject: `📩 New Contact Form Submission from ${name}`,
     html: `
       <div style="font-family: Arial, sans-serif; line-height: 1.5; color: #333;">
@@ -20,8 +22,8 @@ const sendEmail = async (name, email, message) => {
         </blockquote>
         <hr />
         <p style="font-size: 12px; color: #888;">
-          This email was generated from the contact form on <a href="${FRONTEND_PRODUCTION_URL}">
-          ${FRONTEND_PRODUCTION_URL}
+          This email was generated from the contact form on <a href="${CLIENT_URL}">
+          ${CLIENT_URL}
           </a>
         </p>
       </div>
