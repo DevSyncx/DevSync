@@ -10,7 +10,10 @@ import AdStrip from "./Components/Ad";
 import { FeaturesSection } from "./Components/Features";
 import Footer from "./Components/footer";
 import ScrollRevealWrapper from "./Components/ui/ScrollRevealWrapper";
-import Loader from "./Components/ui/Loader"; 
+import Loader from "./Components/ui/Loader"; // ✅ Import the Loader
+import ContributorsSection from "./Components/Contributors";
+import AllContributors from "./Components/AllContributors";
+
 import Login from "./Components/auth/Login";
 import Register from "./Components/auth/Register";
 import Profile from "./Components/profile/Profile";
@@ -33,12 +36,34 @@ function Home() {
   return (
     <div className="min-h-screen w-full bg-[var(--background)] scroll-smooth overflow-hidden">
       <Navbar />
-      <main className="relative z-10 px-4 py-24 text-[var(--foreground)]">
-        <ScrollRevealWrapper><div id="home"><Hero /></div></ScrollRevealWrapper>
-        <ScrollRevealWrapper delay={0.1}><AdStrip /></ScrollRevealWrapper>
-        <ScrollRevealWrapper delay={0.2}><div id="features"><FeaturesSection /></div></ScrollRevealWrapper>
-        <div id="about"><About /></div>
-        <ScrollRevealWrapper delay={0.2}><div id="contact"><Contact /></div></ScrollRevealWrapper>
+
+      {/* Main Content */}
+  <main className="relative z-10 px-4 py-24 text-[var(--foreground)]">
+        <ScrollRevealWrapper>
+          <div id="home">
+            <Hero />
+          </div>
+        </ScrollRevealWrapper>
+
+        <ScrollRevealWrapper delay={0.1}>
+          <AdStrip />
+        </ScrollRevealWrapper>
+
+        <ScrollRevealWrapper delay={0.2}>
+          <div id="features">
+            <FeaturesSection />
+          </div>
+        </ScrollRevealWrapper>
+
+        <div id="about">
+          <About />
+        </div>
+        <ScrollRevealWrapper delay={0.2}>
+          <div id="contact">
+            <Contact />
+          </div>
+        </ScrollRevealWrapper>
+        <ContributorsSection/>
         <Footer />
       </main>
 
@@ -74,7 +99,8 @@ function App() {
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/pomodoro" element={<Pomodoro />} />
-      </Routes>
+        <Route path='/contributors' element={<AllContributors/>}/>
+    </Routes>
     </TimerProvider>
   );
 }

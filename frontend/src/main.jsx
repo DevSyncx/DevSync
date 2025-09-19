@@ -25,7 +25,8 @@ createRoot(document.getElementById("root")).render(
             <Route path="/profile" element={<Profile />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/pomodoro" element={<PomodoroTimer />} />
-            <Route path="*" element={<NotFound />} />
+            <Route path='/contributors' element={<AllContributors/>}/>
+          <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </TimerProvider>
