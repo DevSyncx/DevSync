@@ -9,7 +9,6 @@ import Register from "./Components/auth/Register";
 import Profile from "./Components/profile/Profile";
 import Login from "./Components/auth/Login";
 import Dashboard from "./Components/Dashboard";
-import TestDashboardPage from "./Components/DashBoard/Test";
 import { ThemeProvider } from "./Components/ui/theme-provider";
 import PomodoroTimer from "./Components/DashBoard/PomodoroTimer.jsx"; 
 import { TimerProvider } from "./context/TimerContext.jsx";
@@ -25,7 +24,6 @@ createRoot(document.getElementById("root")).render(
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/test" element={<TestDashboardPage />} />
             <Route path="/pomodoro" element={<PomodoroTimer />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
