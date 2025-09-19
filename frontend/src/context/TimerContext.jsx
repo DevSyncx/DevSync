@@ -1,3 +1,4 @@
+// src/context/TimerContext.jsx
 import { createContext, useContext, useState, useEffect } from "react";
 
 const TimerContext = createContext();
@@ -15,7 +16,13 @@ export function TimerProvider({ children }) {
 
   const [isRunning, setIsRunning] = useState(false);
   const [isWork, setIsWork] = useState(true);
-  const [sessions, setSessions] = useState(() => Number(localStorage.getItem("pomodoroSessions")) || 0);
+  const [isActive, setIsActive] = useState(() => {
+    return localStorage.getItem("pomodoroIsActive") === "true";
+  });
+
+  const [sessions, setSessions] = useState(() =>
+    Number(localStorage.getItem("pomodoroSessions")) || 0
+  );
 
   const [endTimestamp, setEndTimestamp] = useState(() => {
     const saved = localStorage.getItem("pomodoroEndTimestamp");
@@ -45,37 +52,39 @@ export function TimerProvider({ children }) {
       }
     };
 
-    if (isRunning) {
-      raf = requestAnimationFrame(tick);
-    }
+    if (isRunning) raf = requestAnimationFrame(tick);
 
     return () => cancelAnimationFrame(raf);
   }, [isRunning, endTimestamp]);
 
-  // Persist timer info
+  // Persist important states in localStorage
   useEffect(() => localStorage.setItem("pomodoroTimeLeft", timeLeft), [timeLeft]);
   useEffect(() => localStorage.setItem("pomodoroSessions", sessions), [sessions]);
   useEffect(() => {
     if (endTimestamp) localStorage.setItem("pomodoroEndTimestamp", endTimestamp);
   }, [endTimestamp]);
+  useEffect(() => localStorage.setItem("pomodoroIsActive", isActive), [isActive]);
 
   const handleSessionEnd = () => {
     const nextSession = isWork ? sessions + 1 : sessions;
     setSessions(nextSession);
+
     const nextTime = isWork
       ? nextSession % SESSIONS_BEFORE_LONG_BREAK === 0
         ? longBreak
         : shortBreak
       : workTime;
 
-    setIsWork(prev => !prev);
+    setIsWork((prev) => !prev);
     setTimeLeft(nextTime);
     setEndTimestamp(Date.now() + nextTime * 1000);
     setIsRunning(true);
 
     if ("Notification" in window && Notification.permission === "granted") {
       new Notification(
-        isWork ? "Work session complete! Time for a break 🎉" : "Break over! Back to work 💻"
+        isWork
+          ? "Work session complete! Time for a break 🎉"
+          : "Break over! Back to work 💻"
       );
     }
   };
@@ -83,6 +92,7 @@ export function TimerProvider({ children }) {
   const startTimer = () => {
     if (!endTimestamp) setEndTimestamp(Date.now() + timeLeft * 1000);
     setIsRunning(true);
+    setIsActive(true); // ✅ Timer is now active
   };
 
   const pauseTimer = () => setIsRunning(false);
@@ -93,6 +103,7 @@ export function TimerProvider({ children }) {
     setTimeLeft(workTime);
     setSessions(0);
     setEndTimestamp(null);
+    setIsActive(false); // ✅ Timer hidden on reset
   };
 
   const updateWorkTime = (minutes) => {
@@ -103,6 +114,7 @@ export function TimerProvider({ children }) {
       setEndTimestamp(Date.now() + secs * 1000);
     }
   };
+
   const updateShortBreak = (minutes) => {
     const secs = Math.max(1, minutes) * 60;
     setShortBreak(secs);
@@ -111,6 +123,7 @@ export function TimerProvider({ children }) {
       setEndTimestamp(Date.now() + secs * 1000);
     }
   };
+
   const updateLongBreak = (minutes) => {
     const secs = Math.max(1, minutes) * 60;
     setLongBreak(secs);
@@ -136,6 +149,7 @@ export function TimerProvider({ children }) {
         timeLeft,
         isRunning,
         isWork,
+        isActive, // ✅ Expose to components
         sessions,
         startTimer,
         pauseTimer,
