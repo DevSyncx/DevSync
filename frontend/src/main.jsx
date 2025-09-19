@@ -12,6 +12,7 @@ import Dashboard from "./Components/Dashboard";
 import { ThemeProvider } from "./Components/ui/theme-provider";
 import PomodoroTimer from "./Components/DashBoard/PomodoroTimer.jsx"; 
 import { TimerProvider } from "./context/TimerContext.jsx";
+import AllContributors from './Components/AllContributors';
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
