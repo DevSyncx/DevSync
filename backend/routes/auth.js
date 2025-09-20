@@ -54,6 +54,39 @@ router.get(
   }
 );
 
+// Start GitHub OAuth flow
+router.get(
+  "/github",
+  (req, res, next) => {
+    console.log("GitHub auth route hit");
+    next();
+  },
+  passport.authenticate("github", { scope: ["user:email"] })
+);
+
+// Handle callback from GitHub
+router.get(
+  "/github/callback",
+  (req, res, next) => {
+    console.log("GitHub callback received");
+    next();
+  },
+  passport.authenticate("github", {
+    failureRedirect: "/login", // if auth fails → go to login
+    session: true,
+    failWithError: true
+  }),
+  (req, res) => {
+    console.log("GitHub auth successful");
+    // ✅ Successful authentication → redirect to frontend home page
+    res.redirect(`${process.env.CLIENT_URL}/dashboard`);
+  },
+  (err, req, res, next) => {
+    console.error("GitHub auth error:", err);
+    res.redirect(`${process.env.CLIENT_URL}/login?error=github`);
+  }
+);
+
 // @route   POST api/auth/register
 // @desc    Register user
 // @access  Public

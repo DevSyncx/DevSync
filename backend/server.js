@@ -1,11 +1,12 @@
 // Entry point of the backend server
 require("dotenv").config();
-const dbconnection = require("./db/connection");
+// Removed MongoDB dependency
 const express = require("express");
-const mongoose = require("mongoose");
+// Removed mongoose dependency
 const cors = require("cors");
 const path = require("path");
-const contactRouter = require("./routes/contact.route");
+// Commenting out routes that depend on MongoDB
+// const contactRouter = require("./routes/contact.route");
 const passport = require("passport"); // import actual passport
 require("./config/passport"); // just execute the strategy config
 const session = require("express-session");
@@ -23,7 +24,9 @@ const app = express();
 app.use(express.json());
 app.use(cors({
     origin: process.env.CLIENT_URL || "http://localhost:5173", // frontend URL for local dev
-    credentials: true
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 
@@ -33,7 +36,11 @@ app.use(
         secret: process.env.SESSION_SECRET || "devsync_session_secret",
         resave: false,
         saveUninitialized: false,
-        cookie: { secure: false } // set true if using HTTPS
+        cookie: { 
+            secure: false, // set true if using HTTPS
+            httpOnly: true,
+            maxAge: 24 * 60 * 60 * 1000 // 1 day
+        }
     })
 );
 
@@ -45,14 +52,14 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Define routes
 
-// app.use("/api/auth", require("./routes/auth"));
+// Mount auth routes at both /api/auth and /auth to support both paths
 app.use("/api/auth", authMiddleware, require("./routes/auth"));
+// Special mount for GitHub OAuth to match GitHub app configuration
+app.use("/auth", authMiddleware, require("./routes/auth"));
 
-// app.use("/api/profile", require("./routes/profile"));
-app.use("/api/profile", generalMiddleware, require("./routes/profile"));
-
-// app.use("/api/contact",contactRouter);
-app.use("/api/contact", generalMiddleware, contactRouter);
+// Comment out routes that depend on MongoDB
+// app.use("/api/profile", generalMiddleware, require("./routes/profile"));
+// app.use("/api/contact", generalMiddleware, contactRouter);
 
 
 // Route to display the initial message on browser

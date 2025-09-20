@@ -77,6 +77,12 @@ const Login = () => {
     window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`;
   };
 
+  const handleGithubLogin = () => {
+    // Try the /auth/github path instead as this matches GitHub's configured callback
+    console.log(`Redirecting to: ${import.meta.env.VITE_API_URL}/auth/github`);
+    window.location.href = `${import.meta.env.VITE_API_URL}/auth/github`;
+  };
+
   // Show verification component if user needs to verify email
   if (showVerification) {
     return (
@@ -241,6 +247,7 @@ const Login = () => {
           {/* Social Login */}
           <div className="grid grid-cols-2 gap-3">
             <button
+              onClick={handleGithubLogin}
               type="button"
               className="border border-[var(--input)] text-[var(--primary)] hover:bg-[var(--accent)] py-3 rounded-lg flex justify-center items-center"
             >
