@@ -9,6 +9,7 @@ const contactRouter = require("./routes/contact.route");
 const passport = require("passport"); // import actual passport
 require("./config/passport"); // just execute the strategy config
 const session = require("express-session");
+const githubRouter = require("./routes/github.route");
 
 
 // Importing Rate Limiter Middlewares
@@ -54,6 +55,7 @@ app.use("/api/profile", generalMiddleware, require("./routes/profile"));
 // app.use("/api/contact",contactRouter);
 app.use("/api/contact", generalMiddleware, contactRouter);
 
+app.use("/api/github", generalMiddleware, githubRouter);
 
 // Route to display the initial message on browser
 app.get("/", (req, res) => {
