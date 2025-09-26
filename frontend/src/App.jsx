@@ -26,7 +26,14 @@ function Home() {
   const [showTop, setShowTop] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setShowTop(window.scrollY > 300);
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowTop(true);
+      } else {
+        setShowTop(false);
+      }
+    };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -34,7 +41,10 @@ function Home() {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
-    <div className="min-h-screen w-full bg-[var(--background)] scroll-smooth overflow-hidden">
+
+  <div className="min-h-screen w-full bg-[var(--background)] scroll-smooth overflow-hidden">
+
+      {/* Navbar */}
       <Navbar />
 
       {/* Main Content */}
@@ -67,6 +77,18 @@ function Home() {
         <Footer />
       </main>
 
+      {/* ✅ Back to Top Button */}
+  
+{showTop && (
+  <button
+    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+    className="fixed bottom-6 right-6 p-3 rounded-full shadow-lg transition-all duration-300 z-50 bg-[var(--primary)] text-[var(--primary-foreground)] hover:bg-[var(--accent)]"
+
+  >
+    <ArrowUp size={20} />
+  </button>
+)}
+
       {showTop && (
         <button onClick={scrollToTop} className="fixed bottom-6 right-6 p-3 rounded-full shadow-lg transition-all duration-300 z-50 bg-[var(--primary)] text-[var(--primary-foreground)] hover:bg-[var(--accent)]">
           <ArrowUp size={20} />
@@ -78,12 +100,24 @@ function Home() {
 
 function App() {
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 2000);
+    // Simulate initial app/data loading
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000); // adjust delay if needed
+
     return () => clearTimeout(timer);
   }, []);
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
+        <Loader size="lg" />
+      </div>
+    );
+   }
+
+ 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
       <Loader size="lg" />
@@ -104,5 +138,4 @@ function App() {
     </TimerProvider>
   );
 }
-
 export default App;

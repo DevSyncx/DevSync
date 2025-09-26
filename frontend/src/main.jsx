@@ -14,7 +14,7 @@ import PomodoroTimer from "./Components/DashBoard/PomodoroTimer.jsx";
 import { TimerProvider } from "./context/TimerContext.jsx";
 import AllContributors from './Components/AllContributors';
 
-createRoot(document.getElementById("root")).render(
+createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider>
       <TimerProvider>

@@ -1,69 +1,59 @@
 // src/Components/Navbar/Navbar.jsx
 import React, { useEffect, useState } from "react";
-import { Github, Home, Info, Sparkle, LogIn, UserPlus, UserCircle, Phone, Clock } from "lucide-react";
+import { UserCircle, Clock } from "lucide-react";
 import { FloatingNav } from "../ui/floating-navbar";
 import { Link, useNavigate } from "react-router-dom";
 import DarkModeToggle from "../ui/DarkModeToggle";
 import { useTimer } from "../../context/TimerContext";
 
-const navItems = [
-  {
-    name: "Home",
-    link: "/",
-    icon: <Home className="h-4 w-4" />,
-    internal: true,
-  },
-  {
-    name: "Features",
-    link: "#features",
-    icon: <Sparkle className="h-4 w-4" />,
-    internal: false,
-  },
-  {
-    name: "About us",
-    link: "#about",
-    icon: <Info className="h-4 w-4" />,
-    internal: false,
-  },
-  {
-    name: "Github",
-    link: "https://github.com/DevSyncx/DevSync.git",
-    icon: <Github className="h-4 w-4" />,
-    internal: false,
-  },
-  {
-    name: "Contact Us",
-    link: "#contact",
-    icon: <Phone className="h-4 w-4" />,
-    internal: false,
-  },
+const publicNavItems = [
+  { name: "Home", link: "/", icon: null },
+  { name: "Features", link: "#features", icon: null },
+  { name: "About us", link: "#about", icon: null },
+  { name: "Github", link: "https://github.com/DevSyncx/DevSync.git", icon: null },
+  { name: "Contact Us", link: "#contact", icon: null },
 ];
 
 const Navbar = () => {
   const [showFloating, setShowFloating] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [displayTime, setDisplayTime] = useState("25:00");
-  const navigate = useNavigate();
-  const { timeLeft } = useTimer();
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!localStorage.getItem("token")
+  );
 
-  // Update floating nav visibility
+  const navigate = useNavigate();
+  const { timeLeft, isRunning } = useTimer();
+
   useEffect(() => {
     const handleScroll = () => setShowFloating(window.scrollY > 100);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Update mini timer every second
   useEffect(() => {
+    if (!isRunning) return;
     const interval = setInterval(() => {
       const minutes = String(Math.floor(timeLeft / 60)).padStart(2, "0");
       const seconds = String(timeLeft % 60).padStart(2, "0");
       setDisplayTime(`${minutes}:${seconds}`);
-    }, 500); // update twice per second for smoother display
+    }, 500);
     return () => clearInterval(interval);
-  }, [timeLeft]);
+  }, [timeLeft, isRunning]);
 
-  const isAuthenticated = localStorage.getItem("token") !== null;
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setIsAuthenticated(!!localStorage.getItem("token"));
+    };
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsAuthenticated(false);
+    navigate("/login");
+  };
 
   return (
     <div className="w-full font-sans">
@@ -74,32 +64,37 @@ const Navbar = () => {
         >
           <div className="mx-auto flex max-w-7xl items-center justify-between">
             <Link to="/">
-              <h1 className="text-4xl font-extrabold" style={{ color: "var(--primary)" }}>DevSync</h1>
+              <h1 className="text-4xl font-extrabold" style={{ color: "var(--primary)" }}>
+                DevSync
+              </h1>
             </Link>
 
+            {/* Desktop Navigation */}
             <nav className="hidden md:flex space-x-8 items-center">
-              {navItems.map(item => (
-                <a
-                  key={item.name}
-                  href={item.link}
-                  className="flex items-center gap-2 text-[17px] font-medium transition duration-200"
-                  style={{ color: "var(--card-foreground)" }}
+              {!isAuthenticated &&
+                publicNavItems.map((item) => (
+                  <a
+                    key={item.name}
+                    href={item.link}
+                    className="flex items-center gap-2 text-[17px] font-medium transition duration-200"
+                    style={{ color: "var(--card-foreground)" }}
+                  >
+                    {item.icon} {item.name}
+                  </a>
+                ))}
+
+              {isAuthenticated && isRunning && (
+                <div
+                  onClick={() => navigate("/pomodoro")}
+                  className="flex items-center gap-2 cursor-pointer px-3 py-1 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition"
                 >
-                  {item.icon} {item.name}
-                </a>
-              ))}
+                  <Clock className="w-5 h-5 text-blue-500" />
+                  <span className="text-sm font-mono">{displayTime}</span>
+                </div>
+              )}
 
-              {/* Mini Pomodoro Timer */}
-              <div
-                onClick={() => navigate("/pomodoro")}
-                className="flex items-center gap-2 cursor-pointer px-3 py-1 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition"
-              >
-                <Clock className="w-5 h-5 text-blue-500" />
-                <span className="text-sm font-mono">{displayTime}</span>
-              </div>
-
-              <div className="flex items-center gap-3 ml-4">
-                {isAuthenticated ? (
+              {isAuthenticated && (
+                <div className="flex items-center gap-3 ml-4">
                   <Link
                     to="/profile"
                     className="flex items-center gap-2 text-[17px] font-medium transition duration-200"
@@ -107,55 +102,125 @@ const Navbar = () => {
                   >
                     <UserCircle className="h-4 w-4" /> Profile
                   </Link>
-                ) : (
-                  <>
-                    <Link
-                      to="/login"
-                      className="flex items-center gap-2 px-4 py-2 transition duration-200"
-                      style={{ color: "var(--primary)" }}
-                    >
-                      <LogIn className="h-4 w-4" /> Login
-                    </Link>
-                    <Link
-                      to="/register"
-                      className="flex items-center gap-2 px-6 py-2 rounded-lg transition duration-200"
-                      style={{ background: "var(--primary)", color: "var(--primary-foreground)" }}
-                    >
-                      <UserPlus className="h-4 w-4" /> Sign Up
-                    </Link>
-                  </>
-                )}
-                <DarkModeToggle />
-              </div>
+                  <button
+                    onClick={handleLogout}
+                    className="text-[17px] font-medium transition duration-200 text-red-500"
+                  >
+                    Logout
+                  </button>
+                  <DarkModeToggle />
+                </div>
+              )}
+
+              {!isAuthenticated && (
+                <div className="flex items-center gap-3 ml-4">
+                  <Link
+                    to="/login"
+                    className="flex items-center gap-2 px-4 py-2 transition duration-200"
+                    style={{ color: "var(--primary)" }}
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="flex items-center gap-2 px-6 py-2 rounded-lg transition duration-200"
+                    style={{ background: "var(--primary)", color: "var(--primary-foreground)" }}
+                  >
+                    Sign Up
+                  </Link>
+                  <DarkModeToggle />
+                </div>
+              )}
             </nav>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Hamburger */}
             <div className="md:hidden">
-              <button onClick={() => setMenuOpen(!menuOpen)} className="font-semibold text-base" style={{ color: "var(--primary)" }}>
-                Menu
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="relative w-8 h-6 flex flex-col justify-between items-center"
+              >
+                <span
+                  className={`block h-1 w-full bg-current rounded transform transition duration-300 ease-in-out ${
+                    menuOpen ? "rotate-45 translate-y-2" : ""
+                  }`}
+                />
+                <span
+                  className={`block h-1 w-full bg-current rounded transition duration-300 ease-in-out ${
+                    menuOpen ? "opacity-0" : ""
+                  }`}
+                />
+                <span
+                  className={`block h-1 w-full bg-current rounded transform transition duration-300 ease-in-out ${
+                    menuOpen ? "-rotate-45 -translate-y-2" : ""
+                  }`}
+                />
               </button>
+
+              {menuOpen && (
+                <div className="mt-4 flex flex-col gap-3 px-4 pb-4">
+                  {!isAuthenticated ? (
+                    <>
+                      {publicNavItems.map((item) => (
+                        <a
+                          key={item.name}
+                          href={item.link}
+                          className="flex items-center gap-2 text-[17px] font-medium"
+                          style={{ color: "var(--card-foreground)" }}
+                        >
+                          {item.icon} {item.name}
+                        </a>
+                      ))}
+                      <Link
+                        to="/login"
+                        className="flex items-center gap-2 px-4 py-2 transition duration-200"
+                        style={{ color: "var(--primary)" }}
+                      >
+                        Login
+                      </Link>
+                      <Link
+                        to="/register"
+                        className="flex items-center gap-2 px-6 py-2 rounded-lg transition duration-200"
+                        style={{ background: "var(--primary)", color: "var(--primary-foreground)" }}
+                      >
+                        Sign Up
+                      </Link>
+                      <DarkModeToggle />
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        to="/profile"
+                        className="flex items-center gap-2 text-[17px] font-medium"
+                        style={{ color: "var(--primary)" }}
+                      >
+                        Profile
+                      </Link>
+                      {isRunning && (
+                        <div
+                          onClick={() => navigate("/pomodoro")}
+                          className="flex items-center gap-2 cursor-pointer"
+                        >
+                          <Clock className="w-5 h-5 text-blue-500" />
+                          <span className="text-sm font-mono">{displayTime}</span>
+                        </div>
+                      )}
+                      <button
+                        onClick={handleLogout}
+                        className="text-[17px] font-medium text-red-500"
+                      >
+                        Logout
+                      </button>
+                      <DarkModeToggle />
+                    </>
+                  )}
+                </div>
+              )}
             </div>
           </div>
-
-          {/* Mobile Navigation */}
-          {menuOpen && (
-            <div className="md:hidden mt-4 flex flex-col gap-3 px-4 pb-4">
-              {navItems.map(item => (
-                <a
-                  key={item.name}
-                  href={item.link}
-                  className="flex items-center gap-2 text-[17px] font-medium transition duration-200"
-                  style={{ color: "var(--card-foreground)" }}
-                >
-                  {item.icon} {item.name}
-                </a>
-              ))}
-            </div>
-          )}
         </header>
       )}
 
-      {showFloating && <FloatingNav navItems={navItems} />}
+      {showFloating && <FloatingNav navItems={!isAuthenticated ? publicNavItems : []} />}
     </div>
   );
 };

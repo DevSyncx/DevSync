@@ -52,6 +52,7 @@ const setVerificationToken = async (user) => {
 // Helper function to send verification email with error handling
 const handleVerificationEmail = async (email, verificationCode) => {
   try {
+    console.log('Sending For Email Verifcation ...')
     await sendVerificationEmail(email, verificationCode);
     console.log(`Verification code for ${email}: ${verificationCode}`);
   } catch (emailError) {

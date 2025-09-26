@@ -126,7 +126,11 @@ router.post(
 
     } catch (err) {
       console.error(err.message);
-      res.status(500).json({ errors: [{ msg: "Server error" }] });
+      if(err.message === 'Invalid Email ID')
+      {
+        return res.status(400).json({ errors: [{ msg: "Invalid Email ID" }] });
+      }
+      return res.status(500).json({ errors: [{ msg: "Server error" }] });
     }
   }
 );
