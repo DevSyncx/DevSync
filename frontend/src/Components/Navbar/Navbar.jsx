@@ -1,12 +1,12 @@
 // src/Components/Navbar/Navbar.jsx
 import React, { useEffect, useState } from "react";
-import { Github, Home, Info, Sparkle, LogIn, UserPlus, UserCircle,HelpCircle } from "lucide-react";
+import { Github, Home, Info, Sparkle, LogIn, UserPlus, Phone,UserCircle,HelpCircle } from "lucide-react";
 import { FloatingNav } from "../ui/floating-navbar";
 import { Link, useNavigate } from "react-router-dom";
 import DarkModeToggle from "../ui/DarkModeToggle";
 import { useTimer } from "../../context/TimerContext";
 
-const navItems = [
+const publicNavItems = [
   {
     name: "Home",
     link: "/",
