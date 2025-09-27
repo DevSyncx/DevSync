@@ -8,6 +8,8 @@ import NotFound from "./Components/ui/NotFound.jsx";
 import Register from "./Components/auth/Register";
 import Profile from "./Components/profile/Profile";
 import Login from "./Components/auth/Login";
+import ForgotPassword from "./Components/auth/ForgotPassword";
+import ResetPassword from "./Components/auth/ResetPassword";
 import Dashboard from "./Components/Dashboard";
 import { ThemeProvider } from "./Components/ui/theme-provider";
 import PomodoroTimer from "./Components/DashBoard/PomodoroTimer.jsx"; 
@@ -22,6 +24,8 @@ createRoot(document.getElementById('root')).render(
           <Routes>
             <Route path="/" element={<App />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/dashboard" element={<Dashboard />} />

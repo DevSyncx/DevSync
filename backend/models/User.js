@@ -51,7 +51,6 @@ const UserSchema = new Schema({
     linkedin: String,
     twitter: String,
     website: String,
-    // Competitive coding platforms
     codechef: String,
     hackerrank: String,
     leetcode: String,
@@ -92,9 +91,13 @@ const UserSchema = new Schema({
     default: []
   },
   goals: {
-    type: [String], // or [{ text: String, done: Boolean }] if you want tracking
+    type: [String],
     default: []
   },
+
+  // ✅ Fields for forgot/reset password
+  resetPasswordToken: String,
+  resetPasswordExpires: Date,
 
   date: {
     type: Date,

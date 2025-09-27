@@ -11,4 +11,13 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // ✅ Ensure client-side routing works (React Router fix)
+  server: {
+    historyApiFallback: true, // 👈 fallback to index.html on unknown routes
+    port: 5173, // optional
+    open: true, // optional (auto opens browser)
+  },
+  preview: {
+    historyApiFallback: true, // 👈 also for preview
+  },
 });

@@ -5,8 +5,8 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const passport = require("passport");
 const session = require("express-session");
+const passport = require("passport");
 
 // Passport config with error handling
 try {
@@ -15,14 +15,8 @@ try {
   console.warn("Google OAuth is not configured properly. Skipping Passport strategy.");
 }
 
-
-// Import routes
-// Only include contactRouter if needed - commenting it out as it depends on MongoDB
-// const contactRouter = require("./routes/contact.route");
-
 // Rate limiter middleware
 const { generalMiddleware, authMiddleware } = require("./middleware/rateLimit/index");
-
 
 // Initialize Express
 const app = express();
@@ -31,26 +25,26 @@ const app = express();
 app.use(express.json());
 
 // Enable CORS
-app.use(cors({
-  origin: process.env.CLIENT_URL || "http://localhost:5173", // frontend URL for local dev
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
-
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 // Session setup
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "devsync_session_secret",
     resave: false,
-    saveUninitialized: true, // True to maintain session for unauthenticated users
-    cookie: { 
+    saveUninitialized: true, // keep sessions for unauthenticated users
+    cookie: {
       secure: false, // set true if using HTTPS
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-      httpOnly: true
-    }
+      maxAge: 24 * 60 * 60 * 1000,
+      httpOnly: true,
+    },
   })
 );
 
@@ -61,20 +55,11 @@ app.use(passport.session());
 // Serve uploaded files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Define routes
-
-// Mount auth routes at both /api/auth and /auth to support both paths
+// Routes
 app.use("/api/auth", authMiddleware, require("./routes/auth"));
-// Special mount for GitHub OAuth to match GitHub app configuration
 app.use("/auth", authMiddleware, require("./routes/auth"));
-
-// Profile route - now supports non-MongoDB users
 app.use("/api/profile", generalMiddleware, require("./routes/profile"));
-
-// GitHub routes have been removed, only using GitHub for authentication
-// Comment out routes that depend on MongoDB
-// app.use("/api/contact", generalMiddleware, contactRouter);
-
+// contactRouter omitted (MongoDB removed)
 
 // Default route
 app.get("/", (req, res) => {
@@ -86,3 +71,4 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is up and running at http://localhost:${PORT} 🚀`);
 });
+
