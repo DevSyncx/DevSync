@@ -59,7 +59,7 @@ export default function Dashboard() {
 
     {/* Row 1 */}
     <ProfileCard user={profile} className="col-span-1" />
-    <PlatformLinks platforms={profile.platforms || []} className="col-span-1" />
+    <PlatformLinks platforms={profile.socialLinks || []} className="col-span-1" />
     <StreakCard streak={profile.streak || 0} className="col-span-1" />
 
     {/* Row 2: Goals, Time Spent, Notes */}

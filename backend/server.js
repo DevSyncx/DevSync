@@ -9,7 +9,7 @@ const contactRouter = require("./routes/contact.route");
 const passport = require("passport"); // import actual passport
 require("./config/passport"); // just execute the strategy config
 const session = require("express-session");
-
+require("./utils/leetcodeCron")
 
 // Importing Rate Limiter Middlewares
 
