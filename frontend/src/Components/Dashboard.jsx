@@ -6,7 +6,7 @@ import PlatformLinks from "./DashBoard/PlatformLinks";
 import StreakCard from "./DashBoard/StreakCard";
 import GoalsCard from "./DashBoard/GoalsCard";
 import TimeSpentCard from "./DashBoard/TimeSpentCard";
-import ActivityHeatmap from "./DashBoard/ActivityHeatMap";
+// ActivityHeatMap removed - no longer using GitHub data sync
 import NotesCard from "./DashBoard/NotesCard";
 import GithubRepoCard from "./DashBoard/GithubRepoCard";
 import { useNavigate } from "react-router-dom";
@@ -126,10 +126,7 @@ export default function Dashboard() {
     {/* Add NotesCard here */}
     <NotesCard notes={profile?.notes || []} onNotesChange={(n) => setProfile({ ...profile, notes: n })} />
 
-    {/* Row 3: GitHub repositories */}
-    <div className="col-span-1 sm:col-span-2 lg:col-span-3">
-      <ActivityHeatmap activityData={profile?.activity || []} />
-    </div>
+    {/* ActivityHeatmap removed - no longer using GitHub data sync */}
     
     {/* Row 4: GitHub repositories - only show if we have repository data */}
     {profile?.repositories && profile.repositories.length > 0 && (

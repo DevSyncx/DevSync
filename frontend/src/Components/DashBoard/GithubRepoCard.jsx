@@ -61,7 +61,7 @@ export default function GithubRepoCard({ repositories = [], className = '' }) {
 
       {repositories.length === 0 ? (
         <p className="text-sm text-[var(--muted-foreground)] italic text-center py-4">
-          No repositories found. Sync GitHub data to see your repositories.
+          No repositories found. Connect with GitHub to see your repositories.
         </p>
       ) : (
         <div className="space-y-3">

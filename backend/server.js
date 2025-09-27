@@ -62,8 +62,7 @@ app.use("/auth", authMiddleware, require("./routes/auth"));
 // Profile route - now supports non-MongoDB users
 app.use("/api/profile", generalMiddleware, require("./routes/profile"));
 
-// GitHub integration routes - temporarily removed data sync
-// app.use("/api/github", generalMiddleware, require("./routes/github"));
+// GitHub routes have been removed, only using GitHub for authentication
 // Comment out routes that depend on MongoDB
 // app.use("/api/contact", generalMiddleware, contactRouter);
 

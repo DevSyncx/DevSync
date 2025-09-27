@@ -53,17 +53,7 @@ export default function ProfileCard({ user, onSyncGithub, syncingGithub = false 
             </div>
           )}
           
-          {/* GitHub Sync Button */}
-          {hasGithubPlatform && onSyncGithub && (
-            <button
-              onClick={onSyncGithub}
-              disabled={syncingGithub === true}
-              className="mt-2 flex items-center gap-1 mx-auto py-1 px-3 rounded-md text-xs bg-blue-500 hover:bg-blue-600 text-white disabled:opacity-50"
-            >
-              <RefreshCw size={14} className={syncingGithub ? "animate-spin" : ""} />
-              {syncingGithub ? "Syncing..." : (hasGithubActivity ? "Re-sync GitHub" : "Sync GitHub Data")}
-            </button>
-          )}
+          {/* GitHub Sync Button removed - authentication only */}
         </div>
       </div>
 
