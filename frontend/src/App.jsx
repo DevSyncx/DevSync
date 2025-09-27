@@ -142,8 +142,8 @@ function App() {
          <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/pomodoro" element={<Pomodoro />} />
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/pomodoro" element={<ProtectedRoute><Pomodoro /></ProtectedRoute>} />
         <Route path='/contributors' element={<AllContributors/>}/>
     </Routes>
     </TimerProvider>

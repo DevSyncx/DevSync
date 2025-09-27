@@ -1,25 +1,21 @@
 // Entry point of the backend server
 require("dotenv").config();
+
+// Dependencies
 const express = require("express");
-const path = require("path");
 const cors = require("cors");
+const path = require("path");
 const session = require("express-session");
 const passport = require("passport");
 
-// Database connection
-require("./db/connection");
-
-// Passport config (optional Google OAuth)
+// Passport config with error handling
 try {
   require("./config/passport");
 } catch (err) {
   console.warn("Google OAuth is not configured properly. Skipping Passport strategy.");
 }
 
-// Import routes
-const contactRouter = require("./routes/contact.route");
-
-// Rate limiter middleware placeholders
+// Rate limiter middleware
 const { generalMiddleware, authMiddleware } = require("./middleware/rateLimit/index");
 
 // Initialize Express
@@ -29,18 +25,26 @@ const app = express();
 app.use(express.json());
 
 // Enable CORS
-app.use(cors({
-  origin: process.env.CLIENT_URL || "http://localhost:5173",
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 // Session setup
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "devsync_session_secret",
     resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false } // set true if using HTTPS
+    saveUninitialized: true, // keep sessions for unauthenticated users
+    cookie: {
+      secure: false, // set true if using HTTPS
+      maxAge: 24 * 60 * 60 * 1000,
+      httpOnly: true,
+    },
   })
 );
 
@@ -53,8 +57,9 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Routes
 app.use("/api/auth", authMiddleware, require("./routes/auth"));
+app.use("/auth", authMiddleware, require("./routes/auth"));
 app.use("/api/profile", generalMiddleware, require("./routes/profile"));
-app.use("/api/contact", generalMiddleware, contactRouter);
+// contactRouter omitted (MongoDB removed)
 
 // Default route
 app.get("/", (req, res) => {
@@ -66,3 +71,4 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is up and running at http://localhost:${PORT} 🚀`);
 });
+
