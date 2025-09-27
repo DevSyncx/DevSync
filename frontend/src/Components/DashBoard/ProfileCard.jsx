@@ -1,16 +1,27 @@
-import { User } from "lucide-react";
-import React from "react";
+import { User, RefreshCw, Github, Check } from "lucide-react";
+import React, { useEffect } from "react";
 import CardWrapper from "./CardWrapper";
 
-export default function ProfileCard({ user }) {
+export default function ProfileCard({ user, onSyncGithub, syncingGithub = false }) {
   if (!user) return null; // don't render until user is loaded
+  
+  const githubPlatform = user.platforms?.find(p => p.name === 'GitHub');
+  const hasGithubPlatform = !!githubPlatform;
+  const hasGithubActivity = Array.isArray(user.activity) && user.activity.length > 0;
+  
+  // Debug logged when user or activity changes
+  useEffect(() => {
+    console.log("ProfileCard received user:", user);
+    console.log("Has GitHub platform:", hasGithubPlatform);
+    console.log("Has GitHub activity:", hasGithubActivity);
+  }, [user, hasGithubPlatform, hasGithubActivity]);
 
   return (
     <CardWrapper>
       {/* Header */}
       <div className="flex items-center flex-col gap-3">
         {/* Avatar */}
-  <div className="w-14 h-14 flex items-center justify-center rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] overflow-hidden">
+        <div className="w-14 h-14 flex items-center justify-center rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] overflow-hidden">
           {user.avatar ? (
             <img
               src={user.avatar}
@@ -26,6 +37,33 @@ export default function ProfileCard({ user }) {
         <div className="text-center">
           <h2 className="text-lg font-semibold text-[var(--primary)]">{user.name}</h2>
           <p className="text-sm text-[var(--muted-foreground)]">{user.email}</p>
+          
+          {/* GitHub Status */}
+          {hasGithubPlatform && (
+            <div className="flex items-center justify-center gap-2 mt-2 text-sm">
+              <Github size={16} className="text-[var(--muted-foreground)]" />
+              <span className="text-[var(--muted-foreground)]">
+                {githubPlatform.username || 'GitHub Connected'}
+              </span>
+              {hasGithubActivity && (
+                <span className="flex items-center text-green-600">
+                  <Check size={14} className="mr-1" /> Synced
+                </span>
+              )}
+            </div>
+          )}
+          
+          {/* GitHub Sync Button */}
+          {hasGithubPlatform && onSyncGithub && (
+            <button
+              onClick={onSyncGithub}
+              disabled={syncingGithub === true}
+              className="mt-2 flex items-center gap-1 mx-auto py-1 px-3 rounded-md text-xs bg-blue-500 hover:bg-blue-600 text-white disabled:opacity-50"
+            >
+              <RefreshCw size={14} className={syncingGithub ? "animate-spin" : ""} />
+              {syncingGithub ? "Syncing..." : (hasGithubActivity ? "Re-sync GitHub" : "Sync GitHub Data")}
+            </button>
+          )}
         </div>
       </div>
 

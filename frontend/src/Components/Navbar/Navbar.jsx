@@ -1,9 +1,11 @@
 // src/Components/Navbar/Navbar.jsx
 import React, { useEffect, useState } from "react";
-import { UserCircle, Clock, Home, Sparkle, Info, Github, Phone } from "lucide-react";
+import { UserCircle, Clock, Home, Sparkle, Info, Github, Phone, MessageCircle, MessageSquarePlus } from "lucide-react";
 import { FloatingNav } from "../ui/floating-navbar";
 import { Link, useNavigate } from "react-router-dom";
 import DarkModeToggle from "../ui/DarkModeToggle";
+import { useFeedback } from "../../context/FeedbackContext";
+import FeedbackButton from "../feedback/FeedbackButton";
 import { useTimer } from "../../context/TimerContext";
 
 const publicNavItems = [
@@ -12,6 +14,7 @@ const publicNavItems = [
   { name: "About us", link: "#about", icon: <Info className="h-4 w-4" /> },
   { name: "Github", link: "https://github.com/DevSyncx/DevSync.git", icon: <Github className="h-4 w-4" /> },
   { name: "Contact Us", link: "#contact", icon: <Phone className="h-4 w-4" /> },
+  { name: "View Feedback", link: "/feedback", icon: <MessageCircle className="h-4 w-4" /> },
 ];
 
 const Navbar = () => {
@@ -21,6 +24,7 @@ const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(
     !!localStorage.getItem("token")
   );
+  const { openFeedbackPopup } = useFeedback();
 
   const navigate = useNavigate();
   const { timeLeft, isRunning } = useTimer();
@@ -71,17 +75,21 @@ const Navbar = () => {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex space-x-8 items-center">
-              {!isAuthenticated &&
-                publicNavItems.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.link}
-                    className="flex items-center gap-2 text-[17px] font-medium transition duration-200"
-                    style={{ color: "var(--card-foreground)" }}
-                  >
-                    {item.icon} {item.name}
-                  </a>
-                ))}
+              {!isAuthenticated && (
+                <>
+                  {publicNavItems.map((item) => (
+                    <a
+                      key={item.name}
+                      href={item.link}
+                      className="flex items-center gap-2 text-[17px] font-medium transition duration-200"
+                      style={{ color: "var(--card-foreground)" }}
+                    >
+                      {item.icon} {item.name}
+                    </a>
+                  ))}
+                  <FeedbackButton />
+                </>
+              )}
 
               {isAuthenticated && isRunning && (
                 <div
@@ -102,6 +110,22 @@ const Navbar = () => {
                   >
                     <UserCircle className="h-4 w-4" /> Profile
                   </Link>
+                  <div className="flex flex-col sm:flex-row sm:gap-4">
+                    <Link
+                      to="/feedback"
+                      className="flex items-center gap-2 text-[17px] font-medium transition duration-200"
+                      style={{ color: "var(--primary)" }}
+                    >
+                      <MessageCircle className="h-4 w-4" /> View Feedback
+                    </Link>
+                    <button
+                      onClick={openFeedbackPopup}
+                      className="flex items-center gap-2 text-[17px] font-medium transition duration-200 mt-2 sm:mt-0"
+                      style={{ color: "var(--accent)" }}
+                    >
+                      <MessageSquarePlus className="h-4 w-4" /> Give Feedback
+                    </button>
+                  </div>
                   <button
                     onClick={handleLogout}
                     className="text-[17px] font-medium transition duration-200 text-red-500"
@@ -195,6 +219,20 @@ const Navbar = () => {
                       >
                         Profile
                       </Link>
+                      <Link
+                        to="/feedback"
+                        className="flex items-center gap-2 text-[17px] font-medium"
+                        style={{ color: "var(--primary)" }}
+                      >
+                        <MessageCircle className="h-4 w-4" /> View Feedback
+                      </Link>
+                      <button
+                        onClick={openFeedbackPopup}
+                        className="flex items-center gap-2 text-[17px] font-medium mt-2"
+                        style={{ color: "var(--accent)" }}
+                      >
+                        <MessageSquarePlus className="h-4 w-4" /> Give Feedback
+                      </button>
                       {isRunning && (
                         <div
                           onClick={() => navigate("/pomodoro")}
