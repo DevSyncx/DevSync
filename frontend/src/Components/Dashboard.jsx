@@ -36,20 +36,31 @@ export default function Dashboard() {
         if (!res.ok)
           throw new Error(data.errors?.[0]?.msg || "Failed to load profile");
 
-        setProfile(data);
+        setProfile(data || {}); // default to empty object
         setGoals(data.goals || []);
       } catch (err) {
-        setError(err.message);
+        setError(err.message || "Failed to load profile");
       } finally {
         setLoading(false);
       }
     };
 
     fetchProfile();
-  }, []);
+  }, [navigate]);
 
   if (loading) return <p className="p-6">Loading...</p>;
   if (error) return <p className="p-6 text-red-500">{error}</p>;
+
+  // Default values to prevent crashes
+  const safeProfile = {
+    githubUsername: "",
+    streak: 0,
+    notes: [],
+    timeSpent: "0 minutes",
+    activity: [],
+    socialLinks: [],
+    ...profile,
+  };
 
   return (
     <div className="flex flex-col h-screen">
@@ -59,15 +70,19 @@ export default function Dashboard() {
         <main className="flex-1 p-6 bg-[#d1e4f3]">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
             {/* Row 1 */}
-            <ProfileCard user={profile} className="col-span-1" />
-
-            <PlatformLinks platforms={profile.socialLinks || []} className="col-span-1" />
-
-            <StreakCard streak={profile.streak || 0} className="col-span-1" />
+            <ProfileCard user={safeProfile} className="col-span-1" />
+            <PlatformLinks
+              platforms={safeProfile.socialLinks}
+              className="col-span-1"
+            />
+            <StreakCard streak={safeProfile.streak} className="col-span-1" />
 
             {/* GitHub Card (conditionally rendered) */}
-            {profile.githubUsername ? (
-              <GitHubCard githubUsername={profile.githubUsername} className="col-span-1" />
+            {safeProfile.githubUsername ? (
+              <GitHubCard
+                githubUsername={safeProfile.githubUsername}
+                className="col-span-1"
+              />
             ) : (
               <div className="col-span-1 p-4 border rounded-lg shadow-sm bg-gray-100 text-gray-500 flex items-center justify-center">
                 GitHub profile not linked
@@ -76,15 +91,15 @@ export default function Dashboard() {
 
             {/* Row 2: Goals, Time Spent, Notes */}
             <GoalsCard goals={goals} onGoalsChange={setGoals} />
-            <TimeSpentCard time={profile.timeSpent || "0 minutes"} />
+            <TimeSpentCard time={safeProfile.timeSpent} />
             <NotesCard
-              notes={profile.notes || []}
-              onNotesChange={(n) => setProfile({ ...profile, notes: n })}
+              notes={safeProfile.notes}
+              onNotesChange={(n) => setProfile({ ...safeProfile, notes: n })}
             />
 
             {/* Row 3: Activity heatmap full width */}
             <div className="col-span-1 sm:col-span-2 lg:col-span-3">
-              <ActivityHeatmap activityData={profile.activity || []} />
+              <ActivityHeatmap activityData={safeProfile.activity} />
             </div>
           </div>
         </main>

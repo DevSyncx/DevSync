@@ -39,7 +39,7 @@ const GitHubProfile = () => {
   if (loading) return <p className="text-center mt-10">Loading...</p>;
   if (error) return <p className="text-center mt-10 text-red-500">{error}</p>;
 
-  // Default values to prevent crashes
+  // Defaults to prevent crashes
   const {
     profile = {},
     topRepos = [],
@@ -48,20 +48,22 @@ const GitHubProfile = () => {
   } = data || {};
 
   const renderHeatmap = () => {
-    if (!contributions.weeks.length)
-      return <p>No contribution data available.</p>;
+    if (!contributions?.weeks?.length) {
+      return <p className="text-gray-500">No contribution data available.</p>;
+    }
+
     return (
       <div className="flex space-x-0.5 overflow-x-auto py-2">
         {contributions.weeks.map((week, wIdx) => (
           <div key={wIdx} className="flex flex-col space-y-0.5">
-            {week.contributionDays.map((day, dIdx) => (
+            {week?.contributionDays?.map((day, dIdx) => (
               <div
                 key={dIdx}
-                title={`${day.date}: ${
-                  day.contributionCount || 0
+                title={`${day?.date || "N/A"}: ${
+                  day?.contributionCount ?? 0
                 } contributions`}
                 className="w-3 h-3 rounded-sm"
-                style={{ backgroundColor: day.color || "#ebedf0" }}
+                style={{ backgroundColor: day?.color || "#ebedf0" }}
               />
             ))}
           </div>
@@ -71,29 +73,38 @@ const GitHubProfile = () => {
   };
 
   const renderLanguages = () => {
-    if (!Object.keys(languages).length)
-      return <p>No language data available.</p>;
+    const langKeys = Object.keys(languages);
+    if (!langKeys.length)
+      return <p className="text-gray-500">No language data available.</p>;
+
     const totalSize = Object.values(languages).reduce(
       (sum, val) => sum + val,
       0
     );
+
     return (
       <div className="space-y-2">
-        {Object.entries(languages)
-          .sort((a, b) => b[1] - a[1])
-          .map(([lang, size], idx) => (
-            <div key={idx}>
-              <p className="text-sm font-medium">
-                {lang} ({((size / totalSize) * 100).toFixed(1)}%)
-              </p>
-              <div className="w-full bg-gray-200 h-2 rounded">
-                <div
-                  className="h-2 rounded bg-yellow-400"
-                  style={{ width: `${((size / totalSize) * 100).toFixed(1)}%` }}
-                />
+        {langKeys
+          .sort((a, b) => languages[b] - languages[a])
+          .map((lang, idx) => {
+            const size = languages[lang];
+            const percentage = totalSize
+              ? ((size / totalSize) * 100).toFixed(1)
+              : 0;
+            return (
+              <div key={idx}>
+                <p className="text-sm font-medium">
+                  {lang} ({percentage}%)
+                </p>
+                <div className="w-full bg-gray-200 h-2 rounded">
+                  <div
+                    className="h-2 rounded bg-yellow-400"
+                    style={{ width: `${percentage}%` }}
+                  />
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
       </div>
     );
   };
@@ -137,13 +148,15 @@ const GitHubProfile = () => {
         </CardContent>
       </Card>
 
-      {/* Top Repos */}
+      {/* Top Repositories */}
       <Card>
         <CardHeader>
           <CardTitle>Top Repositories</CardTitle>
         </CardHeader>
         <CardContent className="grid md:grid-cols-2 gap-4">
-          {topRepos.length === 0 && <p>No repositories available.</p>}
+          {topRepos.length === 0 && (
+            <p className="text-gray-500">No repositories available.</p>
+          )}
           {topRepos.map((repo, idx) => (
             <div
               key={idx}
@@ -151,12 +164,12 @@ const GitHubProfile = () => {
             >
               <h3 className="font-semibold">
                 <a
-                  href={repo.url}
+                  href={repo.url || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
                 >
-                  {repo.name}
+                  {repo.name || "N/A"}
                 </a>
               </h3>
               <p className="text-sm text-gray-600">

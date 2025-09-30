@@ -19,9 +19,11 @@ const GitHubCard = ({ githubUsername }) => {
           import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
         const res = await fetch(`${backendUrl}/api/github/${githubUsername}`);
         const json = await res.json();
-        setValidUser(res.ok && !json.error);
+
+        // Mark valid only if response is ok and profile data exists
+        setValidUser(res.ok && json && !json.error && json.profile);
       } catch (err) {
-        console.error(err);
+        console.error("Error checking GitHub user:", err);
         setValidUser(false);
       } finally {
         setLoading(false);
@@ -44,7 +46,9 @@ const GitHubCard = ({ githubUsername }) => {
         </Link>
       ) : (
         <div className="text-center text-red-500">
-          GitHub username not found
+          {githubUsername
+            ? `GitHub username "${githubUsername}" not found`
+            : "No GitHub username provided"}
         </div>
       )}
     </Card>
