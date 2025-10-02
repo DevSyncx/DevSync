@@ -1,53 +1,31 @@
 // src/Components/Navbar/Navbar.jsx
 import React, { useEffect, useState } from "react";
-import { 
-  UserCircle, 
-  Clock, 
-  Menu, 
-  X, 
-  Home,
-  Star,
-  Users,
-  Github,
-  Mail,
-  ChevronDown,
-  Settings,
-  LogOut,
-  User
-} from "lucide-react";
+import { UserCircle, Clock, Home, Sparkle, Info, Github, Phone, HelpCircle } from "lucide-react";
 import { FloatingNav } from "../ui/floating-navbar";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DarkModeToggle from "../ui/DarkModeToggle";
 import { useTimer } from "../../context/TimerContext";
 
 const publicNavItems = [
-  { name: "Home", link: "/", icon: Home },
-  { name: "Features", link: "#features", icon: Star },
-  { name: "About", link: "#about", icon: Users },
-  { name: "GitHub", link: "https://github.com/DevSyncx/DevSync.git", icon: Github, external: true },
-  { name: "Contact", link: "#contact", icon: Mail },
+  { name: "Home", link: "/", icon: <Home className="h-4 w-4" /> },
+  { name: "Features", link: "#features", icon: <Sparkle className="h-4 w-4" /> },
+  { name: "About us", link: "#about", icon: <Info className="h-4 w-4" /> },
+  { name: "Github", link: "https://github.com/DevSyncx/DevSync.git", icon: <Github className="h-4 w-4" /> },
+  { name: "Contact Us", link: "#contact", icon: <Phone className="h-4 w-4" /> },
+  { name: "FAQ", link: "#faq", icon: <HelpCircle className="h-4 w-4" /> },
 ];
 
 const Navbar = () => {
   const [showFloating, setShowFloating] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [displayTime, setDisplayTime] = useState("25:00");
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    !!localStorage.getItem("token")
-  );
-  const [scrolled, setScrolled] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
 
   const navigate = useNavigate();
-  const location = useLocation();
   const { timeLeft, isRunning } = useTimer();
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      setShowFloating(scrollTop > 100);
-      setScrolled(scrollTop > 20);
-    };
+    const handleScroll = () => setShowFloating(window.scrollY > 100);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -68,260 +46,178 @@ const Navbar = () => {
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
-  useEffect(() => {
-    // Close mobile menu on route change
-    setMenuOpen(false);
-    setUserMenuOpen(false);
-  }, [location]);
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsAuthenticated(false);
-    setUserMenuOpen(false);
     navigate("/login");
   };
 
-  const isActiveLink = (link) => {
-    if (link === "/") return location.pathname === "/";
-    return location.pathname.startsWith(link);
-  };
-
   return (
-    <>
+    <div className="w-full font-sans">
       {!showFloating && (
         <header
-          className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-            scrolled 
-              ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg border-b border-gray-200/50 dark:border-gray-800/50' 
-              : 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200/30 dark:border-gray-800/30'
-          }`}
+          className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b px-6 py-4 shadow-md"
+          style={{ background: "var(--card)", borderColor: "var(--border)" }}
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              
-              {/* Logo */}
-              <Link 
-                to="/" 
-                className="flex items-center space-x-2 group"
+          <div className="mx-auto flex max-w-7xl items-center justify-between">
+            {/* Logo */}
+            <Link to="/">
+              <h1
+                className="text-4xl font-extrabold tracking-tight hover:scale-105 transition-transform duration-300"
+                style={{ color: "var(--primary)" }}
               >
-                <div className="relative">
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-purple-600 rounded-lg flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-300">
-                    <span className="text-white font-bold text-sm">DS</span>
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-purple-400 rounded-lg opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                </div>
-                <span className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
-                  DevSync
-                </span>
-              </Link>
+                DevSync
+              </h1>
+            </Link>
 
-              {/* Desktop Navigation */}
-              <nav className="hidden lg:flex items-center space-x-1">
-                {!isAuthenticated && publicNavItems.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = !item.external && isActiveLink(item.link);
-                  
-                  return (
-                    <a
-                      key={item.name}
-                      href={item.link}
-                      target={item.external ? "_blank" : undefined}
-                      rel={item.external ? "noopener noreferrer" : undefined}
-                      className={`relative flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                        isActive
-                          ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
-                          : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800/50'
-                      }`}
-                    >
-                      <Icon className="w-4 h-4" />
-                      <span>{item.name}</span>
-                      {item.external && (
-                        <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-                      )}
-                    </a>
-                  );
-                })}
-
-                {/* Timer Display */}
-                {isAuthenticated && isRunning && (
-                  <button
-                    onClick={() => navigate("/pomodoro")}
-                    className="flex items-center space-x-2 px-3 py-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors duration-200"
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex space-x-8 items-center">
+              {!isAuthenticated &&
+                publicNavItems.map((item) => (
+                  <a
+                    key={item.name}
+                    href={item.link}
+                    className="relative text-[17px] font-medium transition-all duration-300 group flex items-center gap-2"
+                    style={{ color: "var(--card-foreground)" }}
                   >
-                    <Clock className="w-4 h-4" />
-                    <span className="font-mono text-sm">{displayTime}</span>
-                  </button>
-                )}
-              </nav>
+                    {item.icon} <span>{item.name}</span>
+                    <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-gradient-to-r from-[var(--primary)] to-purple-500 transition-all duration-500 group-hover:w-full"></span>
+                  </a>
+                ))}
 
-              {/* Right Side Actions */}
-              <div className="flex items-center space-x-3">
-                <DarkModeToggle />
-                
-                {!isAuthenticated ? (
-                  <div className="hidden md:flex items-center space-x-3">
-                    <Link
-                      to="/login"
-                      className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
-                    >
-                      Sign In
-                    </Link>
-                    <Link
-                      to="/register"
-                      className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
-                    >
-                      Get Started
-                    </Link>
-                  </div>
-                ) : (
-                  <div className="hidden md:flex items-center space-x-3">
-                    {/* User Menu */}
-                    <div className="relative">
-                      <button
-                        onClick={() => setUserMenuOpen(!userMenuOpen)}
-                        className="flex items-center space-x-2 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200"
-                      >
-                        <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                          <User className="w-4 h-4 text-white" />
-                        </div>
-                        <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${userMenuOpen ? 'rotate-180' : ''}`} />
-                      </button>
-
-                      {/* User Dropdown */}
-                      {userMenuOpen && (
-                        <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
-                          <Link
-                            to="/profile"
-                            className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50"
-                            onClick={() => setUserMenuOpen(false)}
-                          >
-                            <User className="w-4 h-4" />
-                            <span>Profile</span>
-                          </Link>
-                          <Link
-                            to="/settings"
-                            className="flex items-center space-x-2 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50"
-                            onClick={() => setUserMenuOpen(false)}
-                          >
-                            <Settings className="w-4 h-4" />
-                            <span>Settings</span>
-                          </Link>
-                          <hr className="my-1 border-gray-200 dark:border-gray-600" />
-                          <button
-                            onClick={handleLogout}
-                            className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
-                          >
-                            <LogOut className="w-4 h-4" />
-                            <span>Sign Out</span>
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                {/* Mobile Menu Button */}
-                <button
-                  onClick={() => setMenuOpen(!menuOpen)}
-                  className="md:hidden p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-200"
+              {isAuthenticated && isRunning && (
+                <div
+                  onClick={() => navigate("/pomodoro")}
+                  className="flex items-center gap-2 cursor-pointer px-3 py-1 rounded-lg transition-all duration-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:shadow-md hover:shadow-[var(--primary)]/30"
                 >
-                  {menuOpen ? (
-                    <X className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                  ) : (
-                    <Menu className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                  )}
-                </button>
-              </div>
-            </div>
+                  <Clock className="w-5 h-5 text-blue-500 animate-pulse" />
+                  <span className="text-sm font-mono">{displayTime}</span>
+                </div>
+              )}
 
-            {/* Mobile Menu */}
-            {menuOpen && (
-              <div className="md:hidden border-t border-gray-200 dark:border-gray-700 py-4 space-y-2 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md">
-                {!isAuthenticated ? (
-                  <>
-                    {publicNavItems.map((item) => {
-                      const Icon = item.icon;
-                      const isActive = !item.external && isActiveLink(item.link);
-                      
-                      return (
+              {/* Auth Section */}
+              {isAuthenticated ? (
+                <div className="flex items-center gap-3 ml-4">
+                  <Link
+                    to="/profile"
+                    className="flex items-center gap-2 text-[17px] font-medium relative group"
+                    style={{ color: "var(--primary)" }}
+                  >
+                    <UserCircle className="h-4 w-4" /> <span>Profile</span>
+                    <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-gradient-to-r from-[var(--primary)] to-purple-500 transition-all duration-500 group-hover:w-full"></span>
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="text-[17px] font-medium text-red-500 transition-colors duration-300 hover:text-red-600"
+                  >
+                    Logout
+                  </button>
+                  <DarkModeToggle />
+                </div>
+              ) : (
+                <div className="flex items-center gap-3 ml-4">
+                  <Link to="/login">
+                    <button className="px-4 py-2 rounded-md text-[15px] font-medium text-[var(--primary)] relative overflow-hidden transition-all duration-300 before:absolute before:inset-0 before:bg-[var(--primary)] before:scale-x-0 before:origin-left before:transition-transform before:duration-300 hover:before:scale-x-100 hover:text-[var(--primary-foreground)]">
+                      <span className="relative z-10">Login</span>
+                    </button>
+                  </Link>
+                  <Link to="/register">
+                    <button className="px-6 py-2 rounded-md font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+                      Sign Up
+                    </button>
+                  </Link>
+                  <DarkModeToggle />
+                </div>
+              )}
+            </nav>
+
+            {/* Mobile Hamburger */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="relative w-8 h-6 flex flex-col justify-between items-center"
+              >
+                <span
+                  className={`block h-1 w-full bg-current rounded transform transition duration-300 ease-in-out ${
+                    menuOpen ? "rotate-45 translate-y-2" : ""
+                  }`}
+                />
+                <span
+                  className={`block h-1 w-full bg-current rounded transition duration-300 ease-in-out ${
+                    menuOpen ? "opacity-0" : ""
+                  }`}
+                />
+                <span
+                  className={`block h-1 w-full bg-current rounded transform transition duration-300 ease-in-out ${
+                    menuOpen ? "-rotate-45 -translate-y-2" : ""
+                  }`}
+                />
+              </button>
+
+              {menuOpen && (
+                <div className="mt-4 flex flex-col gap-3 px-4 pb-4">
+                  {!isAuthenticated ? (
+                    <>
+                      {publicNavItems.map((item) => (
                         <a
                           key={item.name}
                           href={item.link}
-                          target={item.external ? "_blank" : undefined}
-                          rel={item.external ? "noopener noreferrer" : undefined}
-                          className={`flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors duration-200 ${
-                            isActive
-                              ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20'
-                              : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50'
-                          }`}
+                          className="relative text-[16px] font-medium transition-all duration-300 group flex items-center gap-2"
+                          style={{ color: "var(--card-foreground)" }}
                         >
-                          <Icon className="w-4 h-4" />
-                          <span>{item.name}</span>
+                          {item.icon} <span>{item.name}</span>
+                          <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-gradient-to-r from-[var(--primary)] to-purple-500 transition-all duration-500 group-hover:w-full"></span>
                         </a>
-                      );
-                    })}
-                    <hr className="border-gray-200 dark:border-gray-700" />
-                    <Link
-                      to="/login"
-                      className="flex items-center space-x-3 px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-lg"
-                    >
-                      <User className="w-4 h-4" />
-                      <span>Sign In</span>
-                    </Link>
-                    <Link
-                      to="/register"
-                      className="flex items-center space-x-3 px-4 py-3 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg mx-4"
-                    >
-                      <span>Get Started</span>
-                    </Link>
-                  </>
-                ) : (
-                  <>
-                    <Link
-                      to="/profile"
-                      className="flex items-center space-x-3 px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-lg"
-                    >
-                      <User className="w-4 h-4" />
-                      <span>Profile</span>
-                    </Link>
-                    
-                    {isRunning && (
-                      <button
-                        onClick={() => navigate("/pomodoro")}
-                        className="flex items-center space-x-3 px-4 py-3 text-sm font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg w-full text-left"
+                      ))}
+                      <Link to="/login">
+                        <button className="w-full mt-2 px-4 py-2 rounded-md text-[15px] font-medium relative overflow-hidden text-[var(--primary)] transition-all duration-300 before:absolute before:inset-0 before:bg-[var(--primary)] before:scale-x-0 before:origin-left before:transition-transform before:duration-300 hover:before:scale-x-100 hover:text-[var(--primary-foreground)]">
+                          <span className="relative z-10">Login</span>
+                        </button>
+                      </Link>
+                      <Link to="/register">
+                        <button className="w-full px-6 py-2 mt-2 rounded-md font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+                          Sign Up
+                        </button>
+                      </Link>
+                      <DarkModeToggle />
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        to="/profile"
+                        className="relative flex items-center gap-2 text-[17px] font-medium group"
+                        style={{ color: "var(--primary)" }}
                       >
-                        <Clock className="w-4 h-4" />
-                        <span>Timer: {displayTime}</span>
+                        <UserCircle className="h-4 w-4" /> <span>Profile</span>
+                        <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-gradient-to-r from-[var(--primary)] to-purple-500 transition-all duration-500 group-hover:w-full"></span>
+                      </Link>
+                      {isRunning && (
+                        <div
+                          onClick={() => navigate("/pomodoro")}
+                          className="flex items-center gap-2 cursor-pointer hover:shadow-md hover:shadow-[var(--primary)]/30 transition-all duration-300"
+                        >
+                          <Clock className="w-5 h-5 text-blue-500 animate-pulse" />
+                          <span className="text-sm font-mono">{displayTime}</span>
+                        </div>
+                      )}
+                      <button
+                        onClick={handleLogout}
+                        className="text-[17px] font-medium text-red-500 hover:text-red-600 transition-colors"
+                      >
+                        Logout
                       </button>
-                    )}
-                    
-                    <Link
-                      to="/settings"
-                      className="flex items-center space-x-3 px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-lg"
-                    >
-                      <Settings className="w-4 h-4" />
-                      <span>Settings</span>
-                    </Link>
-                    
-                    <hr className="border-gray-200 dark:border-gray-700" />
-                    
-                    <button
-                      onClick={handleLogout}
-                      className="flex items-center space-x-3 px-4 py-3 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg w-full text-left"
-                    >
-                      <LogOut className="w-4 h-4" />
-                      <span>Sign Out</span>
-                    </button>
-                  </>
-                )}
-              </div>
-            )}
+                      <DarkModeToggle />
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </header>
       )}
 
       {showFloating && <FloatingNav navItems={!isAuthenticated ? publicNavItems : []} />}
-    </>
+    </div>
   );
 };
 
