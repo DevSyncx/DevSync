@@ -62,7 +62,7 @@ export default function Dashboard() {
         }
 
         setProfile(data);
-        setGoals(data.goals || []);   // ✅ sync backend goals into state
+        setGoals(data.goals || []);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -79,11 +79,12 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col h-screen">
       <Topbar />
-
       <div className="flex flex-1">
         <Sidebar />
-<main className="flex-1 p-6 bg-[#d1e4f3]">
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+        <main className="flex-1 p-6 bg-[#d1e4f3]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+            {/* Row 1 */}
+            <ProfileCard user={profile} className="col-span-1" />
 
     {/* Row 1 */}
     <ProfileCard 

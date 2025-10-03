@@ -6,7 +6,9 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const session = require("express-session");
+require("./utils/leetcodeCron");
 const passport = require("passport");
+const githubRouter = require("./routes/github.route");
 
 // Passport config with error handling
 try {

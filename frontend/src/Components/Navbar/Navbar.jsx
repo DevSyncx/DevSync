@@ -7,7 +7,6 @@ import DarkModeToggle from "../ui/DarkModeToggle";
 import { useTimer } from "../../context/TimerContext";
 
 const publicNavItems = [
-  { name: "Home", link: "/", icon: <Home className="h-4 w-4" /> },
   { name: "Features", link: "#features", icon: <Sparkle className="h-4 w-4" /> },
   { name: "About us", link: "#about", icon: <Info className="h-4 w-4" /> },
   { name: "Github", link: "https://github.com/DevSyncx/DevSync.git", icon: <Github className="h-4 w-4" /> },
@@ -116,13 +115,8 @@ const Navbar = () => {
                 </div>
               ) : (
                 <div className="flex items-center gap-3 ml-4">
-                  <Link to="/login">
-                    <button className="px-4 py-2 rounded-md text-[15px] font-medium text-[var(--primary)] relative overflow-hidden transition-all duration-300 before:absolute before:inset-0 before:bg-[var(--primary)] before:scale-x-0 before:origin-left before:transition-transform before:duration-300 hover:before:scale-x-100 hover:text-[var(--primary-foreground)]">
-                      <span className="relative z-10">Login</span>
-                    </button>
-                  </Link>
                   <Link to="/register">
-                    <button className="px-6 py-2 rounded-md font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+                    <button className="px-6 py-2 rounded-md font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer">
                       Sign Up
                     </button>
                   </Link>
@@ -169,13 +163,8 @@ const Navbar = () => {
                           <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-gradient-to-r from-[var(--primary)] to-purple-500 transition-all duration-500 group-hover:w-full"></span>
                         </a>
                       ))}
-                      <Link to="/login">
-                        <button className="w-full mt-2 px-4 py-2 rounded-md text-[15px] font-medium relative overflow-hidden text-[var(--primary)] transition-all duration-300 before:absolute before:inset-0 before:bg-[var(--primary)] before:scale-x-0 before:origin-left before:transition-transform before:duration-300 hover:before:scale-x-100 hover:text-[var(--primary-foreground)]">
-                          <span className="relative z-10">Login</span>
-                        </button>
-                      </Link>
                       <Link to="/register">
-                        <button className="w-full px-6 py-2 mt-2 rounded-md font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+                        <button className="cursor-pointer w-full px-6 py-2 mt-2 rounded-md font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg">
                           Sign Up
                         </button>
                       </Link>

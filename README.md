@@ -1,19 +1,7 @@
 <!-- GSSoC banner and project insights -->
 <h1 align="center">
-  <img width="64" height="64" alt="LegalHuB Logo" src="frontend/public/vite.svg"/>
-  <br>
   DevSync
-</h1>
-
-
-<p align="center">
-  <b>This project is now OFFICIALLY accepted for:</b>
-</p>
-
-<div align="center">
-  <img src="assets/gssoc.png" alt="GSSOC" width="80%">   
-
-</div>   
+</h1> 
 
 <table align="center">
     <thead align="center">
