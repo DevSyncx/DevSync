@@ -89,7 +89,7 @@ const Navbar = () => {
           className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b px-4 md:px-6 py-3 md:py-4 shadow-md"
           style={{ background: "var(--card)", borderColor: "var(--border)" }}
         >
-          <div className="mx-auto flex max-w-7xl items-center justify-between">
+          <div className="mx-auto mr-1 flex max-w-7xl items-center justify-between">
             {/* Logo */}
         
             <Link to="/">
