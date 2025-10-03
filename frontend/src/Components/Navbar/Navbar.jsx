@@ -1,24 +1,54 @@
 // src/Components/Navbar/Navbar.jsx
 import React, { useEffect, useState } from "react";
-import { UserCircle, Clock, Home, Sparkle, Info, Github, Phone, HelpCircle } from "lucide-react";
+import {
+  UserCircle,
+  Clock,
+  Sparkle,
+  Info,
+  Github,
+  Phone,
+  HelpCircle,
+} from "lucide-react";
 import { FloatingNav } from "../ui/floating-navbar";
 import { Link, useNavigate } from "react-router-dom";
 import DarkModeToggle from "../ui/DarkModeToggle";
 import { useTimer } from "../../context/TimerContext";
 
 const publicNavItems = [
-  { name: "Features", link: "#features", icon: <Sparkle className="h-4 w-4" /> },
-  { name: "About us", link: "#about", icon: <Info className="h-4 w-4" /> },
-  { name: "Github", link: "https://github.com/DevSyncx/DevSync.git", icon: <Github className="h-4 w-4" /> },
-  { name: "Contact Us", link: "#contact", icon: <Phone className="h-4 w-4" /> },
-  { name: "FAQ", link: "#faq", icon: <HelpCircle className="h-4 w-4" /> },
+  {
+    name: "Features",
+    link: "#features",
+    icon: <Sparkle className="h-4 w-4" />,
+  },
+  {
+    name: "About us",
+    link: "#about",
+    icon: <Info className="h-4 w-4" />,
+  },
+  {
+    name: "Github",
+    link: "https://github.com/DevSyncx/DevSync.git",
+    icon: <Github className="h-4 w-4" />,
+  },
+  {
+    name: "Contact Us",
+    link: "#contact",
+    icon: <Phone className="h-4 w-4" />,
+  },
+  {
+    name: "FAQ",
+    link: "#faq",
+    icon: <HelpCircle className="h-4 w-4" />,
+  },
 ];
 
 const Navbar = () => {
   const [showFloating, setShowFloating] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [displayTime, setDisplayTime] = useState("25:00");
-  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!localStorage.getItem("token")
+  );
 
   const navigate = useNavigate();
   const { timeLeft, isRunning } = useTimer();
@@ -40,7 +70,8 @@ const Navbar = () => {
   }, [timeLeft, isRunning]);
 
   useEffect(() => {
-    const handleStorageChange = () => setIsAuthenticated(!!localStorage.getItem("token"));
+    const handleStorageChange = () =>
+      setIsAuthenticated(!!localStorage.getItem("token"));
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
@@ -55,28 +86,29 @@ const Navbar = () => {
     <div className="w-full font-sans">
       {!showFloating && (
         <header
-          className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b px-6 py-4 shadow-md"
+          className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b px-4 md:px-6 py-3 md:py-4 shadow-md"
           style={{ background: "var(--card)", borderColor: "var(--border)" }}
         >
           <div className="mx-auto flex max-w-7xl items-center justify-between">
             {/* Logo */}
+        
             <Link to="/">
               <h1
-                className="text-4xl font-extrabold tracking-tight hover:scale-105 transition-transform duration-300"
+                className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight hover:scale-105 transition-transform duration-300"
                 style={{ color: "var(--primary)" }}
               >
                 DevSync
               </h1>
             </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex space-x-8 items-center">
+            {/* Desktop Navigation - visible from lg */}
+            <nav className="hidden lg:flex space-x-6 lg:space-x-8 items-center">
               {!isAuthenticated &&
                 publicNavItems.map((item) => (
                   <a
                     key={item.name}
                     href={item.link}
-                    className="relative text-[17px] font-medium transition-all duration-300 group flex items-center gap-2"
+                    className="relative text-[15px] md:text-[16px] lg:text-[17px] font-medium transition-all duration-300 group flex items-center gap-2"
                     style={{ color: "var(--card-foreground)" }}
                   >
                     {item.icon} <span>{item.name}</span>
@@ -99,7 +131,7 @@ const Navbar = () => {
                 <div className="flex items-center gap-3 ml-4">
                   <Link
                     to="/profile"
-                    className="flex items-center gap-2 text-[17px] font-medium relative group"
+                    className="flex items-center gap-2 text-[16px] lg:text-[17px] font-medium relative group"
                     style={{ color: "var(--primary)" }}
                   >
                     <UserCircle className="h-4 w-4" /> <span>Profile</span>
@@ -107,7 +139,7 @@ const Navbar = () => {
                   </Link>
                   <button
                     onClick={handleLogout}
-                    className="text-[17px] font-medium text-red-500 transition-colors duration-300 hover:text-red-600"
+                    className="text-[16px] lg:text-[17px] font-medium text-red-500 transition-colors duration-300 hover:text-red-600"
                   >
                     Logout
                   </button>
@@ -116,7 +148,7 @@ const Navbar = () => {
               ) : (
                 <div className="flex items-center gap-3 ml-4">
                   <Link to="/register">
-                    <button className="px-6 py-2 rounded-md font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer">
+                    <button className="px-4 md:px-5 lg:px-6 py-2 rounded-md font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer text-sm md:text-base">
                       Sign Up
                     </button>
                   </Link>
@@ -125,8 +157,8 @@ const Navbar = () => {
               )}
             </nav>
 
-            {/* Mobile Hamburger */}
-            <div className="md:hidden">
+            {/* Mobile & Tablet Hamburger */}
+            <div className="lg:hidden">
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
                 className="relative w-8 h-6 flex flex-col justify-between items-center"
@@ -156,7 +188,7 @@ const Navbar = () => {
                         <a
                           key={item.name}
                           href={item.link}
-                          className="relative text-[16px] font-medium transition-all duration-300 group flex items-center gap-2"
+                          className="relative text-[15px] md:text-[16px] font-medium transition-all duration-300 group flex items-center gap-2"
                           style={{ color: "var(--card-foreground)" }}
                         >
                           {item.icon} <span>{item.name}</span>
@@ -164,7 +196,7 @@ const Navbar = () => {
                         </a>
                       ))}
                       <Link to="/register">
-                        <button className="cursor-pointer w-full px-6 py-2 mt-2 rounded-md font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg">
+                        <button className="cursor-pointer w-full px-4 md:px-5 py-2 mt-2 rounded-md font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg text-sm md:text-base">
                           Sign Up
                         </button>
                       </Link>
@@ -174,7 +206,7 @@ const Navbar = () => {
                     <>
                       <Link
                         to="/profile"
-                        className="relative flex items-center gap-2 text-[17px] font-medium group"
+                        className="relative flex items-center gap-2 text-[16px] font-medium group"
                         style={{ color: "var(--primary)" }}
                       >
                         <UserCircle className="h-4 w-4" /> <span>Profile</span>
@@ -186,12 +218,14 @@ const Navbar = () => {
                           className="flex items-center gap-2 cursor-pointer hover:shadow-md hover:shadow-[var(--primary)]/30 transition-all duration-300"
                         >
                           <Clock className="w-5 h-5 text-blue-500 animate-pulse" />
-                          <span className="text-sm font-mono">{displayTime}</span>
+                          <span className="text-sm font-mono">
+                            {displayTime}
+                          </span>
                         </div>
                       )}
                       <button
                         onClick={handleLogout}
-                        className="text-[17px] font-medium text-red-500 hover:text-red-600 transition-colors"
+                        className="text-[16px] font-medium text-red-500 hover:text-red-600 transition-colors"
                       >
                         Logout
                       </button>
@@ -205,7 +239,9 @@ const Navbar = () => {
         </header>
       )}
 
-      {showFloating && <FloatingNav navItems={!isAuthenticated ? publicNavItems : []} />}
+      {showFloating && (
+        <FloatingNav navItems={!isAuthenticated ? publicNavItems : []} />
+      )}
     </div>
   );
 };
