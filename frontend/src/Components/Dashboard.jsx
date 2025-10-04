@@ -9,7 +9,6 @@ import GoalsCard from "./DashBoard/GoalsCard";
 import TimeSpentCard from "./DashBoard/TimeSpentCard";
 import ActivityHeatmap from "./DashBoard/ActivityHeatMap";
 import NotesCard from "./DashBoard/NotesCard";
-import GitHubCard from "@/Components/GitHubCard";
 
 export default function Dashboard() {
   const [profile, setProfile] = useState(null);
@@ -93,10 +92,9 @@ export default function Dashboard() {
   const {
     socialLinks = {},
     streak = 0,
-    githubUsername = null,
     timeSpent = "0 minutes",
     activity = [],
-    notes = []
+    notes = [],
   } = profile;
 
   return (
@@ -110,15 +108,6 @@ export default function Dashboard() {
             <ProfileCard user={profile} className="col-span-1" />
             <PlatformLinks platforms={socialLinks} className="col-span-1" />
             <StreakCard streak={streak} className="col-span-1" />
-
-            {/* GitHub Card */}
-            {githubUsername ? (
-              <GitHubCard githubUsername={githubUsername} className="col-span-1" />
-            ) : (
-              <div className="col-span-1 p-4 border rounded-lg shadow-sm bg-gray-100 text-gray-500 flex items-center justify-center">
-                GitHub profile not linked
-              </div>
-            )}
 
             {/* Row 2: Goals, Time Spent, Notes */}
             <GoalsCard goals={goals} onGoalsChange={setGoals} />
