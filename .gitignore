@@ -3,6 +3,7 @@
 # Environment files
 backend/.env
 frontend/.env
+*.clienvy*
 
 # Node
 **/node_modules/
