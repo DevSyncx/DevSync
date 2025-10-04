@@ -1,5 +1,5 @@
 import { User, RefreshCw, Github, Check } from "lucide-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import CardWrapper from "./CardWrapper";
 import {
   SiLeetcode, SiCodechef, SiHackerrank, SiGithub, SiHackerearth, SiLinkedin,
@@ -12,6 +12,15 @@ const iconMap = {
   hackerearth: SiHackerearth,
   github: SiGithub,
   linkedin: SiLinkedin,
+};
+
+// Normalize LeetCode URL to standard format
+const normalizeLeetcodeURL = (url) => {
+  if (!url) return '';
+  // Handle both old and new LeetCode URL formats
+  const leetcodeURLPattern = /leetcode\.com\/([^\/]+)/;
+  const match = url.match(leetcodeURLPattern);
+  return match ? `https://leetcode.com/${match[1]}` : url;
 };
 
 export default function ProfileCard({ user, onSyncGithub, syncingGithub = false }) {
@@ -72,7 +81,11 @@ export default function ProfileCard({ user, onSyncGithub, syncingGithub = false 
       {/* Platforms */}
       <div className="mt-3">
         <p className="text-md font-medium text-[var(--primary)] mb-1">Platforms</p>
-        {entries.length > 0 ? (
+        {useMemo(() => {
+          const platforms = user.platforms || [];
+          const entries = platforms.map(p => [p.name, p.url]);
+          
+          return entries.length > 0 ? (
           <div className="flex flex-wrap gap-3">
             {entries.map(([platformName, url]) => {
               const Icon = iconMap[platformName.toLowerCase()];
@@ -101,7 +114,8 @@ export default function ProfileCard({ user, onSyncGithub, syncingGithub = false 
           <p className="text-sm text-[var(--muted-foreground)] italic">
             No platforms linked yet
           </p>
-        )}
+        );
+        }, [user.platforms])}
       </div>
     </CardWrapper>
   );

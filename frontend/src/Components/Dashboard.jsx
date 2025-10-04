@@ -84,19 +84,16 @@ export default function Dashboard() {
         <main className="flex-1 p-6 bg-[#d1e4f3]">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
             {/* Row 1 */}
-            <ProfileCard user={profile} className="col-span-1" />
-
-    {/* Row 1 */}
-    <ProfileCard 
-      user={profile} 
-      className="col-span-1" 
-      onSyncGithub={async () => {
-        try {
-          // Just display message that GitHub sync is temporarily disabled
-          alert('GitHub sync is temporarily disabled in the backend server.');
-          console.log('GitHub sync is disabled - backend route is commented out');
-          
-          // Just refresh the profile without GitHub sync
+            <ProfileCard 
+              user={profile} 
+              className="col-span-1" 
+              onSyncGithub={async () => {
+                try {
+                  // Just display message that GitHub sync is temporarily disabled
+                  alert('GitHub sync is temporarily disabled in the backend server.');
+                  console.log('GitHub sync is disabled - backend route is commented out');
+                  
+                  // Just refresh the profile without GitHub sync
           const headers = {};
           const token = localStorage.getItem("token");
           if (token) {
