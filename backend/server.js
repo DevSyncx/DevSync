@@ -1,27 +1,23 @@
 // Entry point of the backend server
 require("dotenv").config();
+
+// Dependencies
 const express = require("express");
-const path = require("path");
 const cors = require("cors");
+const path = require("path");
 const session = require("express-session");
 require("./utils/leetcodeCron");
 const passport = require("passport");
 const githubRouter = require("./routes/github.route");
 
-// Database connection
-require("./db/connection");
-
-// Passport config (optional Google OAuth)
+// Passport config with error handling
 try {
   require("./config/passport");
 } catch (err) {
   console.warn("Google OAuth is not configured properly. Skipping Passport strategy.");
 }
 
-// Import routes
-const contactRouter = require("./routes/contact.route");
-
-// Rate limiter middleware placeholders
+// Rate limiter middleware
 const { generalMiddleware, authMiddleware } = require("./middleware/rateLimit/index");
 
 // Initialize Express
@@ -30,11 +26,22 @@ const app = express();
 // JSON parsing
 app.use(express.json());
 
-// Enable CORS
+// CORS preflight handling - respond to OPTIONS requests explicitly
+app.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Origin', process.env.CLIENT_URL || 'http://localhost:5173');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-auth-token');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.status(200).send();
+});
+
+// Enable CORS for all other requests
 app.use(
   cors({
     origin: process.env.CLIENT_URL || "http://localhost:5173",
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "x-auth-token"],
   })
 );
 
@@ -43,8 +50,12 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET || "devsync_session_secret",
     resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false }, // set true if using HTTPS
+    saveUninitialized: true, // keep sessions for unauthenticated users
+    cookie: {
+      secure: false, // set true if using HTTPS
+      maxAge: 24 * 60 * 60 * 1000,
+      httpOnly: true,
+    },
   })
 );
 
@@ -60,9 +71,9 @@ app.use("/auth", require("./routes/auth"));
 
 // API Routes
 app.use("/api/auth", authMiddleware, require("./routes/auth"));
+app.use("/auth", authMiddleware, require("./routes/auth"));
 app.use("/api/profile", generalMiddleware, require("./routes/profile"));
-app.use("/api/contact", generalMiddleware, contactRouter);
-app.use("/api/github", generalMiddleware, githubRouter);
+// contactRouter omitted (MongoDB removed)
 
 // Default route
 app.get("/", (req, res) => {
@@ -74,3 +85,4 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is up and running at http://localhost:${PORT} 🚀`);
 });
+

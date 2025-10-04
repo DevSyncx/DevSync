@@ -78,6 +78,18 @@ const Login = () => {
     window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
   };
 
+  const handleGithubLogin = () => {
+    // Clear any existing tokens to avoid conflicts with session-based auth
+    localStorage.removeItem('token');
+    
+    // Try the /auth/github path instead as this matches GitHub's configured callback
+    console.log(`Redirecting to: ${import.meta.env.VITE_API_URL}/auth/github?from=login`);
+    
+    // Use a timestamp to prevent caching issues
+    const timestamp = new Date().getTime();
+    window.location.href = `${import.meta.env.VITE_API_URL}/auth/github?from=login&t=${timestamp}`;
+  };
+
   // Show verification component if user needs to verify email
   if (showVerification) {
     return (
@@ -242,6 +254,7 @@ const Login = () => {
           {/* Social Login */}
           <div className="grid grid-cols-2 gap-3">
             <button
+              onClick={handleGithubLogin}
               type="button"
               className="border border-[var(--input)] text-[var(--primary)] hover:bg-[var(--accent)] py-3 rounded-lg flex justify-center items-center"
             >
