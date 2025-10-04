@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Trash2, UserX, AlertTriangle } from 'lucide-react';
+import { Button } from '@/Components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/Card';
 import { ConfirmationModal } from './ConfirmationModal';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
@@ -62,20 +64,17 @@ export const AccountDangerZone = () => {
   };
 
   return (
-    <div className="rounded-lg border border-red-200 bg-red-50/50 text-gray-950 shadow-sm">
-      {/* Header */}
-      <div className="flex flex-col space-y-1.5 p-6">
-        <h3 className="text-2xl font-semibold leading-none tracking-tight flex items-center gap-2 text-red-700">
+    <Card className="border-red-200 bg-red-50/50">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2 text-red-700">
           <AlertTriangle className="h-5 w-5" />
           Danger Zone
-        </h3>
-        <p className="text-sm text-red-600">
+        </CardTitle>
+        <CardDescription className="text-red-600">
           These actions are irreversible. Please proceed with caution.
-        </p>
-      </div>
-
-      {/* Content */}
-      <div className="p-6 pt-0 space-y-4">
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
         {/* Deactivate Account */}
         <div className="flex items-center justify-between p-4 border border-orange-200 rounded-lg bg-orange-50">
           <div>
@@ -84,14 +83,15 @@ export const AccountDangerZone = () => {
               Temporarily disable your account. You can reactivate it later.
             </p>
           </div>
-          <button
+          <Button
+            variant="outline"
+            className="border-orange-300 text-orange-700 hover:bg-orange-100"
             onClick={() => setShowDeactivateModal(true)}
             disabled={isLoading}
-            className="inline-flex items-center justify-center rounded-md text-sm font-medium border border-orange-300 text-orange-700 hover:bg-orange-100 h-10 py-2 px-4 disabled:opacity-50 disabled:pointer-events-none"
           >
             <UserX className="h-4 w-4 mr-2" />
             Deactivate
-          </button>
+          </Button>
         </div>
 
         {/* Delete Account */}
@@ -102,16 +102,16 @@ export const AccountDangerZone = () => {
               Permanently remove your account and all associated data.
             </p>
           </div>
-          <button
+          <Button
+            variant="destructive"
             onClick={() => setShowDeleteModal(true)}
             disabled={isLoading}
-            className="inline-flex items-center justify-center rounded-md text-sm font-medium bg-red-600 text-white hover:bg-red-700 h-10 py-2 px-4 disabled:opacity-50 disabled:pointer-events-none"
           >
             <Trash2 className="h-4 w-4 mr-2" />
             Delete
-          </button>
+          </Button>
         </div>
-      </div>
+      </CardContent>
 
       {/* Confirmation Modals */}
       <ConfirmationModal
@@ -135,6 +135,6 @@ export const AccountDangerZone = () => {
         isLoading={isLoading}
         variant="destructive"
       />
-    </div>
+    </Card>
   );
 };
