@@ -17,10 +17,14 @@ const GitHubProfile = () => {
         return;
       }
 
+      const normalizedUsername = username.split("/").pop();
+
       try {
         const backendUrl =
           import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
-        const res = await fetch(`${backendUrl}/api/github/${username}`);
+        const res = await fetch(
+          `${backendUrl}/api/github/${normalizedUsername}`
+        );
         const json = await res.json();
 
         if (res.ok) setData(json);
@@ -39,7 +43,6 @@ const GitHubProfile = () => {
   if (loading) return <p className="text-center mt-10">Loading...</p>;
   if (error) return <p className="text-center mt-10 text-red-500">{error}</p>;
 
-  // Defaults to prevent crashes
   const {
     profile = {},
     topRepos = [],
@@ -48,9 +51,8 @@ const GitHubProfile = () => {
   } = data || {};
 
   const renderHeatmap = () => {
-    if (!contributions?.weeks?.length) {
+    if (!contributions?.weeks?.length)
       return <p className="text-gray-500">No contribution data available.</p>;
-    }
 
     return (
       <div className="flex space-x-0.5 overflow-x-auto py-2">
@@ -76,7 +78,6 @@ const GitHubProfile = () => {
     const langKeys = Object.keys(languages);
     if (!langKeys.length)
       return <p className="text-gray-500">No language data available.</p>;
-
     const totalSize = Object.values(languages).reduce(
       (sum, val) => sum + val,
       0
@@ -111,7 +112,6 @@ const GitHubProfile = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
-      {/* Profile */}
       <Card>
         <CardHeader>
           <CardTitle>GitHub Profile</CardTitle>
@@ -148,7 +148,6 @@ const GitHubProfile = () => {
         </CardContent>
       </Card>
 
-      {/* Top Repositories */}
       <Card>
         <CardHeader>
           <CardTitle>Top Repositories</CardTitle>
@@ -188,7 +187,6 @@ const GitHubProfile = () => {
         </CardContent>
       </Card>
 
-      {/* Contributions Heatmap */}
       <Card>
         <CardHeader>
           <CardTitle>Contribution Heatmap</CardTitle>
@@ -196,7 +194,6 @@ const GitHubProfile = () => {
         <CardContent>{renderHeatmap()}</CardContent>
       </Card>
 
-      {/* Languages Chart */}
       <Card>
         <CardHeader>
           <CardTitle>Languages Used</CardTitle>

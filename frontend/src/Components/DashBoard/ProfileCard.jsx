@@ -24,7 +24,6 @@ export default function ProfileCard({ user }) {
   const socialLinks = user.socialLinks || {};
   const entries = Object.entries(socialLinks);
 
-  // Normalize LeetCode URL
   function normalizeLeetcodeURL(url) {
     const leetcodeRegex =
       /^https?:\/\/(www\.)?leetcode\.com\/(u\/)?[a-zA-Z0-9_-]+\/?$/;
@@ -32,16 +31,28 @@ export default function ProfileCard({ user }) {
     return url.replace(/\/$/, "");
   }
 
-  // Normalize GitHub URL
   function normalizeGitHubURL(url) {
     const githubRegex = /^https?:\/\/(www\.)?github\.com\/[a-zA-Z0-9_-]+\/?$/;
     if (!githubRegex.test(url)) return null;
     return url.replace(/\/$/, "");
   }
 
+  const leetcodeUrl = (url) => {
+    const normalized = normalizeLeetcodeURL(url);
+    if (!normalized) return "#";
+    const username = normalized.split("/").pop();
+    return `/leetcode/${username}`;
+  };
+
+  const githubUrl = (url) => {
+    const normalized = normalizeGitHubURL(url);
+    if (!normalized) return "#";
+    const username = normalized.split("/").pop();
+    return `/dashboard/github/${username}`;
+  };
+
   return (
     <CardWrapper>
-      {/* Header */}
       <div className="flex items-center flex-col gap-3">
         <div className="w-14 h-14 flex items-center justify-center rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] overflow-hidden">
           {user.avatar ? (
@@ -63,7 +74,6 @@ export default function ProfileCard({ user }) {
         </div>
       </div>
 
-      {/* Platforms */}
       <div className="mt-3">
         <p className="text-md font-medium text-[var(--primary)] mb-1">
           Platforms
@@ -73,22 +83,6 @@ export default function ProfileCard({ user }) {
             {entries.map(([platformName, url]) => {
               const Icon = iconMap[platformName.toLowerCase()];
               if (!Icon) return null;
-
-              // Internal route for LeetCode
-              const leetcodeUrl = (url) => {
-                const normalized = normalizeLeetcodeURL(url);
-                if (!normalized) return "#";
-                const username = normalized.split("/").pop();
-                return `/leetcode/${username}`;
-              };
-
-              // Internal route for GitHub
-              const githubUrl = (url) => {
-                const normalized = normalizeGitHubURL(url);
-                if (!normalized) return "#";
-                const username = normalized.split("/").pop();
-                return `/dashboard/github/${username}`;
-              };
 
               let href = url;
               if (platformName.toLowerCase() === "leetcode")
