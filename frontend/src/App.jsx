@@ -27,6 +27,7 @@ import { ArrowUp } from "lucide-react";
 import GitHubProfile from "./Components/GitHubProfile";
 import LeetCode from "./Components/DashBoard/LeetCode";
 import FloatingSupportButton from "./Components/ui/Support";
+import Settings from "./Components/Settings";
 
 function Home() {
   const [showTop, setShowTop] = useState(false);
@@ -134,6 +135,7 @@ function App() {
         <Route path="/contributors" element={<AllContributors />} />
         <Route path="/dashboard/github/:username" element={<GitHubProfile />} />
         <Route path="/leetcode/:leetUser" element={<LeetCode />} />
+        <Route path="/settings" element={<Settings />} />
       </Routes>
     </TimerProvider>
   );
