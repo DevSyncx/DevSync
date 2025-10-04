@@ -28,7 +28,21 @@ const Footer = () => {
         <div>
           <h4 className="text-lg font-semibold mb-3" style={{ color: "var(--primary)" }}>Resources</h4>
           <ul className="space-y-2 text-sm" style={{ color: "var(--muted-foreground)" }}>
-            <li><a href="#" className="relative inline-block transition-colors duration-200 hover:text-neutral-400 after:content-[''] after:absolute after:w-0 after:h-0.5 after:left-0 after:-bottom-1 after:bg-gradient-to-r after:from-blue-400 after:to-purple-500 after:transition-all after:duration-300 hover:after:w-full" style={{ color: "var(--card-foreground)" }}>Documentation</a></li>
+            <li>
+              <a
+                href="https://github.com/DevSyncx/DevSync/tree/main/docs"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative inline-block transition-colors duration-200 hover:text-neutral-400 
+                          after:content-[''] after:absolute after:w-0 after:h-0.5 after:left-0 after:-bottom-1 
+                          after:bg-gradient-to-r after:from-blue-400 after:to-purple-500 after:transition-all 
+                          after:duration-300 hover:after:w-full"
+                style={{ color: "var(--card-foreground)" }}
+              >
+                Documentation
+              </a>
+            </li>
+
             <li><a href="#" className="relative inline-block transition-colors duration-200 hover:text-neutral-400 after:content-[''] after:absolute after:w-0 after:h-0.5 after:left-0 after:-bottom-1 after:bg-gradient-to-r after:from-blue-400 after:to-purple-500 after:transition-all after:duration-300 hover:after:w-full" style={{ color: "var(--card-foreground)" }}>API Reference</a></li>
             <li><a href="#" className="relative inline-block transition-colors duration-200 hover:text-neutral-400 after:content-[''] after:absolute after:w-0 after:h-0.5 after:left-0 after:-bottom-1 after:bg-gradient-to-r after:from-blue-400 after:to-purple-500 after:transition-all after:duration-300 hover:after:w-full" style={{ color: "var(--card-foreground)" }}>Community</a></li>
             <li><a href="#" className="relative inline-block transition-colors duration-200 hover:text-neutral-400 after:content-[''] after:absolute after:w-0 after:h-0.5 after:left-0 after:-bottom-1 after:bg-gradient-to-r after:from-blue-400 after:to-purple-500 after:transition-all after:duration-300 hover:after:w-full" style={{ color: "var(--card-foreground)" }}>Support</a></li>
@@ -53,17 +67,8 @@ const Footer = () => {
             >
               <Mail className="w-5 h-5" />
             </a>
-            
             <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-blue-400"
-            >
-              <Facebook className="w-5 h-5" />
-            </a>
-            <a
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/annanyatiwary4"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-blue-400"
@@ -73,7 +78,7 @@ const Footer = () => {
 
             {/* ✅ Twitter (X) logo */}
             <a
-              href="https://twitter.com"
+              href="https://x.com/Annan_ya"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-blue-400"
@@ -91,9 +96,15 @@ const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="mt-12 pt-6 text-center text-sm" style={{ borderTop: "1px solid var(--border)", color: "var(--muted-foreground)" }}>
-        © {new Date().getFullYear()} DevSync. All rights reserved.
-      </div>
+      <div
+          className="mt-12 pt-6 text-center text-sm space-y-1"
+          style={{ borderTop: "1px solid var(--border)", color: "var(--muted-foreground)" }}
+        >
+          <p>© {new Date().getFullYear()} DevSync. All rights reserved.</p>
+          <p>
+            Made with ☕ by <span className="font-semibold text-[var(--primary)]">Annanya</span>
+          </p>
+        </div>
     </footer>
   );
 };

@@ -10,7 +10,7 @@ import AdStrip from "./Components/Ad";
 import { FeaturesSection } from "./Components/Features";
 import Footer from "./Components/footer";
 import ScrollRevealWrapper from "./Components/ui/ScrollRevealWrapper";
-import Loader from "./Components/ui/Loader"; // ✅ Import the Loader
+import Loader from "./Components/ui/Loader";
 import ContributorsSection from "./Components/Contributors";
 import AllContributors from "./Components/AllContributors";
 
@@ -23,19 +23,17 @@ import ProtectedRoute from "./Components/auth/ProtectedRoute";
 import Dashboard from "./Components/Dashboard";
 import FAQ from "./Components/FAQ";
 import Pomodoro from "./Components/DashBoard/Pomodoro";
-import { ArrowUp } from "lucide-react"; 
+import { ArrowUp } from "lucide-react";
+import GitHubProfile from "./Components/GitHubProfile";
 import LeetCode from "./Components/DashBoard/LeetCode";
+import FloatingSupportButton from "./Components/ui/Support";
 
 function Home() {
   const [showTop, setShowTop] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 300) {
-        setShowTop(true);
-      } else {
-        setShowTop(false);
-      }
+      setShowTop(window.scrollY > 300);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -45,14 +43,11 @@ function Home() {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
-
-  <div className="min-h-screen w-full bg-[var(--background)] scroll-smooth overflow-hidden">
-
-      {/* Navbar */}
+    <div className="min-h-screen w-full bg-[var(--background)] scroll-smooth overflow-hidden">
       <Navbar />
 
       {/* Main Content */}
-  <main className="relative z-10 px-4 pt-[108px] pb-24 text-[var(--foreground)]">
+      <main className="relative z-10 px-4 pt-[108px] pb-24 text-[var(--foreground)]">
         <ScrollRevealWrapper>
           <div id="home">
             <Hero />
@@ -72,6 +67,7 @@ function Home() {
         <div id="about">
           <About />
         </div>
+
         <ScrollRevealWrapper delay={0.2}>
           <div id="contact">
             <Contact />
@@ -83,24 +79,17 @@ function Home() {
             <FAQ />
           </div>
         </ScrollRevealWrapper>
-        <ContributorsSection/>
+
+        <ContributorsSection />
         <Footer />
+        <FloatingSupportButton />
       </main>
 
-      {/* ✅ Back to Top Button */}
-  
-{showTop && (
-  <button
-    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-    className="fixed bottom-6 right-6 p-3 rounded-full shadow-lg transition-all duration-300 z-50 bg-[var(--primary)] text-[var(--primary-foreground)] hover:bg-[var(--accent)]"
-
-  >
-    <ArrowUp size={20} />
-  </button>
-)}
-
       {showTop && (
-        <button onClick={scrollToTop} className="fixed bottom-6 right-6 p-3 rounded-full shadow-lg transition-all duration-300 z-50 bg-[var(--primary)] text-[var(--primary-foreground)] hover:bg-[var(--accent)]">
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 p-3 rounded-full shadow-lg transition-all duration-300 z-50 bg-[var(--primary)] text-[var(--primary-foreground)] hover:bg-[var(--accent)]"
+        >
           <ArrowUp size={20} />
         </button>
       )}
@@ -110,12 +99,9 @@ function Home() {
 
 function App() {
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    // Simulate initial app/data loading
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000); // adjust delay if needed
 
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -125,14 +111,7 @@ function App() {
         <Loader size="lg" />
       </div>
     );
-   }
-
- 
-  if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
-      <Loader size="lg" />
-    </div>
-  );
+  }
 
   return (
     <TimerProvider>
@@ -140,15 +119,24 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
-        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/pomodoro" element={<Pomodoro />} />
-        <Route path='/contributors' element={<AllContributors/>}/>
+        <Route path="/contributors" element={<AllContributors />} />
+        <Route path="/dashboard/github/:username" element={<GitHubProfile />} />
         <Route path="/leetcode/:leetUser" element={<LeetCode />} />
-    </Routes>
+      </Routes>
     </TimerProvider>
   );
 }
+
 export default App;

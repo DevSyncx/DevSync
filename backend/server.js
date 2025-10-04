@@ -6,6 +6,7 @@ const cors = require("cors");
 const session = require("express-session");
 require("./utils/leetcodeCron");
 const passport = require("passport");
+const githubRouter = require("./routes/github.route");
 
 // Database connection
 require("./db/connection");
@@ -30,10 +31,12 @@ const app = express();
 app.use(express.json());
 
 // Enable CORS
-app.use(cors({
-  origin: process.env.CLIENT_URL || "http://localhost:5173",
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 // Session setup
 app.use(
@@ -41,7 +44,7 @@ app.use(
     secret: process.env.SESSION_SECRET || "devsync_session_secret",
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false } // set true if using HTTPS
+    cookie: { secure: false }, // set true if using HTTPS
   })
 );
 
@@ -52,10 +55,14 @@ app.use(passport.session());
 // Serve uploaded files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Routes
+// OAuth Routes (mounted at root to match Google's callback URL)
+app.use("/auth", require("./routes/auth"));
+
+// API Routes
 app.use("/api/auth", authMiddleware, require("./routes/auth"));
 app.use("/api/profile", generalMiddleware, require("./routes/profile"));
 app.use("/api/contact", generalMiddleware, contactRouter);
+app.use("/api/github", generalMiddleware, githubRouter);
 
 // Default route
 app.get("/", (req, res) => {
