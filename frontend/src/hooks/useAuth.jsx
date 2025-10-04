@@ -1,7 +1,8 @@
-import { useState, useEffect, createContext, useContext, createElement } from 'react';
+import React, { useState, useEffect, createContext, useContext } from 'react';
 
 const AuthContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -65,5 +66,9 @@ export const AuthProvider = ({ children }) => {
     loading,
   };
 
-  return createElement(AuthContext.Provider, { value }, children);
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
