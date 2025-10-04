@@ -64,7 +64,7 @@ const Contact = () => {
             <Mail className="w-10 h-10 text-[var(--primary)]" />
             <div>
               <h3 className="text-lg font-semibold text-[var(--card-foreground)]">Email Us</h3>
-              <p className="text-[var(--muted-foreground)]">info@example.com</p>
+              <p className="text-[var(--muted-foreground)]">anonym.notifys@gmail.com</p>
             </div>
           </div>
 
@@ -186,7 +186,7 @@ const Contact = () => {
                       href="mailto:info@example.com"
                       className="text-blue-600 font-medium hover:underline"
                     >
-                      info@example.com
+                      anonym.notifys@gmail.com
                     </a>
                   </p>
                 </motion.form>
@@ -232,7 +232,7 @@ const Contact = () => {
                       href="mailto:info@example.com"
                       className="text-blue-600 hover:underline"
                     >
-                      info@example.com
+                     anonym.notifys@gmail.com
                     </a>
                   </p>
                 </motion.div>

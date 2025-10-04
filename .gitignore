@@ -120,3 +120,8 @@ jest-*
 
 node_modules/
 # .env.example
+
+
+# ignore everything inside uploads
+uploads/
+

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { RocketIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { PointerHighlight } from "./ui/pointer-highlight";
+import { Link } from "react-router-dom";
 
 // Generate random jitter for words
 const randomShift = () => ({
@@ -63,9 +64,10 @@ const AdStrip = () => {
 
         {/* CTA Button */}
         <PointerHighlight>
-          <Button style={{ background: "var(--primary)", color: "var(--primary-foreground)" }} className="px-6 py-3 text-base rounded-xl shadow-lg transition">
+        <Link to="/register">  <Button style={{ background: "var(--primary)", color: "var(--primary-foreground)" }} className="px-6 py-3 text-base rounded-xl shadow-lg transition">
             Sign Up
           </Button>
+          </Link>
         </PointerHighlight>
       </div>
     </motion.section>

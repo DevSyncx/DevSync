@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../Navbar/Navbar";
 import { Camera, RefreshCw, User, MapPin, Mail, Globe, Edit2, Save, X, Plus, Check, LogOut, Sparkles, Zap } from "lucide-react";
 import { SiLeetcode, SiCodechef, SiHackerrank, SiHackerearth, SiCodeforces, SiLinkedin, SiGitlab, SiGithub } from "react-icons/si";
+import BackButton from "../ui/backbutton";
 
 // --- START: Helper Components for Modern UI (Including the new SuccessPopup) ---
 
@@ -488,8 +488,7 @@ const Profile = () => {
   return (
     // Outer Container: Full Viewport Height
     <div className="h-screen w-full bg-background flex flex-col">
-      <Navbar />
-      
+      <BackButton />  
       {/* Success Popup */}
       <SuccessPopup 
         isVisible={showSuccessPopup} 
@@ -506,14 +505,14 @@ const Profile = () => {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8 text-center"
         >
-          <div className="space-y-3">
+          
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
               Developer Profile
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Showcase your skills and connect with the developer community
             </p>
-          </div>
+         
         </motion.div>
 
         {/* Main Profile Content Container (Removed Card Styling and max-w-6xl) */}

@@ -12,9 +12,9 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { useParams } from "react-router-dom";
-import Navbar from "../Navbar/Navbar";
 import ReactCalendarHeatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
+import BackButton from "../ui/backbutton";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -123,8 +123,8 @@ export default function LeetCode({ platforms = {} }) {
 
   return (
     <>
-      <Navbar />
-      <div className="max-w-6xl mx-auto p-4 bg-[var(--card)] rounded-lg shadow-lg border border-[var(--border)] mt-20 space-y-6">
+    <BackButton />
+      <div className="w-full min-h-screen p-10 bg-[var(--card)] rounded-lg shadow-lg border border-[var(--border)] space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <img
