@@ -2,7 +2,12 @@ import { User } from "lucide-react";
 import React from "react";
 import CardWrapper from "./CardWrapper";
 import {
-  SiLeetcode, SiCodechef, SiHackerrank, SiGithub, SiHackerearth, SiLinkedin,
+  SiLeetcode,
+  SiCodechef,
+  SiHackerrank,
+  SiGithub,
+  SiHackerearth,
+  SiLinkedin,
 } from "react-icons/si";
 
 const iconMap = {
@@ -15,23 +20,29 @@ const iconMap = {
 };
 
 export default function ProfileCard({ user }) {
-  if (!user) return null; // don't render until user is loaded
+  if (!user) return null;
   const socialLinks = user.socialLinks || {};
   const entries = Object.entries(socialLinks);
 
+  // Normalize LeetCode URL
   function normalizeLeetcodeURL(url) {
-    const leetcodeRegex = /^https?:\/\/(www\.)?leetcode\.com\/(u\/)?[a-zA-Z0-9_-]+\/?$/;
-    if (!leetcodeRegex.test(url)) {
-      return null;
-    }
-    return url.replace(/\/$/, '');
+    const leetcodeRegex =
+      /^https?:\/\/(www\.)?leetcode\.com\/(u\/)?[a-zA-Z0-9_-]+\/?$/;
+    if (!leetcodeRegex.test(url)) return null;
+    return url.replace(/\/$/, "");
+  }
+
+  // Normalize GitHub URL
+  function normalizeGitHubURL(url) {
+    const githubRegex = /^https?:\/\/(www\.)?github\.com\/[a-zA-Z0-9_-]+\/?$/;
+    if (!githubRegex.test(url)) return null;
+    return url.replace(/\/$/, "");
   }
 
   return (
     <CardWrapper>
       {/* Header */}
       <div className="flex items-center flex-col gap-3">
-        {/* Avatar */}
         <div className="w-14 h-14 flex items-center justify-center rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] overflow-hidden">
           {user.avatar ? (
             <img
@@ -44,34 +55,54 @@ export default function ProfileCard({ user }) {
           )}
         </div>
 
-        {/* Name + Email */}
         <div className="text-center">
-          <h2 className="text-lg font-semibold text-[var(--primary)]">{user.name}</h2>
+          <h2 className="text-lg font-semibold text-[var(--primary)]">
+            {user.name}
+          </h2>
           <p className="text-sm text-[var(--muted-foreground)]">{user.email}</p>
         </div>
       </div>
 
       {/* Platforms */}
       <div className="mt-3">
-        <p className="text-md font-medium text-[var(--primary)] mb-1">Platforms</p>
+        <p className="text-md font-medium text-[var(--primary)] mb-1">
+          Platforms
+        </p>
         {entries.length > 0 ? (
           <div className="flex flex-wrap gap-3">
             {entries.map(([platformName, url]) => {
               const Icon = iconMap[platformName.toLowerCase()];
               if (!Icon) return null;
-              const leetcodeUrl = (url) => {
-                url = normalizeLeetcodeURL(url);
-                const username = url.split("/").pop();
-                return `/leetcode/${username}`
 
-              }
+              // Internal route for LeetCode
+              const leetcodeUrl = (url) => {
+                const normalized = normalizeLeetcodeURL(url);
+                if (!normalized) return "#";
+                const username = normalized.split("/").pop();
+                return `/leetcode/${username}`;
+              };
+
+              // Internal route for GitHub
+              const githubUrl = (url) => {
+                const normalized = normalizeGitHubURL(url);
+                if (!normalized) return "#";
+                const username = normalized.split("/").pop();
+                return `/dashboard/github/${username}`;
+              };
+
+              let href = url;
+              if (platformName.toLowerCase() === "leetcode")
+                href = leetcodeUrl(url);
+              if (platformName.toLowerCase() === "github")
+                href = githubUrl(url);
+
               return (
                 <a
                   key={platformName}
-                  href={platformName == 'leetcode' ? leetcodeUrl(url) : url}
+                  href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 flex items-center justify-center rounded-md bg-[var(--secondary)]  shadow-sm hover:shadow-md transition"
+                  className="w-10 h-10 flex items-center justify-center rounded-md bg-[var(--secondary)] shadow-sm hover:shadow-md transition"
                   title={platformName}
                 >
                   <Icon className="w-5 h-5 text-[var(--primary)]" />

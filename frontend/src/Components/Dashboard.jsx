@@ -8,8 +8,8 @@ import GoalsCard from "./DashBoard/GoalsCard";
 import TimeSpentCard from "./DashBoard/TimeSpentCard";
 import ActivityHeatmap from "./DashBoard/ActivityHeatMap";
 import NotesCard from "./DashBoard/NotesCard";
-import { useNavigate } from "react-router-dom";
 import GitHubCard from "@/Components/GitHubCard";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const [profile, setProfile] = useState(null);
@@ -19,6 +19,18 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const oauthToken = params.get("token");
+    if (oauthToken) {
+      try {
+        localStorage.setItem("token", oauthToken);
+      } catch (e) {
+        console.error("Failed to persist OAuth token:", e);
+      }
+      const cleanUrl = window.location.origin + window.location.pathname;
+      window.history.replaceState({}, document.title, cleanUrl);
+    }
+
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -33,12 +45,14 @@ export default function Dashboard() {
         });
 
         const data = await res.json();
-        if (!res.ok)
+        if (!res.ok) {
           throw new Error(data.errors?.[0]?.msg || "Failed to load profile");
+        }
 
-        setProfile(data || {}); // default to empty object
+        setProfile(data || {});
         setGoals(data.goals || []);
       } catch (err) {
+        console.error("Error fetching profile:", err);
         setError(err.message || "Failed to load profile");
       } finally {
         setLoading(false);
@@ -48,10 +62,36 @@ export default function Dashboard() {
     fetchProfile();
   }, [navigate]);
 
-  if (loading) return <p className="p-6">Loading...</p>;
-  if (error) return <p className="p-6 text-red-500">{error}</p>;
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
-  // Default values to prevent crashes
+  if (error) {
+    return (
+      <div className="p-6 text-red-500">
+        <p>Error: {error}</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Try Again
+        </button>
+      </div>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <div className="p-6">
+        <p>No profile data available. Please try logging in again.</p>
+      </div>
+    );
+  }
+
   const safeProfile = {
     githubUsername: "",
     streak: 0,
@@ -77,7 +117,7 @@ export default function Dashboard() {
             />
             <StreakCard streak={safeProfile.streak} className="col-span-1" />
 
-            {/* GitHub Card (conditionally rendered) */}
+            {/* GitHub Card (internal routing) */}
             {safeProfile.githubUsername ? (
               <GitHubCard
                 githubUsername={safeProfile.githubUsername}
