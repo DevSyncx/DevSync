@@ -55,7 +55,10 @@ app.use(passport.session());
 // Serve uploaded files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Routes
+// OAuth Routes (mounted at root to match Google's callback URL)
+app.use("/auth", require("./routes/auth"));
+
+// API Routes
 app.use("/api/auth", authMiddleware, require("./routes/auth"));
 app.use("/api/profile", generalMiddleware, require("./routes/profile"));
 app.use("/api/contact", generalMiddleware, contactRouter);

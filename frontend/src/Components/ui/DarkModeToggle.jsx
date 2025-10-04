@@ -1,23 +1,22 @@
 import React, { useContext } from "react";
+import { Sun, Moon } from "lucide-react";
 import ThemeContext from "./theme-provider.jsx";
 
 export default function DarkModeToggle() {
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const isDark = theme === "dark";
+
   return (
     <button
       onClick={toggleTheme}
-      style={{
-        padding: "0.5rem 1rem",
-        borderRadius: "999px",
-        border: "none",
-        background: theme === "dark" ? "#222" : "#eee",
-        color: theme === "dark" ? "#fff" : "#222",
-        cursor: "pointer",
-        fontWeight: "bold"
-      }}
       aria-label="Toggle dark mode"
+      className={`flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300 cursor-pointer hover:scale-110   ${
+        isDark
+          ? "bg-[ --background]"
+          : "bg-[--foreground]"
+      }`}
     >
-      {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
+      {isDark ? <Moon className="w-6 h-6" /> : <Sun className="w-6 h-6" />}
     </button>
   );
 }

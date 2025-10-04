@@ -7,4 +7,4 @@ mongoose.connect(dburl).then(() => {
     console.log("Connected to DB Successfully ");
 }).catch((err) => {
     console.log(err.message);
-});
+}); 

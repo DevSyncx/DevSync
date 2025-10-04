@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "./DashBoard/Sidebar";
 import Topbar from "./DashBoard/Topbar";
 import ProfileCard from "./DashBoard/ProfileCard";
@@ -9,7 +10,6 @@ import TimeSpentCard from "./DashBoard/TimeSpentCard";
 import ActivityHeatmap from "./DashBoard/ActivityHeatMap";
 import NotesCard from "./DashBoard/NotesCard";
 import GitHubCard from "@/Components/GitHubCard";
-import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const [profile, setProfile] = useState(null);
@@ -19,14 +19,11 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Capture OAuth token from URL
     const params = new URLSearchParams(window.location.search);
     const oauthToken = params.get("token");
     if (oauthToken) {
-      try {
-        localStorage.setItem("token", oauthToken);
-      } catch (e) {
-        console.error("Failed to persist OAuth token:", e);
-      }
+      localStorage.setItem("token", oauthToken);
       const cleanUrl = window.location.origin + window.location.pathname;
       window.history.replaceState({}, document.title, cleanUrl);
     }
@@ -92,15 +89,15 @@ export default function Dashboard() {
     );
   }
 
-  const safeProfile = {
-    githubUsername: "",
-    streak: 0,
-    notes: [],
-    timeSpent: "0 minutes",
-    activity: [],
-    socialLinks: [],
-    ...profile,
-  };
+  // Safely destructure profile with defaults
+  const {
+    socialLinks = {},
+    streak = 0,
+    githubUsername = null,
+    timeSpent = "0 minutes",
+    activity = [],
+    notes = []
+  } = profile;
 
   return (
     <div className="flex flex-col h-screen">
@@ -110,19 +107,13 @@ export default function Dashboard() {
         <main className="flex-1 p-6 bg-[#d1e4f3]">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
             {/* Row 1 */}
-            <ProfileCard user={safeProfile} className="col-span-1" />
-            <PlatformLinks
-              platforms={safeProfile.socialLinks}
-              className="col-span-1"
-            />
-            <StreakCard streak={safeProfile.streak} className="col-span-1" />
+            <ProfileCard user={profile} className="col-span-1" />
+            <PlatformLinks platforms={socialLinks} className="col-span-1" />
+            <StreakCard streak={streak} className="col-span-1" />
 
-            {/* GitHub Card (internal routing) */}
-            {safeProfile.githubUsername ? (
-              <GitHubCard
-                githubUsername={safeProfile.githubUsername}
-                className="col-span-1"
-              />
+            {/* GitHub Card */}
+            {githubUsername ? (
+              <GitHubCard githubUsername={githubUsername} className="col-span-1" />
             ) : (
               <div className="col-span-1 p-4 border rounded-lg shadow-sm bg-gray-100 text-gray-500 flex items-center justify-center">
                 GitHub profile not linked
@@ -131,15 +122,17 @@ export default function Dashboard() {
 
             {/* Row 2: Goals, Time Spent, Notes */}
             <GoalsCard goals={goals} onGoalsChange={setGoals} />
-            <TimeSpentCard time={safeProfile.timeSpent} />
+            <TimeSpentCard time={timeSpent} />
             <NotesCard
-              notes={safeProfile.notes}
-              onNotesChange={(n) => setProfile({ ...safeProfile, notes: n })}
+              notes={notes}
+              onNotesChange={(updatedNotes) =>
+                setProfile({ ...profile, notes: updatedNotes })
+              }
             />
 
             {/* Row 3: Activity heatmap full width */}
             <div className="col-span-1 sm:col-span-2 lg:col-span-3">
-              <ActivityHeatmap activityData={safeProfile.activity} />
+              <ActivityHeatmap activityData={activity} />
             </div>
           </div>
         </main>

@@ -3,7 +3,7 @@ name: Discord Notifications
 on:
   push:
   pull_request:
-    types: [closed]
+    types: [closed] # Optional: can remove this too if you no longer need PR triggers
   issues:
     types: [opened]
   release:
@@ -36,39 +36,6 @@ jobs:
                  }]
                }" \
                "${{ secrets.DISCORD_WEBHOOK }}"
-
-      - name: PR Merged Notification
-        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
-        run: |
-            PAYLOAD=$(jq -n \
-              --arg title "${{ github.event.pull_request.title }}" \
-              --arg body "${{ github.event.pull_request.body }}" \
-              --arg user "${{ github.event.pull_request.user.login }}" \
-              --arg avatar "${{ github.event.pull_request.user.avatar_url }}" \
-              --arg repo "${{ github.repository }}" \
-              --arg branch "${{ github.event.pull_request.head.ref }}" \
-              --arg base "${{ github.event.pull_request.base.ref }}" \
-              --arg url "${{ github.event.pull_request.html_url }}" \
-              --arg timestamp "${{ github.event.pull_request.merged_at }}" \
-              '{
-                embeds: [{
-                  title: $title,
-                  description: $body,
-                  color: 5763719,
-                  author: { name: $user, icon_url: $avatar },
-                  fields: [
-                    { name: "Repository", value: $repo, inline: true },
-                    { name: "Branch", value: $branch, inline: true },
-                    { name: "Base Branch", value: $base, inline: true }
-                  ],
-                  url: $url,
-                  timestamp: $timestamp,
-                  footer: { text: "DevSync • GitHub" }
-                }]
-              }')
-              
-            curl -H "Content-Type: application/json" -X POST -d "$PAYLOAD" "${{ secrets.DISCORD_WEBHOOK }}"
-
 
       - name: Issue Opened Notification
         if: github.event_name == 'issues' && github.event.action == 'opened'

@@ -26,6 +26,7 @@ import Pomodoro from "./Components/DashBoard/Pomodoro";
 import { ArrowUp } from "lucide-react";
 import GitHubProfile from "./Components/GitHubProfile";
 import LeetCode from "./Components/DashBoard/LeetCode";
+import FloatingSupportButton from "./Components/ui/Support";
 
 function Home() {
   const [showTop, setShowTop] = useState(false);
@@ -81,6 +82,7 @@ function Home() {
 
         <ContributorsSection />
         <Footer />
+        <FloatingSupportButton />
       </main>
 
       {showTop && (
