@@ -33,7 +33,6 @@ const generateAvatarUrl = (email, name) => {
 const JWT_SECRET =
   process.env.JWT_SECRET || "devsync_secure_jwt_secret_key_for_authentication";
 
-// Start Google OAuth flow
 router.get(
   "/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
@@ -41,16 +40,35 @@ router.get(
 
 // Handle callback from Google
 router.get(
-  "/google/callback",
+  "/callback",
+  (req, res, next) => {
+    console.log('OAuth callback received. Starting authentication...');
+    console.log('Query params:', req.query);
+    next();
+  },
   passport.authenticate("google", {
-    failureRedirect: "/login", // if auth fails → go to login
+    // Redirect failures to the frontend login for better UX
+    failureRedirect: `${process.env.CLIENT_URL}/login`,
+    failureMessage: true,      // Enable failure messages
     session: true,
   }),
-  (req, res) => {
-    // ✅ Successful authentication → redirect to frontend home page
-    res.redirect(`${process.env.CLIENT_URL}/dashboard`);
-
-    // ⬆️ change port if your React app runs elsewhere
+  async (req, res, next) => {
+    try {
+      console.log('OAuth successful, user:', req.user);
+      // Issue JWT and redirect to frontend with token as query param
+      // Frontend reads ?token=... on /dashboard and stores it
+      const token = await generateJWT(req.user.id);
+      const redirectUrl = `${process.env.CLIENT_URL}/dashboard?token=${encodeURIComponent(token)}`;
+      return res.redirect(redirectUrl);
+    } catch (err) {
+      console.error('JWT generation failed after OAuth:', err);
+      return res.redirect(`${process.env.CLIENT_URL}/login?error=oauth_token_failed`);
+    }
+  },
+  // Error handler for the authentication
+  (err, req, res, next) => {
+    console.error('OAuth error:', err);
+    res.redirect(`${process.env.CLIENT_URL}/login?error=oauth_failed`);
   }
 );
 

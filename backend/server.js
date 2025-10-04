@@ -26,13 +26,22 @@ const app = express();
 // JSON parsing
 app.use(express.json());
 
-// Enable CORS
+// CORS preflight handling - respond to OPTIONS requests explicitly
+app.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Origin', process.env.CLIENT_URL || 'http://localhost:5173');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, x-auth-token');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.status(200).send();
+});
+
+// Enable CORS for all other requests
 app.use(
   cors({
     origin: process.env.CLIENT_URL || "http://localhost:5173",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "x-auth-token"],
   })
 );
 
@@ -57,7 +66,10 @@ app.use(passport.session());
 // Serve uploaded files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Routes
+// OAuth Routes (mounted at root to match Google's callback URL)
+app.use("/auth", require("./routes/auth"));
+
+// API Routes
 app.use("/api/auth", authMiddleware, require("./routes/auth"));
 app.use("/auth", authMiddleware, require("./routes/auth"));
 app.use("/api/profile", generalMiddleware, require("./routes/profile"));

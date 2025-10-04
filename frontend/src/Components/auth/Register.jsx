@@ -121,7 +121,8 @@ const Register = () => {
   };
 
   const handleGoogleRegister = () => {
-    window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`;
+    // Use backend OAuth route at /auth (not protected /api)
+    window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
   };
 
   const handleGithubRegister = () => {
@@ -330,9 +331,10 @@ const Register = () => {
               </button>
               <button
                 onClick={() => {
+                  // Trigger Google OAuth via backend
                   window.location.href = `${
                     import.meta.env.VITE_API_URL
-                  }/api/auth/google`;
+                  }/auth/google`;
                 }}
                 type="button"
                 className="flex items-center cursor-pointer justify-center py-3 border border-[var(--input)] rounded-lg text-[var(--primary)] hover:bg-[var(--accent)]">
