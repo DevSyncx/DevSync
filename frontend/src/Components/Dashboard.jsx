@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "./DashBoard/Sidebar";
 import Topbar from "./DashBoard/Topbar";
 import ProfileCard from "./DashBoard/ProfileCard";
@@ -8,8 +9,6 @@ import GoalsCard from "./DashBoard/GoalsCard";
 import TimeSpentCard from "./DashBoard/TimeSpentCard";
 import ActivityHeatmap from "./DashBoard/ActivityHeatMap";
 import NotesCard from "./DashBoard/NotesCard";
-import { useNavigate } from "react-router-dom";
-import GitHubCard from "@/Components/GitHubCard";
 
 export default function Dashboard() {
   const [profile, setProfile] = useState(null);
@@ -19,16 +18,11 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Capture token issued by backend OAuth redirect: /dashboard?token=...
+    // Capture OAuth token from URL
     const params = new URLSearchParams(window.location.search);
     const oauthToken = params.get("token");
     if (oauthToken) {
-      try {
-        localStorage.setItem("token", oauthToken);
-      } catch (e) {
-        console.error("Failed to persist OAuth token:", e);
-      }
-      // Clean up URL after capturing token (avoid keeping token in address bar)
+      localStorage.setItem("token", oauthToken);
       const cleanUrl = window.location.origin + window.location.pathname;
       window.history.replaceState({}, document.title, cleanUrl);
     }
@@ -51,11 +45,11 @@ export default function Dashboard() {
           throw new Error(data.errors?.[0]?.msg || "Failed to load profile");
         }
 
-        setProfile(data);
+        setProfile(data || {});
         setGoals(data.goals || []);
       } catch (err) {
         console.error("Error fetching profile:", err);
-        setError(err.message);
+        setError(err.message || "Failed to load profile");
       } finally {
         setLoading(false);
       }
@@ -64,7 +58,6 @@ export default function Dashboard() {
     fetchProfile();
   }, [navigate]);
 
-  // Show loading state
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -73,7 +66,6 @@ export default function Dashboard() {
     );
   }
 
-  // Show error state
   if (error) {
     return (
       <div className="p-6 text-red-500">
@@ -88,7 +80,6 @@ export default function Dashboard() {
     );
   }
 
-  // Show message if no profile data is available
   if (!profile) {
     return (
       <div className="p-6">
@@ -97,14 +88,13 @@ export default function Dashboard() {
     );
   }
 
-  // Safely destructure with default values
+  // Safely destructure profile with defaults
   const {
-    socialLinks = [],
+    socialLinks = {},
     streak = 0,
-    githubUsername = null,
     timeSpent = "0 minutes",
     activity = [],
-    notes = []
+    notes = [],
   } = profile;
 
   return (
@@ -119,21 +109,12 @@ export default function Dashboard() {
             <PlatformLinks platforms={socialLinks} className="col-span-1" />
             <StreakCard streak={streak} className="col-span-1" />
 
-            {/* GitHub Card (conditionally rendered) */}
-            {githubUsername ? (
-              <GitHubCard githubUsername={githubUsername} className="col-span-1" />
-            ) : (
-              <div className="col-span-1 p-4 border rounded-lg shadow-sm bg-gray-100 text-gray-500 flex items-center justify-center">
-                GitHub profile not linked
-              </div>
-            )}
-
             {/* Row 2: Goals, Time Spent, Notes */}
             <GoalsCard goals={goals} onGoalsChange={setGoals} />
             <TimeSpentCard time={timeSpent} />
             <NotesCard
               notes={notes}
-              onNotesChange={(updatedNotes) => 
+              onNotesChange={(updatedNotes) =>
                 setProfile({ ...profile, notes: updatedNotes })
               }
             />
