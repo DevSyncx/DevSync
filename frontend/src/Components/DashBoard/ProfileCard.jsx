@@ -22,7 +22,9 @@ const iconMap = {
 export default function ProfileCard({ user }) {
   if (!user) return null;
   const socialLinks = user.socialLinks || {};
-  const entries = Object.entries(socialLinks);
+  const entries = Object.entries(socialLinks).filter(
+    ([, url]) => url && url.trim() !== ""
+  );
 
   function normalizeLeetcodeURL(url) {
     const leetcodeRegex =
@@ -45,9 +47,8 @@ export default function ProfileCard({ user }) {
   };
 
   const githubUrl = (url) => {
-    const normalized = normalizeGitHubURL(url);
-    if (!normalized) return "#";
-    const username = normalized.split("/").pop();
+    if (!url) return "#";
+    const username = url.replace(/\/$/, "").split("/").pop();
     return `/dashboard/github/${username}`;
   };
 

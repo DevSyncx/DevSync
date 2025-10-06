@@ -31,7 +31,7 @@ const GitHubProfile = () => {
         else setError(json.error || "Failed to fetch GitHub data");
       } catch (err) {
         console.error(err);
-        setError("Server error");
+        setError("User not found or an error occurred");
       } finally {
         setLoading(false);
       }
@@ -134,7 +134,7 @@ const GitHubProfile = () => {
                 </p>
                 <div className="w-full bg-gray-200 dark:bg-gray-700 h-2 rounded">
                   <div
-                    className="h-2 rounded bg-yellow-500"
+                    className="h-2 rounded bg-[var(--primary)]"
                     style={{ width: `${percentage}%` }}
                   />
                 </div>
@@ -158,7 +158,7 @@ const GitHubProfile = () => {
             <img
               src={profile.avatarUrl || ""}
               alt={profile.login || "avatar"}
-              className="w-32 h-32 rounded-full border-4 border-yellow-400 shadow"
+              className="w-32 h-32 rounded-full border-4 border-[var(--primary)] shadow"
             />
             <h2 className="text-xl font-bold mt-4">
               {profile.name || profile.login || "N/A"}
@@ -181,7 +181,7 @@ const GitHubProfile = () => {
               href={`https://github.com/${profile.login}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-3 inline-block bg-yellow-500 text-black px-4 py-2 rounded-lg font-semibold shadow hover:bg-yellow-600 transition"
+              className="mt-3 inline-block bg-[var(--primary)] text-black px-4 py-2 rounded-lg font-semibold shadow hover:bg-[var(--primary-foreground)] transition"
             >
               View on GitHub
             </a>
@@ -213,7 +213,7 @@ const GitHubProfile = () => {
               key={idx}
               className="p-4 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition shadow-sm"
             >
-              <h3 className="font-semibold text-yellow-600 dark:text-yellow-400">
+              <h3 className="font-semibold text-[var(--primary)]">
                 <a
                   href={repo.url || "#"}
                   target="_blank"
@@ -227,7 +227,7 @@ const GitHubProfile = () => {
                 {repo.description || "No description"}
               </p>
               <p className="text-gray-600 dark:text-gray-400 text-xs mt-1">
-                ⭐ {repo.stars ?? 0} | 🍴 {repo.forks ?? 0}
+                stars {repo.stars ?? 0} | fork {repo.forks ?? 0}
               </p>
               {repo.languages?.length > 0 && (
                 <p className="text-gray-600 dark:text-gray-400 text-xs mt-1">

@@ -135,7 +135,7 @@ router.get("/:username", async (req, res) => {
     });
   } catch (err) {
     console.error("GitHub API error:", err);
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: "User not found or an error occurred" });
   }
 });
 
