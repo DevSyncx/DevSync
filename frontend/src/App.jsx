@@ -10,6 +10,8 @@ import { FeaturesSection } from "./Components/Features";
 import Footer from "./Components/footer";
 import ScrollRevealWrapper from "./Components/ui/ScrollRevealWrapper";
 import Loader from "./Components/ui/Loader"; // ✅ Import the Loader
+import ChatBubble from "./Components/ui/ChatBubble";
+import ChatAssistant from "./Components/ui/ChatAssistant";
 
 import Login from "./Components/auth/Login";
 import Register from "./Components/auth/Register";
@@ -23,6 +25,7 @@ import { ArrowUp } from "lucide-react"; // <-- icon for back to top
 
 function Home() {
   const [showTop, setShowTop] = useState(false);
+  const [assistantOpen, setAssistantOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -78,6 +81,9 @@ function Home() {
         <Footer />
       </main>
 
+      {/* ✅ Assistant bubble */}
+      <ChatBubble onClick={() => setAssistantOpen(true)} />
+
       {/* ✅ Back to Top Button */}
   
 {showTop && (
@@ -89,6 +95,9 @@ function Home() {
     <ArrowUp size={20} />
   </button>
 )}
+
+    {/* Assistant overlay */}
+    <ChatAssistant open={assistantOpen} onClose={() => setAssistantOpen(false)} />
 
     </div>
   );
