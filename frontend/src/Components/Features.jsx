@@ -29,8 +29,8 @@ export function FeaturesSection() {
       icon: <TimerReset />,
     },
     {
-      title: "GitHub Authentication",
-      description: "Secure login with your GitHub account.",
+      title: "Auto GitHub Sync",
+      description: "Sync contributions, commits, and streaks automatically.",
       icon: <GitBranch />,
     },
     {

@@ -5,18 +5,12 @@ require('dotenv').config();
 const JWT_SECRET = process.env.JWT_SECRET || 'devsync_secure_jwt_secret_key_for_authentication';
 
 module.exports = function(req, res, next) {
-  // Check if user is authenticated via Passport session (GitHub, Google)
-  if (req.isAuthenticated && req.isAuthenticated()) {
-    console.log('User authenticated via session:', req.user);
-    return next();
-  }
-  
-  // Get token from header for JWT auth
+  // Get token from header
   const token = req.header('x-auth-token');
 
   // Check if no token
   if (!token) {
-    return res.status(401).json({ errors: [{ msg: 'No authentication, authorization denied' }] });
+    return res.status(401).json({ errors: [{ msg: 'No token, authorization denied' }] });
   }
 
   // Verify token

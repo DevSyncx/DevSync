@@ -172,29 +172,19 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        // First check for JWT token authentication
         const token = localStorage.getItem('token');
-        
-        // Create request options for either token or session-based auth
-        const requestOptions = {
-          headers: {},
-          credentials: 'include' // Always include credentials for session-based auth
-        };
-        
-        // Add token if available
-        if (token) {
-          requestOptions.headers['x-auth-token'] = token;
+        if (!token) {
+          navigate('/login');
+          return;
         }
-        
-        // Try to fetch profile with either auth method
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, requestOptions);
+
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
+          headers: {
+            'x-auth-token': token
+          }
+        });
 
         if (!response.ok) {
-          // If no auth method works, navigate to login
-          if (response.status === 401) {
-            navigate('/login');
-            return;
-          }
           throw new Error('Failed to fetch profile data');
         }
 

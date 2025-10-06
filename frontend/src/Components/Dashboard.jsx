@@ -17,21 +17,17 @@ export default function Dashboard() {
   const [error, setError] = useState(null);
   const [goals, setGoals] = useState([]);
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     // Capture token issued by backend OAuth redirect: /dashboard?token=...
     const params = new URLSearchParams(window.location.search);
     const oauthToken = params.get("token");
-    
     if (oauthToken) {
       try {
         localStorage.setItem("token", oauthToken);
-        // Also store in sessionStorage for GitHub API calls (from your branch)
-        sessionStorage.setItem("github_token", oauthToken);
       } catch (e) {
         console.error("Failed to persist OAuth token:", e);
       }
-      
       // Clean up URL after capturing token (avoid keeping token in address bar)
       const cleanUrl = window.location.origin + window.location.pathname;
       window.history.replaceState({}, document.title, cleanUrl);
@@ -40,27 +36,19 @@ export default function Dashboard() {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem("token");
-
         if (!token) {
           navigate("/login");
           setLoading(false);
           return;
         }
 
-        // For session auth, keeping both auth methods (your custom + main branch approach)
         const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
           headers: { "x-auth-token": token },
-          credentials: 'include', // Important for session-based auth (from your branch)
         });
 
         const data = await res.json();
         if (!res.ok) {
           throw new Error(data.errors?.[0]?.msg || "Failed to load profile");
-        }
-        
-        // Use DevSync activity data or initialize empty array
-        if (!data.activity || !Array.isArray(data.activity)) {
-          data.activity = [];
         }
 
         setProfile(data);
@@ -128,7 +116,7 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
             {/* Row 1 */}
             <ProfileCard user={profile} className="col-span-1" />
-            <PlatformLinks platforms={profile?.platforms || []} className="col-span-1" />
+            <PlatformLinks platforms={socialLinks} className="col-span-1" />
             <StreakCard streak={streak} className="col-span-1" />
 
             {/* GitHub Card (conditionally rendered) */}

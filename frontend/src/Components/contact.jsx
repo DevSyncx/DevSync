@@ -93,7 +93,7 @@ const Contact = () => {
         >
           <div className="flex items-center justify-center mb-6 space-x-2">
             <MessageCircle className="w-10 h-10 text-blue-600 animate-bounce" />
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Contact Us</h1>
+            <h1 className="text-3xl font-bold text-gray-800">Contact Us</h1>
           </div>
 
           <div className="text-center w-full z-10">
