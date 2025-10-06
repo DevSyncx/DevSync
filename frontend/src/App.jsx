@@ -24,7 +24,7 @@ import Dashboard from "./Components/Dashboard";
 import FAQ from "./Components/FAQ";
 import Pomodoro from "./Components/DashBoard/Pomodoro";
 import { ArrowUp } from "lucide-react";
-
+import GitHubProfile from "./Components/GitHubProfile";
 import LeetCode from "./Components/DashBoard/LeetCode";
 import FloatingSupportButton from "./Components/ui/Support";
 
@@ -132,6 +132,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/pomodoro" element={<Pomodoro />} />
         <Route path="/contributors" element={<AllContributors />} />
+        <Route path="/dashboard/github/:username" element={<GitHubProfile />} />
         <Route path="/leetcode/:leetUser" element={<LeetCode />} />
       </Routes>
     </TimerProvider>
