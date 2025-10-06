@@ -7,6 +7,11 @@ const UserSchema = new Schema({
     unique: true,
     sparse: true, // multiple nulls allowed
   },
+  githubId: {
+    type: String,
+    unique: true,
+    sparse: true, // multiple nulls allowed
+  },
   name: {
     type: String,
     required: true, 
@@ -24,7 +29,7 @@ const UserSchema = new Schema({
   password: {
     type: String,
      required: function () {
-      return !this.googleId;
+      return !this.googleId && !this.githubId;
      },
   },
   avatar: {

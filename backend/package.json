@@ -21,10 +21,10 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.17.1",
     "multer": "^2.0.2",
-    "node-fetch": "^3.3.2",
-    "node-cron": "^4.2.1",
+    "node-fetch": "^2.7.0",
     "nodemailer": "^7.0.6",
     "passport": "^0.7.0",
+    "passport-github2": "^0.1.12",
     "passport-google-oauth20": "^2.0.0",
     "rate-limiter-flexible": "^7.3.0",
     "resend": "^6.0.1"

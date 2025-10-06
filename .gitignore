@@ -7,7 +7,7 @@ frontend/.env
 
 # Node
 **/node_modules/
-
+*.clienvy*
 # Logs
 **/logs
 **/*.log
