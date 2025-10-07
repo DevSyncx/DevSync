@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaArrowRight } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
 const ContributorsSection = () => {

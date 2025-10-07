@@ -1,39 +1,39 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const GitHubStrategy = require("passport-github2").Strategy;
 const User = require("../models/User");
 
-// Only use Google Strategy if credentials are provided
-if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
-  console.log('Initializing Google OAuth strategy...');
-  console.log('Callback URL:', process.env.GOOGLE_CALLBACK_URL);
+console.log('Initializing Google OAuth strategy...');
+console.log('Callback URL:', process.env.GOOGLE_CALLBACK_URL);
 
-  passport.use(
-    new GoogleStrategy(
-      {
-        clientID: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: process.env.GOOGLE_CALLBACK_URL || "http://localhost:5000/auth/callback",
-      },
-      async (accessToken, refreshToken, profile, done) => {
-        console.log('Google profile received:', profile);
-        try {
-          // Simplified to avoid MongoDB dependency
-          const user = {
-            id: profile.id,
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: process.env.GOOGLE_CALLBACK_URL || "http://localhost:5000/auth/callback",
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      console.log('Google profile received:', profile);
+      try {
+        let user = await User.findOne({ googleId: profile.id });
+        
+        if (!user) {
+          console.log('Creating new user from Google profile');
+          user = new User({
             googleId: profile.id,
             name: profile.displayName,
             email: profile.emails && profile.emails[0] ? profile.emails[0].value : null,
-            isEmailVerified: true
-          };
-          return done(null, user);
-        } catch (err) {
-          return done(err, null);
+          });
+          await user.save();
         }
+
+        return done(null, user);
+      } catch (err) {
+        return done(err, null);
       }
-    )
-  );
-}
+    }
+  )
+);
 
 // GitHub OAuth Strategy - Only use if credentials are provided
 
@@ -110,30 +110,14 @@ if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
 
 // serialize + deserialize (improved to store full user object)
 passport.serializeUser((user, done) => {
-  console.log("Serializing user:", user.id || user.githubId || user.googleId);
-  // Store the whole user object instead of just the ID
-  // This avoids needing to retrieve the user from the database on every request
-  
-  // Make sure we're preserving the access token
-  if (user.accessToken) {
-    console.log("Access token preserved in session");
-  } else {
-    console.log("WARNING: No access token available in user object during serialization");
-  }
-  
-  done(null, user);
+  done(null, user.id);
 });
 
-passport.deserializeUser((user, done) => {
-  console.log("Deserializing user:", user.id || user.githubId || user.googleId);
-  
-  // Confirm access token availability during deserialization
-  if (user.accessToken) {
-    console.log("Access token available during deserialization");
-  } else {
-    console.log("WARNING: Access token missing during deserialization");
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (err) {
+    done(err, null);
   }
-  
-  // Simply pass through the user object
-  done(null, user);
 });

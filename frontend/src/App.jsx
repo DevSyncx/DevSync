@@ -24,7 +24,7 @@ import Dashboard from "./Components/Dashboard";
 import FAQ from "./Components/FAQ";
 import Pomodoro from "./Components/DashBoard/Pomodoro";
 import { ArrowUp } from "lucide-react";
-import GitHubProfile from "./Components/GitHubProfile";
+
 import LeetCode from "./Components/DashBoard/LeetCode";
 import FloatingSupportButton from "./Components/ui/Support";
 
@@ -121,11 +121,19 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
-        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path="/pomodoro" element={<ProtectedRoute><Pomodoro /></ProtectedRoute>} />
-        <Route path='/contributors' element={<AllContributors/>}/>
-    </Routes>
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/pomodoro" element={<Pomodoro />} />
+        <Route path="/contributors" element={<AllContributors />} />
+        <Route path="/leetcode/:leetUser" element={<LeetCode />} />
+      </Routes>
     </TimerProvider>
   );
 }

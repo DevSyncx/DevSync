@@ -9,58 +9,6 @@ const fs = require('fs');
 const crypto = require('crypto');
 const LeetCode = require("../models/Leetcode")
 
-// @route   GET api/profile
-// @desc    Get user profile
-// @access  Private
-router.get('/', auth, async (req, res) => {
-  try {
-    // For GitHub/Google authenticated users (session-based)
-    if (req.isAuthenticated && req.isAuthenticated()) {
-      console.log('Profile route: User authenticated via session:', req.user);
-      
-      // Return the complete user object with all fields
-      // This uses the enhanced user object we created during authentication
-      if (req.user.platforms && req.user.streak !== undefined) {
-        return res.json(req.user);
-      }
-      
-      // Fallback if we don't have the enhanced user object
-      return res.json({
-        name: req.user.name || req.user.displayName || 'Social Auth User',
-        email: req.user.email || '',
-        avatar: req.user.avatar || req.user.photos?.[0]?.value || generateAvatarUrl(req.user.email, req.user.name),
-        platforms: req.user.username ? [
-          {
-            name: 'GitHub',
-            username: req.user.username,
-            url: `https://github.com/${req.user.username}`
-          }
-        ] : [],
-        streak: 0,
-        timeSpent: '0 minutes',
-        notes: [],
-        activity: [],
-        goals: []
-      });
-    }
-
-    // For regular JWT users with MongoDB records
-    if (req.user && req.user.id) {
-      let user = await User.findById(req.user.id).select('-password');
-      if (!user) {
-        return res.status(404).json({ msg: 'User not found' });
-      }
-      return res.json(user);
-    }
-
-    // If we get here, something's wrong with authentication
-    return res.status(401).json({ errors: [{ msg: 'Authentication failed' }] });
-  } catch (err) {
-    console.error('Profile error:', err.message);
-    res.status(500).json({ errors: [{ msg: 'Server Error' }] });
-  }
-});
-
 // Helper function to generate avatar URL from email or name
 const generateAvatarUrl = (email, name) => {
   // Use email for consistent avatar, or fallback to name
