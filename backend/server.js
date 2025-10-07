@@ -6,6 +6,7 @@ const cors = require("cors");
 const session = require("express-session");
 require("./utils/leetcodeCron");
 const passport = require("passport");
+const githubRoute = require("./routes/github.route");
 
 
 // Database connection
@@ -57,7 +58,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // OAuth Routes (mounted at root to match Google's callback URL)
 app.use("/auth", require("./routes/auth"));
-
+app.use("/api/github", githubRoute);
 // API Routes
 app.use("/api/auth", authMiddleware, require("./routes/auth"));
 app.use("/api/profile", generalMiddleware, require("./routes/profile"));
