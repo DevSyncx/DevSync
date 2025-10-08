@@ -27,6 +27,7 @@ import { ArrowUp } from "lucide-react";
 
 import LeetCode from "./Components/DashBoard/LeetCode";
 import FloatingSupportButton from "./Components/ui/Support";
+import Settings from "./Components/Settings";
 
 function Home() {
   const [showTop, setShowTop] = useState(false);
@@ -133,6 +134,7 @@ function App() {
         <Route path="/pomodoro" element={<Pomodoro />} />
         <Route path="/contributors" element={<AllContributors />} />
         <Route path="/leetcode/:leetUser" element={<LeetCode />} />
+        <Route path="/settings" element={<Settings />} />
       </Routes>
     </TimerProvider>
   );

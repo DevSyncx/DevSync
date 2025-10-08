@@ -97,7 +97,43 @@ const UserSchema = new Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
+    index: true
+  },
+  deletedAt: {
+    type: Date,
+    default: null
+  },
+  deactivatedAt: {
+    type: Date,
+    default: null
   }
+}, {
+  timestamps: true
 });
+
+// Add method to safely delete user data
+UserSchema.methods.softDelete = function() {
+  this.isActive = false;
+  this.deletedAt = new Date();
+  return this.save();
+};
+
+// Add method to deactivate account
+UserSchema.methods.deactivate = function() {
+  this.isActive = false;
+  this.deactivatedAt = new Date();
+  return this.save();
+};
+
+// Add method to reactivate account
+UserSchema.methods.reactivate = function() {
+  this.isActive = true;
+  this.deactivatedAt = null;
+  return this.save();
+};
 
 module.exports = mongoose.model('User', UserSchema);
