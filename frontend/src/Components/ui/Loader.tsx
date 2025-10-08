@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "@/lib/utils"; // if you have shadcn's `cn`, else remove
+// import { cn } from "@/lib/utils"; // if you have shadcn's `cn`, else remove
 
 interface LoaderProps {
   className?: string;

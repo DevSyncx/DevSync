@@ -101,7 +101,6 @@ export default function Dashboard() {
   const {
     socialLinks = [],
     streak = 0,
-    githubUsername = null,
     timeSpent = "0 minutes",
     activity = [],
     notes = []

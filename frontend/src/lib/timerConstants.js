@@ -1,0 +1,1 @@
+export const SESSIONS_BEFORE_LONG_BREAK = 4;
