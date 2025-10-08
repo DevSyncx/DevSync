@@ -33,7 +33,6 @@ const generateAvatarUrl = (email, name) => {
 const JWT_SECRET =
   process.env.JWT_SECRET || "devsync_secure_jwt_secret_key_for_authentication";
 
-// Start Google OAuth flow
 router.get(
   "/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
@@ -41,16 +40,35 @@ router.get(
 
 // Handle callback from Google
 router.get(
-  "/google/callback",
+  "/callback",
+  (req, res, next) => {
+    console.log('OAuth callback received. Starting authentication...');
+    console.log('Query params:', req.query);
+    next();
+  },
   passport.authenticate("google", {
-    failureRedirect: "/login", // if auth fails → go to login
+    // Redirect failures to the frontend login for better UX
+    failureRedirect: `${process.env.CLIENT_URL}/login`,
+    failureMessage: true,      // Enable failure messages
     session: true,
   }),
-  (req, res) => {
-    // ✅ Successful authentication → redirect to frontend home page
-    res.redirect(`${process.env.CLIENT_URL}/dashboard`);
-
-    // ⬆️ change port if your React app runs elsewhere
+  async (req, res, next) => {
+    try {
+      console.log('OAuth successful, user:', req.user);
+      // Issue JWT and redirect to frontend with token as query param
+      // Frontend reads ?token=... on /dashboard and stores it
+      const token = await generateJWT(req.user.id);
+      const redirectUrl = `${process.env.CLIENT_URL}/dashboard?token=${encodeURIComponent(token)}`;
+      return res.redirect(redirectUrl);
+    } catch (err) {
+      console.error('JWT generation failed after OAuth:', err);
+      return res.redirect(`${process.env.CLIENT_URL}/login?error=oauth_token_failed`);
+    }
+  },
+  // Error handler for the authentication
+  (err, req, res, next) => {
+    console.error('OAuth error:', err);
+    res.redirect(`${process.env.CLIENT_URL}/login?error=oauth_failed`);
   }
 );
 
@@ -126,10 +144,84 @@ router.post(
 
     } catch (err) {
       console.error(err.message);
-      res.status(500).json({ errors: [{ msg: "Server error" }] });
+      if(err.message === 'Invalid Email ID')
+      {
+        return res.status(400).json({ errors: [{ msg: "Invalid Email ID" }] });
+      }
+      return res.status(500).json({ errors: [{ msg: "Server error" }] });
     }
   }
 );
+
+// @route   POST api/auth/forgot-password
+// @desc    Send password reset link
+// @access  Public
+router.post("/forgot-password", async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ errors: [{ msg: "User not found" }] });
+    }
+
+    // Generate reset token
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+    await user.save();
+
+    // Send reset email
+    const resetLink = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
+    await sendVerificationEmail(
+      user.email,
+      "Password Reset Request",
+      `<p>You requested a password reset. Click <a href="${resetLink}">here</a> to reset your password.</p>`
+    );
+
+    res.json({ message: "Password reset link sent to your email." });
+  } catch (err) {
+    console.error("Forgot password error:", err.message);
+    res.status(500).json({ errors: [{ msg: "Server error" }] });
+  }
+});
+
+
+// @route   POST api/auth/reset-password/:token
+// @desc    Reset password using token
+// @access  Public
+router.post("/reset-password/:token", async (req, res) => {
+  const { token } = req.params;
+  const { password } = req.body;
+
+  try {
+    const user = await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "Invalid or expired reset token" }] });
+    }
+
+    // Hash new password
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
+
+    // Clear reset token fields
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    res.json({ message: "Password reset successfully." });
+  } catch (err) {
+    console.error("Reset password error:", err.message);
+    res.status(500).json({ errors: [{ msg: "Server error" }] });
+  }
+});
+
 
 // @route   POST api/auth/verify-email
 // @desc    Verify user email with code

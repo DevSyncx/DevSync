@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
+import { ArrowRightIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { AnimatedGradientText } from "./ui/animated-gradient-text";
+import { ScrollProgress } from "./ui/scroll-progress";
+
 const Hero = () => {
   const textRef = useRef(null);
   const underlineRef = useRef(null);
@@ -18,11 +23,13 @@ const Hero = () => {
   };
 
   return (
-    <section
+    <section 
+   
       id="home"
       className="relative w-full min-h-[78vh] px-6 py-20 flex items-center justify-center overflow-hidden rounded-3xl border border-white/50 bg-gradient-to-b from-white to-sky-50 shadow-2xl"
     style={{ background: "var(--background)", color: "var(--foreground)" }}
     >
+      <ScrollProgress />
       {/* subtle corner accents */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-3 top-3 h-10 w-20 rounded-tl-2xl border-l border-t border-sky-200/70" />
@@ -98,6 +105,40 @@ const Hero = () => {
           Your all-in-one productivity dashboard for developers 🚀
         </p>
 
+          <div className="z-10 mt-10 flex justify-center">
+            <a
+              href="https://github.com/DevSyncx/DevSync"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative flex items-center justify-center rounded-full px-6 py-2 shadow-[inset_0_-8px_10px_rgba(96,165,250,0.12)] transition-shadow duration-500 ease-out hover:shadow-[inset_0_-5px_10px_rgba(59,130,246,0.25)]"
+            >
+              {/* gradient overlay */}
+              <span
+                className={cn(
+                  "animate-gradient absolute inset-0 block h-full w-full rounded-full bg-gradient-to-r from-[#3b82f6]/50 via-[#60a5fa]/50 to-[#1e40af]/50 bg-[length:300%_100%] p-[1px]"
+                )}
+                style={{
+                  WebkitMask:
+                    "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  WebkitMaskComposite: "destination-out",
+                  mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                  maskComposite: "subtract",
+                  WebkitClipPath: "padding-box",
+                }}
+              />
+
+              {/* separator */}
+              ⭐ <hr className="mx-2 h-4 w-px shrink-0 bg-sky-300/50" />
+
+              {/* text */}
+              <AnimatedGradientText className="text-sm font-medium text-[--popover-foreground]">
+                Star on GitHub
+              </AnimatedGradientText>
+
+              {/* arrow icon */}
+              <ArrowRightIcon className="ml-2 h-5 w-5 stroke-[--popover-foreground] transition-transform duration-300 ease-in-out group-hover:translate-x-1" />
+            </a>
+          </div>          
         <div className="mt-6" />
       </motion.div>
     </section>

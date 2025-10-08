@@ -7,6 +7,7 @@ const path = require('path');
 const User = require('../models/User');
 const fs = require('fs');
 const crypto = require('crypto');
+const LeetCode = require("../models/Leetcode")
 
 // Helper function to generate avatar URL from email or name
 const generateAvatarUrl = (email, name) => {
@@ -337,6 +338,314 @@ router.put('/time', auth, async (req, res) => {
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
+  }
+});
+
+
+
+
+router.post("/leetcode/:username", async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    const existingUser = await LeetCode.findOne({ username });
+    if (existingUser) {
+      return res.json({
+        message: "LeetCode data fetched from database.",
+        data: existingUser,
+      });
+    }
+
+    const response = await fetch("https://leetcode.com/graphql", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": "Mozilla/5.0",
+      },
+      body: JSON.stringify({
+        query: `
+          query LeetCodeProfile($username: String!, $limit: Int!) {
+            matchedUser(username: $username) {
+              username
+              profile {
+                ranking
+                userAvatar
+              }
+              submitStatsGlobal {
+                acSubmissionNum {
+                  difficulty
+                  count
+                }
+              }
+              badges {
+                id
+                displayName
+                icon
+              }
+              submissionCalendar
+            }
+            userContestRanking(username: $username) {
+              attendedContestsCount
+              rating
+              globalRanking
+              totalParticipants
+              topPercentage
+              badge {
+                name
+                icon
+                expired
+              }
+            }
+            userContestRankingHistory(username: $username) {
+              attended
+              rating
+              contest {
+                title
+                startTime
+              }
+            }
+            recentAcSubmissionList(username: $username, limit: $limit) {
+              id
+              title
+              titleSlug
+              timestamp
+            }
+          }
+        `,
+        variables: { username, limit: 10 },
+      }),
+    });
+
+    let json;
+    try {
+      json = await response.json();
+    } catch (err) {
+      const text = await response.text();
+      console.error("Invalid JSON from LeetCode API:", text.slice(0, 300));
+      return res.status(500).json({ error: "Invalid JSON from LeetCode" });
+    }
+
+    if (!json.data?.matchedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const contestRanking = json.data.userContestRanking || {};
+    const contestHistory = json.data.userContestRankingHistory || [];
+
+    const result = {
+      username: json.data.matchedUser.username,
+      profile: {
+        ranking: json.data.matchedUser.profile?.ranking,
+        avatar: json.data.matchedUser.profile?.userAvatar,
+      },
+      submitStatsGlobal: json.data.matchedUser.submitStatsGlobal.acSubmissionNum.map(sub => ({
+        difficulty: sub.difficulty,
+        count: sub.count,
+      })),
+      badges: json.data.matchedUser.badges.map(badge => ({
+        id: badge.id,
+        displayName: badge.displayName,
+        icon: badge.icon,
+      })),
+      submissionCalendar: JSON.parse(json.data.matchedUser.submissionCalendar || "{}"),
+      recentSubmissions: json.data.recentAcSubmissionList.map(sub => ({
+        id: sub.id,
+        title: sub.title,
+        titleSlug: sub.titleSlug,
+        timestamp: new Date(sub.timestamp * 1000).toISOString(),
+      })),
+      contestRating: {
+        attendedContestsCount: contestRanking.attendedContestsCount || 0,
+        rating: contestRanking.rating || 0,
+        globalRanking: contestRanking.globalRanking || 0,
+        totalParticipants: contestRanking.totalParticipants || 0,
+        topPercentage: contestRanking.topPercentage || 0,
+        badge: {
+          name: contestRanking.badge?.name || "No Badge",
+          icon: contestRanking.badge?.icon || "/default_icon.png",
+          expired: contestRanking.badge?.expired || false,
+        },
+      },
+      contestHistory: contestHistory.map(contest => ({
+        attended: contest.attended || false,
+        rating: contest.rating || 0,
+        contest: {
+          title: contest.contest.title || "No Title",
+          startTime: new Date(contest.contest.startTime * 1000).toISOString(),
+        },
+      })),
+    };
+
+    const newUser = await LeetCode.create(result);
+
+    res.json({
+      message: "LeetCode data fetched from API and saved to DB.",
+      data: newUser,
+    });
+  } catch (err) {
+    console.error("LeetCode API Error:", err);
+    res.status(500).json({ error: "Failed to fetch or save LeetCode stats" });
+  }
+});
+
+
+
+router.post("/leetcode/update/:username", async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    const existingUser = await LeetCode.findOne({ username });
+
+    if (!existingUser) {
+      return res.status(404).json({ error: "User not found in database" });
+    }
+
+    const timeDifference = Date.now() - new Date(existingUser.lastUpdated).getTime();
+    const sixHoursInMillis = 6 * 60 * 60 * 1000; 
+
+    if (timeDifference < sixHoursInMillis) {
+      return res.json({
+        message: "Profile is up-to-date. No update necessary.",
+        data: existingUser,
+      });
+    }
+
+    const response = await fetch("https://leetcode.com/graphql", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": "Mozilla/5.0",
+      },
+      body: JSON.stringify({
+        query: `query LeetCodeProfile($username: String!, $limit: Int!) {
+          matchedUser(username: $username) {
+            username
+            profile {
+              ranking
+              userAvatar
+            }
+            submitStatsGlobal {
+              acSubmissionNum {
+                difficulty
+                count
+              }
+            }
+            badges {
+              id
+              displayName
+              icon
+            }
+            submissionCalendar
+          }
+          userContestRanking(username: $username) {
+            attendedContestsCount
+            rating
+            globalRanking
+            totalParticipants
+            topPercentage
+            badge {
+              name
+              icon
+              expired
+            }
+          }
+          userContestRankingHistory(username: $username) {
+            attended
+            rating
+            contest {
+              title
+              startTime
+            }
+          }
+          recentAcSubmissionList(username: $username, limit: $limit) {
+            id
+            title
+            titleSlug
+            timestamp
+          }
+        }`,
+        variables: { username, limit: 10 },
+      }),
+    });
+
+    let json;
+    try {
+      json = await response.json();
+    } catch (err) {
+      const text = await response.text();
+      console.error("Invalid JSON from LeetCode API:", text.slice(0, 300));
+      return res.status(500).json({ error: "Invalid JSON from LeetCode" });
+    }
+
+    if (!json.data?.matchedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const contestRanking = json.data.userContestRanking || {};
+    const contestHistory = json.data.userContestRankingHistory || [];
+
+    const result = {
+      username: json.data.matchedUser.username,
+      profile: {
+        ranking: json.data.matchedUser.profile?.ranking,
+        avatar: json.data.matchedUser.profile?.userAvatar,
+      },
+      submitStatsGlobal: json.data.matchedUser.submitStatsGlobal.acSubmissionNum.map(sub => ({
+        difficulty: sub.difficulty,
+        count: sub.count,
+      })),
+      badges: json.data.matchedUser.badges.map(badge => ({
+        id: badge.id,
+        displayName: badge.displayName,
+        icon: badge.icon,
+      })),
+      submissionCalendar: JSON.parse(json.data.matchedUser.submissionCalendar || "{}"),
+      recentSubmissions: json.data.recentAcSubmissionList.map(sub => ({
+        id: sub.id,
+        title: sub.title,
+        titleSlug: sub.titleSlug,
+        timestamp: new Date(sub.timestamp * 1000).toISOString(),
+      })),
+      contestRating: {
+        attendedContestsCount: contestRanking.attendedContestsCount || 0,
+        rating: contestRanking.rating || 0,
+        globalRanking: contestRanking.globalRanking || 0,
+        totalParticipants: contestRanking.totalParticipants || 0,
+        topPercentage: contestRanking.topPercentage || 0,
+        badge: {
+          name: contestRanking.badge?.name || "No Badge",
+          icon: contestRanking.badge?.icon || "/default_icon.png",
+          expired: contestRanking.badge?.expired || false,
+        },
+      },
+      contestHistory: contestHistory.map(contest => ({
+        attended: contest.attended || false,
+        rating: contest.rating || 0,
+        contest: {
+          title: contest.contest.title || "No Title",
+          startTime: new Date(contest.contest.startTime * 1000).toISOString(),
+        },
+      })),
+    };
+
+    existingUser.profile = result.profile;
+    existingUser.submitStatsGlobal = result.submitStatsGlobal;
+    existingUser.badges = result.badges;
+    existingUser.submissionCalendar = result.submissionCalendar;
+    existingUser.recentSubmissions = result.recentSubmissions;
+    existingUser.contestRating = result.contestRating;
+    existingUser.contestHistory = result.contestHistory;
+    existingUser.lastUpdated = new Date();
+
+    await existingUser.save();
+
+    res.json({
+      message: "LeetCode data updated successfully.",
+      data: existingUser,
+    });
+  } catch (err) {
+    console.error("LeetCode API Error:", err);
+    res.status(500).json({ error: "Failed to fetch or update LeetCode stats" });
   }
 });
 

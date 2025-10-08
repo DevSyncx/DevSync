@@ -74,7 +74,8 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`;
+    // Hit backend OAuth entry (mounted at /auth), not /api/auth
+    window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
   };
 
   // Show verification component if user needs to verify email

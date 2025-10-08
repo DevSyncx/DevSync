@@ -60,6 +60,7 @@ const handleVerificationEmail = async (email, verificationCode) => {
   }
 
   try {
+    console.log('Sending For Email Verifcation ...')
     await sendVerificationEmail(email, verificationCode);
     console.log(`Verification code for ${email}: ${verificationCode}`);
   } catch (emailError) {

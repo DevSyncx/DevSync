@@ -1,66 +1,76 @@
 // Entry point of the backend server
 require("dotenv").config();
-const dbconnection = require("./db/connection");
 const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
 const path = require("path");
-const contactRouter = require("./routes/contact.route");
-const passport = require("passport"); // import actual passport
-require("./config/passport"); // just execute the strategy config
+const cors = require("cors");
 const session = require("express-session");
+require("./utils/leetcodeCron");
+const passport = require("passport");
 
 
-// Importing Rate Limiter Middlewares
+// Database connection
+require("./db/connection");
 
-const { generalMiddleware, authMiddleware } = require("./middleware/rateLimit/index")
+// Passport config (optional Google OAuth)
+try {
+  require("./config/passport");
+} catch (err) {
+  console.warn("Google OAuth is not configured properly. Skipping Passport strategy.");
+}
 
+// Import routes
+const contactRouter = require("./routes/contact.route");
 
+// Rate limiter middleware placeholders
+const { generalMiddleware, authMiddleware } = require("./middleware/rateLimit/index");
 
-// Initialize express
+// Initialize Express
 const app = express();
 
+// JSON parsing
 app.use(express.json());
-app.use(cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173", // frontend URL for local dev
-    credentials: true
-}));
 
-
-
+// Enable CORS
 app.use(
-    session({
-        secret: process.env.SESSION_SECRET || "devsync_session_secret",
-        resave: false,
-        saveUninitialized: false,
-        cookie: { secure: false } // set true if using HTTPS
-    })
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true,
+  })
 );
 
+// Session setup
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "devsync_session_secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false }, // set true if using HTTPS
+  })
+);
+
+// Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Serve uploaded files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Define routes
+// OAuth Routes (mounted at root to match Google's callback URL)
+app.use("/auth", require("./routes/auth"));
 
-// app.use("/api/auth", require("./routes/auth"));
+// API Routes
 app.use("/api/auth", authMiddleware, require("./routes/auth"));
-
-// app.use("/api/profile", require("./routes/profile"));
 app.use("/api/profile", generalMiddleware, require("./routes/profile"));
-
-// app.use("/api/contact",contactRouter);
 app.use("/api/contact", generalMiddleware, contactRouter);
 
 
-// Route to display the initial message on browser
+// Default route
 app.get("/", (req, res) => {
-    res.send("DEVSYNC BACKEND API");
+  res.send("DEVSYNC BACKEND API 🚀");
 });
 
+// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Server is up and running at http://localhost:${PORT} 🚀`);
+  console.log(`Server is up and running at http://localhost:${PORT} 🚀`);
 });

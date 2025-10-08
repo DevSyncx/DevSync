@@ -121,7 +121,8 @@ const Register = () => {
   };
 
   const handleGoogleRegister = () => {
-    window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`;
+    // Use backend OAuth route at /auth (not protected /api)
+    window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
   };
 
   if (showVerification) {
@@ -151,7 +152,7 @@ const Register = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="w-full max-w-md"
       >
-  <div className="bg-[var(--card)] backdrop-blur-xl border border-[var(--border)] rounded-3xl shadow-xl p-8">
+  <div className="bg-[ var(--card-foreground)] backdrop-blur-xl border border-[var(--border)] rounded-3xl shadow-xl p-8">
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-4xl font-extrabold text-[var(--primary)] mb-2 tracking-tight">DevSync</h1>
@@ -294,7 +295,7 @@ const Register = () => {
             <button
               type="submit"
               disabled={isLoading || !passwordMatch}
-              className="w-full py-3 px-4 mt-2 bg-[var(--primary)] text-[var(--primary-foreground)] font-medium rounded-lg hover:bg-[var(--accent)] transition duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex justify-center"
+              className="w-full py-3 px-4 mt-2 cursor-pointer bg-[var(--primary)] text-[var(--primary-foreground)] font-medium rounded-lg hover:bg-[var(--accent)] transition duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex justify-center hover:text-[var(--foreground)]"
             >
               {isLoading ? "Creating account..." : "Create account"}
             </button>
@@ -313,18 +314,19 @@ const Register = () => {
 
             {/* Social Login */}
             <div className="grid grid-cols-2 gap-3">
-              <button type="button" className="flex items-center justify-center py-3 border border-[var(--input)] rounded-lg text-[var(--primary)] hover:bg-[var(--accent)]">
+              <button type="button" className="flex items-center cursor-pointer justify-center py-3 border border-[var(--input)] rounded-lg text-[var(--primary)] hover:bg-[var(--accent)]">
                 <Github className="h-4 w-4 mr-2" />
                 GitHub
               </button>
               <button
                 onClick={() => {
+                  // Trigger Google OAuth via backend
                   window.location.href = `${
                     import.meta.env.VITE_API_URL
-                  }/api/auth/google`;
+                  }/auth/google`;
                 }}
                 type="button"
-                className="flex items-center justify-center py-3 border border-[var(--input)] rounded-lg text-[var(--primary)] hover:bg-[var(--accent)]">
+                className="flex items-center cursor-pointer justify-center py-3 border border-[var(--input)] rounded-lg text-[var(--primary)] hover:bg-[var(--accent)]">
                 <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24">
                   <path
                     fill="currentColor"
