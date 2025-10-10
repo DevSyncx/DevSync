@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Navbar from "../Navbar/Navbar";
 import ThemeContext from "../ui/theme-provider.jsx";
 import { useTimer } from "../../context/TimerContext.jsx";
@@ -79,10 +79,24 @@ export default function PomodoroTimer() {
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
 
+  useEffect(() => {
+    // Check if the timer is at 0:00. We rely on the context to switch phases.
+    // We only play the sound if the timer hits zero while running.
+    if (timeLeft === 0) { 
+      const audio = document.getElementById('timer-end-sound');
+      if (audio) {
+        audio.play().catch(error => {
+          // Log error if browser blocks auto-play
+          console.error("Audio playback blocked:", error);
+        });
+      }
+    }
+  }, [timeLeft]); // only re-runs when timeLeft changes
+
   return (
     <div className={`min-h-screen flex flex-col transition-colors duration-500 ${isDarkMode ? "bg-[#232b34] text-white" : "bg-gradient-to-br from-blue-100 to-white text-black"}`}>
       <Navbar />
-      <div className="flex flex-col items-center justify-center flex-1 px-4 py-6">
+        <div className="flex flex-col items-center justify-center flex-1 px-4 py-24"> 
         <h1 className="text-3xl md:text-4xl font-bold mb-10">{isWork ? "Focus Time 💻" : "Break Time ☕"}</h1>
 
         <div style={{ display: "flex", alignItems: "center", gap: "54px", marginBottom: "36px", justifyContent: "center" }}>
@@ -122,6 +136,8 @@ export default function PomodoroTimer() {
           Session {sessions + 1} {isWork ? "(Work)" : "(Break)"}
         </p>
       </div>
+      <audio id="timer-end-sound" src="/sounds/alert.mp3" preload="auto" style={{ display: 'none' }} />
     </div>
+    
   );
 }

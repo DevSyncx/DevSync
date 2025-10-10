@@ -70,8 +70,9 @@ export function TimerProvider({ children }) {
 
     setIsWork(prev => !prev);
     setTimeLeft(nextTime);
-    setEndTimestamp(Date.now() + nextTime * 1000);
-    setIsRunning(true);
+    
+    setEndTimestamp(null);//stopped auto-restart
+    setIsRunning(false);//stopped the timer loop
 
     if ("Notification" in window && Notification.permission === "granted") {
       new Notification(

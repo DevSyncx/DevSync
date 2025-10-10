@@ -1,4 +1,5 @@
 // src/Components/FeaturesSectionDemo.jsx
+import { Link } from 'react-router-dom'; // <-- ADD THIS LINE
 import { cn } from "@/lib/utils";
 import {
   Activity,
@@ -72,14 +73,22 @@ const Feature = ({
   icon,
   index,
 }) => {
+  const isPomodoro = title === "Live Pomodoro Timer";
+  
+  // Use 'Link' component if it's Pomodoro, otherwise use a regular 'div'
+  const Component = isPomodoro ? Link : 'div';
+  
   return (
-    <div
+    <Component
+      // The 'to' prop is only valid on the Link component
+      {...(isPomodoro ? { to: "/pomodoro" } : {})} 
       className={cn(
         "flex flex-col lg:border-r py-10 relative group/feature dark:border-neutral-800",
-        "transition-all duration-300 ease-in-out", // Added for smooth transitions
+        "transition-all duration-300 ease-in-out",
+        "cursor-pointer", // Added cursor for better UX
         (index === 0 || index === 4) && "lg:border-l dark:border-neutral-500",
         index < 4 && "lg:border-b dark:border-neutral-800",
-        "hover:bg-[#1a2b47] hover:shadow-xl rounded-lg" // Background and shadow on hover
+        "hover:bg-[#1a2b47] hover:shadow-xl rounded-lg"
       )}
     >
       {/* Absolute positioned overlay for a subtle highlight effect */}
@@ -97,6 +106,6 @@ const Feature = ({
       <p className="text-sm text-blue-50 dark:text-neutral-300 max-w-xs relative z-10 px-10 group-hover/feature:text-blue-100 transition-colors duration-200">
         {description}
       </p>
-    </div>
+    </Component>
   );
 };
