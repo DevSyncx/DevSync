@@ -12,7 +12,7 @@ export default function DarkModeToggle() {
       aria-label="Toggle dark mode"
       className={`flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300 cursor-pointer hover:scale-110   ${
         isDark
-          ? "bg-[ --background]"
+          ? "bg-[--background]"
           : "bg-[--foreground]"
       }`}
     >

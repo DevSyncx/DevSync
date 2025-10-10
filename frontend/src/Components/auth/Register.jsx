@@ -115,14 +115,9 @@ const Register = () => {
     }
   };
 
-  const handleVerificationSuccess = (user) => {
+  const handleVerificationSuccess = () => {
     // Redirect to dashboard
     window.location.href = "/dashboard";
-  };
-
-  const handleGoogleRegister = () => {
-    // Use backend OAuth route at /auth (not protected /api)
-    window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
   };
 
   if (showVerification) {

@@ -1,12 +1,11 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { SESSIONS_BEFORE_LONG_BREAK } from "../lib/timerConstants";
 
 const TimerContext = createContext();
 
 export function useTimer() {
   return useContext(TimerContext);
 }
-
-const SESSIONS_BEFORE_LONG_BREAK = 4;
 
 export function TimerProvider({ children }) {
   const [workTime, setWorkTime] = useState(25 * 60);
@@ -26,6 +25,27 @@ export function TimerProvider({ children }) {
     const saved = localStorage.getItem("pomodoroTimeLeft");
     return saved ? Number(saved) : workTime;
   });
+
+  const handleSessionEnd = useCallback(() => {
+    const nextSession = isWork ? sessions + 1 : sessions;
+    setSessions(nextSession);
+    const nextTime = isWork
+      ? nextSession % SESSIONS_BEFORE_LONG_BREAK === 0
+        ? longBreak
+        : shortBreak
+      : workTime;
+
+    setIsWork(prev => !prev);
+    setTimeLeft(nextTime);
+    setEndTimestamp(Date.now() + nextTime * 1000);
+    setIsRunning(true);
+
+    if ("Notification" in window && Notification.permission === "granted") {
+      new Notification(
+        isWork ? "Work session complete! Time for a break 🎉" : "Break over! Back to work 💻"
+      );
+    }
+  }, [sessions, isWork, longBreak, shortBreak, workTime]);
 
   // Timer tick using requestAnimationFrame
   useEffect(() => {
@@ -50,7 +70,7 @@ export function TimerProvider({ children }) {
     }
 
     return () => cancelAnimationFrame(raf);
-  }, [isRunning, endTimestamp]);
+  }, [isRunning, endTimestamp, handleSessionEnd]);
 
   // Persist timer info
   useEffect(() => localStorage.setItem("pomodoroTimeLeft", timeLeft), [timeLeft]);
@@ -58,27 +78,6 @@ export function TimerProvider({ children }) {
   useEffect(() => {
     if (endTimestamp) localStorage.setItem("pomodoroEndTimestamp", endTimestamp);
   }, [endTimestamp]);
-
-  const handleSessionEnd = () => {
-    const nextSession = isWork ? sessions + 1 : sessions;
-    setSessions(nextSession);
-    const nextTime = isWork
-      ? nextSession % SESSIONS_BEFORE_LONG_BREAK === 0
-        ? longBreak
-        : shortBreak
-      : workTime;
-
-    setIsWork(prev => !prev);
-    setTimeLeft(nextTime);
-    setEndTimestamp(Date.now() + nextTime * 1000);
-    setIsRunning(true);
-
-    if ("Notification" in window && Notification.permission === "granted") {
-      new Notification(
-        isWork ? "Work session complete! Time for a break 🎉" : "Break over! Back to work 💻"
-      );
-    }
-  };
 
   const startTimer = () => {
     if (!endTimestamp) setEndTimestamp(Date.now() + timeLeft * 1000);

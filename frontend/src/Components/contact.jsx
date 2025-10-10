@@ -45,7 +45,7 @@ const Contact = () => {
           message: "Something went wrong. Please try again.",
         });
       }
-    } catch (error) {
+    } catch {
       setStatus("error");
       setError("root", { message: "Something went wrong. Please try again." });
     }
