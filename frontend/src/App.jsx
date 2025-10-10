@@ -30,6 +30,7 @@ import FloatingSupportButton from "./Components/ui/Support";
 
 function Home() {
   const [showTop, setShowTop] = useState(false);
+  const [assistantOpen, setAssistantOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {

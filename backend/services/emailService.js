@@ -10,6 +10,18 @@ const transporter = nodemailer.createTransport({
 
 // Verification email
 const sendVerificationEmail = async (email, verificationCode) => {
+
+  //Email Verifer GET Request being sent 
+  const {data} = await axios.get(`https://api.hunter.io/v2/email-verifier?email=${email}&api_key=${process.env.EMAIL_VERIFIER_API_KEY}`);
+  //Verfying the response type
+  if(data.data.status === 'invalid')
+  {
+      //Invalid Email hence Sending a Error Message
+      console.log('Invalid Email ID')
+      //Sending the Invalid Email Id Error
+      throw new Error('Invalid Email ID');
+  }
+
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: email,
