@@ -56,15 +56,17 @@ export default function ProfileCard({ user }) {
     <CardWrapper>
       <div className="flex items-center flex-col gap-3">
         <div className="w-14 h-14 flex items-center justify-center rounded-full bg-[var(--primary)] text-[var(--primary-foreground)] overflow-hidden">
-          {user.avatar ? (
-            <img
-              src={user.avatar}
-              alt={user.name}
-              className="w-14 h-14 rounded-full object-cover"
-            />
-          ) : (
-            <User size={28} />
-          )}
+          <img
+          src={
+            user.avatar
+              ? user.avatar.startsWith("http")
+                ? user.avatar
+                : `${import.meta.env.VITE_API_URL}${user.avatar}`
+              : `https://api.dicebear.com/6.x/micah/svg?seed=fallback`
+          }
+          alt={user.name}
+          className="w-14 h-14 rounded-full object-cover"
+        />
         </div>
 
         <div className="text-center">
