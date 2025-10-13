@@ -1,0 +1,17 @@
+name: Ping Render App
+
+# Run periodically
+on:
+  schedule:
+    # Every 10 minutes
+    - cron: '*/5 * * * *'
+  workflow_dispatch: 
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Render app
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://devsync-hrj5.onrender.com)
+          echo "Pinged Render app with status: $STATUS"

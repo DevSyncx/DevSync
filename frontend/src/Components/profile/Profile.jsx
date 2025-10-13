@@ -1,8 +1,32 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Camera, RefreshCw, User, MapPin, Mail, Globe, Edit2, Save, X, Plus, Check, LogOut, Sparkles, Zap } from "lucide-react";
-import { SiLeetcode, SiCodechef, SiHackerrank, SiHackerearth, SiCodeforces, SiLinkedin, SiGitlab, SiGithub } from "react-icons/si";
+import {
+  Camera,
+  RefreshCw,
+  User,
+  MapPin,
+  Mail,
+  Globe,
+  Edit2,
+  Save,
+  X,
+  Plus,
+  Check,
+  LogOut,
+  Sparkles,
+  Zap,
+} from "lucide-react";
+import {
+  SiLeetcode,
+  SiCodechef,
+  SiHackerrank,
+  SiHackerearth,
+  SiCodeforces,
+  SiLinkedin,
+  SiGitlab,
+  SiGithub,
+} from "react-icons/si";
 import BackButton from "../ui/backbutton";
 
 // --- START: Helper Components for Modern UI (Including the new SuccessPopup) ---
@@ -12,7 +36,7 @@ import BackButton from "../ui/backbutton";
  */
 const SocialButton = ({ icon, buttonUrl, buttonName, leetcodeUrl }) => {
   const isLinked = !!buttonUrl;
-  
+
   return (
     <motion.button
       whileHover={{ scale: isLinked ? 1.05 : 1 }}
@@ -24,7 +48,8 @@ const SocialButton = ({ icon, buttonUrl, buttonName, leetcodeUrl }) => {
       } w-full`}
       onClick={() => {
         if (buttonUrl) {
-          const url = buttonName === 'Leetcode' ? leetcodeUrl(buttonUrl) : buttonUrl;
+          const url =
+            buttonName === "Leetcode" ? leetcodeUrl(buttonUrl) : buttonUrl;
           if (url) {
             window.open(url, "_blank", "noopener,noreferrer");
           }
@@ -32,13 +57,27 @@ const SocialButton = ({ icon, buttonUrl, buttonName, leetcodeUrl }) => {
       }}
       disabled={!buttonUrl}
     >
-      <div className={`text-xl ${isLinked ? 'group-hover:scale-110 transition-transform' : ''}`}>
+      <div
+        className={`text-xl ${
+          isLinked ? "group-hover:scale-110 transition-transform" : ""
+        }`}
+      >
         {icon}
       </div>
       <span className="font-medium truncate">{buttonName}</span>
       {isLinked && (
-        <svg className="w-4 h-4 ml-auto opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        <svg
+          className="w-4 h-4 ml-auto opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 5l7 7-7 7"
+          />
         </svg>
       )}
     </motion.button>
@@ -48,7 +87,14 @@ const SocialButton = ({ icon, buttonUrl, buttonName, leetcodeUrl }) => {
 /**
  * A themed input wrapper for editing social links.
  */
-const SocialInput = ({ labelName, icon, linkName, editData, setEditData, error }) => {
+const SocialInput = ({
+  labelName,
+  icon,
+  linkName,
+  editData,
+  setEditData,
+  error,
+}) => {
   return (
     <div className="space-y-2">
       <label className="text-sm font-semibold text-foreground flex items-center gap-2">
@@ -59,18 +105,18 @@ const SocialInput = ({ labelName, icon, linkName, editData, setEditData, error }
         type="text"
         value={editData.socialLinks?.[linkName] || ""}
         onChange={(e) => {
-          setEditData(prev => ({
+          setEditData((prev) => ({
             ...prev,
             socialLinks: {
               ...prev.socialLinks,
-              [linkName]: e.target.value
-            }
+              [linkName]: e.target.value,
+            },
           }));
         }}
         placeholder={`Enter ${labelName} URL`}
         className="w-full px-4 py-2.5 bg-background border-2 border-border rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none"
       />
-      {linkName === 'leetcode' && error && (
+      {linkName === "leetcode" && error && (
         <p className="text-sm text-destructive flex items-center gap-1">
           <X className="w-4 h-4" />
           {error}
@@ -105,7 +151,12 @@ const SuccessPopup = ({ isVisible, onClose, userName }) => {
             <motion.div
               initial={{ scale: 0, rotate: 0 }}
               animate={{ scale: 1, rotate: 360 }}
-              transition={{ type: "spring", stiffness: 200, damping: 10, delay: 0.1 }}
+              transition={{
+                type: "spring",
+                stiffness: 200,
+                damping: 10,
+                delay: 0.1,
+              }}
               className="w-16 h-16 mx-auto bg-primary text-primary-foreground rounded-full flex items-center justify-center shadow-lg"
             >
               <Zap className="w-8 h-8" />
@@ -113,7 +164,8 @@ const SuccessPopup = ({ isVisible, onClose, userName }) => {
 
             <h3 className="text-3xl font-bold text-primary">Success!</h3>
             <p className="text-lg text-foreground/90">
-              **{userName || "Your profile"}** has been **updated successfully**.
+              **{userName || "Your profile"}** has been **updated
+              successfully**.
             </p>
             <p className="text-muted-foreground text-sm">
               Your changes are now live and visible to the community.
@@ -136,7 +188,6 @@ const SuccessPopup = ({ isVisible, onClose, userName }) => {
 
 // --- END: Helper Components for Modern UI (Including the new SuccessPopup) ---
 
-
 const Profile = () => {
   const [profileData, setProfileData] = useState({
     name: "",
@@ -146,10 +197,17 @@ const Profile = () => {
     avatar: "/uploads/avatars/default-avatar.png",
     website: "",
     socialLinks: {
-      github: "", gitlab: "", linkedin: "", website: "",
-      codechef: "", hackerrank: "", leetcode: "", codeforces: "", hackerearth: ""
+      github: "",
+      gitlab: "",
+      linkedin: "",
+      website: "",
+      codechef: "",
+      hackerrank: "",
+      leetcode: "",
+      codeforces: "",
+      hackerearth: "",
     },
-    skills: []
+    skills: [],
   });
 
   // NEW STATE FOR POPUP
@@ -199,23 +257,30 @@ const Profile = () => {
         }
 
         const data = await response.json();
-        
+
         // Ensure socialLinks exists
         const normalizedData = {
           ...data,
           socialLinks: data.socialLinks || {
-            github: "", gitlab: "", linkedin: "", website: "",
-            codechef: "", hackerrank: "", leetcode: "", codeforces: "", hackerearth: ""
+            github: "",
+            gitlab: "",
+            linkedin: "",
+            website: "",
+            codechef: "",
+            hackerrank: "",
+            leetcode: "",
+            codeforces: "",
+            hackerearth: "",
           },
-          skills: data.skills || []
+          skills: data.skills || [],
         };
-        
+
         setProfileData(normalizedData);
         setEditData(normalizedData);
         setIsLoading(false);
       } catch (error) {
-        console.error('Error fetching profile:', error);
-        setError('Failed to load profile data');
+        console.error("Error fetching profile:", error);
+        setError("Failed to load profile data");
         setIsLoading(false);
       }
     };
@@ -237,27 +302,30 @@ const Profile = () => {
     const { name, value } = e.target;
     setEditData({
       ...editData,
-      [name]: value
+      [name]: value,
     });
   };
-  
+
   const handleWebsiteChange = (e) => {
     const value = e.target.value;
-    setEditData(prev => ({
-        ...prev,
+    setEditData((prev) => ({
+      ...prev,
+      website: value,
+      socialLinks: {
+        ...prev.socialLinks,
         website: value,
-        socialLinks: {
-            ...prev.socialLinks,
-            website: value
-        }
+      },
     }));
   };
 
   const handleAddSkill = () => {
-    if (currentSkill.trim() !== "" && !editData.skills.includes(currentSkill.trim())) {
+    if (
+      currentSkill.trim() !== "" &&
+      !editData.skills.includes(currentSkill.trim())
+    ) {
       setEditData({
         ...editData,
-        skills: [...editData.skills, currentSkill.trim()]
+        skills: [...editData.skills, currentSkill.trim()],
       });
       setCurrentSkill("");
     }
@@ -266,7 +334,7 @@ const Profile = () => {
   const handleRemoveSkill = (skillToRemove) => {
     setEditData({
       ...editData,
-      skills: editData.skills.filter(skill => skill !== skillToRemove)
+      skills: editData.skills.filter((skill) => skill !== skillToRemove),
     });
   };
 
@@ -279,29 +347,32 @@ const Profile = () => {
   const handleGenerateAvatar = async () => {
     if (isEditing) {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem("token");
         if (!token) {
-          throw new Error('Authentication required');
+          throw new Error("Authentication required");
         }
 
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/profile/generate-avatar`, {
-          method: 'POST',
-          headers: {
-            'x-auth-token': token
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/profile/generate-avatar`,
+          {
+            method: "POST",
+            headers: {
+              "x-auth-token": token,
+            },
           }
-        });
+        );
 
         if (!response.ok) {
-          throw new Error('Failed to generate avatar');
+          throw new Error("Failed to generate avatar");
         }
 
         const data = await response.json();
         setAvatarPreview(`${import.meta.env.VITE_API_URL}${data.avatar}`);
         setAvatarFile(null);
-        setEditData(prev => ({...prev, avatar: data.avatar})); 
+        setEditData((prev) => ({ ...prev, avatar: data.avatar }));
       } catch (error) {
-        console.error('Error generating avatar:', error);
-        alert('Failed to generate new avatar');
+        console.error("Error generating avatar:", error);
+        alert("Failed to generate new avatar");
       }
     }
   };
@@ -320,24 +391,44 @@ const Profile = () => {
 
   function normalizeLeetcodeURL(url) {
     if (!url || url.trim() === "") return null;
-    const leetcodeRegex = /^https?:\/\/(www\.)?leetcode\.com\/(u\/)?[a-zA-Z0-9_-]+\/?$/;
-    if (!leetcodeRegex.test(url)) {
-      return null;
-    }
-    return url.replace(/\/$/, '');
+    const leetcodeRegex =
+      /^https?:\/\/(www\.)?leetcode\.com\/(u\/)?[a-zA-Z0-9_-]+\/?$/;
+    if (!leetcodeRegex.test(url)) return null;
+    return url.replace(/\/$/, "");
+  }
+
+  function normalizeGitHubURL(url) {
+    if (!url || url.trim() === "") return null;
+    const githubRegex = /^https?:\/\/(www\.)?github\.com\/[a-zA-Z0-9_-]+\/?$/;
+    if (!githubRegex.test(url)) return null;
+
+    const username = url.replace(/\/$/, "").split("/").pop();
+    return username;
   }
 
   const getLeetcodeUrl = (url) => {
     const normalized = normalizeLeetcodeURL(url);
     if (!normalized) return null;
     const username = normalized.split("/").pop();
-    return `${import.meta.env.VITE_API_URL}/leetcode/${username}`; 
-  }
+    return `${import.meta.env.VITE_API_URL}/leetcode/${username}`;
+  };
 
   const handleSaveProfile = async () => {
     setIsSaving(true);
+
+    // GitHub validation
+    let githubUrlValue = editData.socialLinks?.github?.trim();
+    let normalizedGithub = githubUrlValue
+      ? normalizeGitHubURL(githubUrlValue)
+      : "";
+    if (githubUrlValue && !normalizedGithub) {
+      setError("GitHub Profile URL must be valid");
+      setIsSaving(false);
+      return;
+    }
+
+    // LeetCode validation
     let leetcodeUrlValue = editData.socialLinks?.leetcode?.trim();
-    
     if (leetcodeUrlValue && leetcodeUrlValue !== "") {
       let res = normalizeLeetcodeURL(leetcodeUrlValue);
       if (!res) {
@@ -348,40 +439,39 @@ const Profile = () => {
     }
 
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        throw new Error('Authentication required');
-      }
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("Authentication required");
 
       let finalAvatarPath = editData.avatar;
 
       if (avatarFile) {
         const formData = new FormData();
-        formData.append('avatar', avatarFile);
+        formData.append("avatar", avatarFile);
 
-        const avatarResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/profile/avatar`, {
-          method: 'POST',
-          headers: {
-            'x-auth-token': token
-          },
-          body: formData
-        });
+        const avatarResponse = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/profile/avatar`,
+          {
+            method: "POST",
+            headers: { "x-auth-token": token },
+            body: formData,
+          }
+        );
 
         if (!avatarResponse.ok) {
           const errorData = await avatarResponse.json();
-          throw new Error(errorData.msg || 'Failed to upload avatar');
+          throw new Error(errorData.msg || "Failed to upload avatar");
         }
 
         const avatarData = await avatarResponse.json();
         finalAvatarPath = avatarData.avatar;
       }
-      
+
       const requestBody = {
         name: editData.name,
         bio: editData.bio,
         location: editData.location,
         skills: editData.skills,
-        github: editData.socialLinks?.github || "",
+        github: githubUrlValue,
         gitlab: editData.socialLinks?.gitlab || "",
         linkedin: editData.socialLinks?.linkedin || "",
         twitter: editData.socialLinks?.twitter || "",
@@ -390,25 +480,28 @@ const Profile = () => {
         hackerrank: editData.socialLinks?.hackerrank || "",
         leetcode: editData.socialLinks?.leetcode || "",
         codeforces: editData.socialLinks?.codeforces || "",
-        hackerearth: editData.socialLinks?.hackerearth || ""
+        hackerearth: editData.socialLinks?.hackerearth || "",
       };
-      
-      if (avatarFile || (avatarPreview && !avatarPreview.startsWith('data:'))) {
-        requestBody.avatar = finalAvatarPath; 
+
+      if (avatarFile || (avatarPreview && !avatarPreview.startsWith("data:"))) {
+        requestBody.avatar = finalAvatarPath;
       }
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': token
-        },
-        body: JSON.stringify(requestBody)
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/profile`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token,
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.msg || 'Failed to update profile');
+        throw new Error(errorData.msg || "Failed to update profile");
       }
 
       const rawUpdatedProfile = await response.json();
@@ -416,9 +509,16 @@ const Profile = () => {
       const updatedProfile = {
         ...rawUpdatedProfile,
         socialLinks: rawUpdatedProfile.socialLinks || {
-          github: "", gitlab: "", linkedin: "", website: "",
-          codechef: "", hackerrank: "", leetcode: "", codeforces: "", hackerearth: ""
-        }
+          github: "",
+          gitlab: "",
+          linkedin: "",
+          website: "",
+          codechef: "",
+          hackerrank: "",
+          leetcode: "",
+          codeforces: "",
+          hackerearth: "",
+        },
       };
 
       setAvatarFile(null);
@@ -432,7 +532,6 @@ const Profile = () => {
       setShowSuccessPopup(true); // Show the success popup instead of alert
       // alert("Profile updated successfully!"); // REMOVE ORIGINAL ALERT
       // --- END POPUP INTEGRATION ---
-
     } catch (error) {
       console.error("Error saving profile:", error);
       alert(error.message || "Failed to update profile. Please try again.");
@@ -449,24 +548,24 @@ const Profile = () => {
 
   // --- END: ORIGINAL LOGIC (STRICTLY UNCHANGED FOR FUNCTIONALITY) ---
 
-
-  const connectedPlatformsCount = profileData.socialLinks 
-    ? Object.values(profileData.socialLinks).filter(link => link && link.trim() !== "").length 
+  const connectedPlatformsCount = profileData.socialLinks
+    ? Object.values(profileData.socialLinks).filter(
+        (link) => link && link.trim() !== ""
+      ).length
     : 0;
 
-  const currentAvatarSrc = avatarPreview 
-    ? avatarPreview 
-    : (profileData.avatar?.startsWith('http') 
-        ? profileData.avatar 
-        : `${import.meta.env.VITE_API_URL}${profileData.avatar}`
-      );
-      
+  const currentAvatarSrc = avatarPreview
+    ? avatarPreview
+    : profileData.avatar?.startsWith("http")
+    ? profileData.avatar
+    : `${import.meta.env.VITE_API_URL}${profileData.avatar}`;
+
   // ... (Loading and Error screens remain the same) ...
 
   const handleClosePopup = () => {
     setShowSuccessPopup(false);
   };
-      
+
   if (isLoading) {
     return (
       <div className="min-h-screen w-full bg-background flex items-center justify-center">
@@ -498,31 +597,28 @@ const Profile = () => {
   return (
     // Outer Container: Full Viewport Height
     <div className="h-screen w-full bg-background flex flex-col">
-      <BackButton />  
+      <BackButton />
       {/* Success Popup */}
-      <SuccessPopup 
-        isVisible={showSuccessPopup} 
-        onClose={handleClosePopup} 
+      <SuccessPopup
+        isVisible={showSuccessPopup}
+        onClose={handleClosePopup}
         userName={profileData.name}
       />
 
       {/* Content Wrapper: Flex-grow to fill space below Navbar, using full width */}
       <div className="flex-grow overflow-y-auto mt-[72px] pb-12 pt-6 px-4 md:px-12">
-        
         {/* Header Section: Removed max-w-6xl mx-auto */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-8 text-center"
         >
-          
-            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
-              Developer Profile
-            </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Showcase your skills and connect with the developer community
-            </p>
-         
+          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
+            Developer Profile
+          </h1>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Showcase your skills and connect with the developer community
+          </p>
         </motion.div>
 
         {/* Main Profile Content Container (Removed Card Styling and max-w-6xl) */}
@@ -533,8 +629,7 @@ const Profile = () => {
           className="w-full" // Use full width
         >
           {/* Main Content Div (Kept overflow-hidden for safety) */}
-          <div className="overflow-hidden"> 
-            
+          <div className="overflow-hidden">
             {/* Header Strip with Actions (Full Width) */}
             <div className="bg-primary/5 px-6 md:px-12 py-6 border-b-2 border-border">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -543,8 +638,12 @@ const Profile = () => {
                     <User className="w-6 h-6 text-primary-foreground" />
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-foreground">Your Profile</h2>
-                    <p className="text-sm text-muted-foreground">Manage your developer identity</p>
+                    <h2 className="text-2xl font-bold text-foreground">
+                      Your Profile
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                      Manage your developer identity
+                    </p>
                   </div>
                 </div>
 
@@ -614,7 +713,7 @@ const Profile = () => {
               <div className="grid md:grid-cols-12 gap-8">
                 {/* Left Sidebar - Avatar and Name (Sticky) */}
                 <div className="md:col-span-4">
-                  <div className="sticky top-20 space-y-8"> 
+                  <div className="sticky top-20 space-y-8">
                     {/* Avatar Block - Adjusted to use full width and better padding */}
                     <div className="text-center p-6 bg-secondary/30 rounded-3xl border-2 border-border shadow-lg">
                       <motion.div
@@ -623,7 +722,7 @@ const Profile = () => {
                       >
                         <div
                           className={`relative w-full h-full rounded-3xl overflow-hidden border-4 border-primary/50 shadow-xl transition-all duration-300 ${
-                            isEditing ? 'cursor-pointer' : ''
+                            isEditing ? "cursor-pointer" : ""
                           }`}
                           onClick={handleAvatarClick}
                         >
@@ -632,7 +731,8 @@ const Profile = () => {
                             alt={profileData.name || "User"}
                             className="w-full h-full object-cover"
                             onError={(e) => {
-                              e.target.src = "https://api.dicebear.com/6.x/micah/svg?seed=fallback";
+                              e.target.src =
+                                "https://api.dicebear.com/6.x/micah/svg?seed=fallback";
                             }}
                           />
                           {isEditing && (
@@ -642,7 +742,9 @@ const Profile = () => {
                               className="absolute inset-0 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center text-white"
                             >
                               <Camera className="w-8 h-8 mb-2" />
-                              <span className="text-sm font-medium">Change Photo</span>
+                              <span className="text-sm font-medium">
+                                Change Photo
+                              </span>
                             </motion.div>
                           )}
                         </div>
@@ -667,10 +769,14 @@ const Profile = () => {
                       <div className="mt-6 space-y-3">
                         {!isEditing ? (
                           <>
-                            <h2 className="text-3xl font-bold text-foreground">{profileData.name || "Your Name"}</h2>
+                            <h2 className="text-3xl font-bold text-foreground">
+                              {profileData.name || "Your Name"}
+                            </h2>
                             <div className="flex items-center justify-center gap-2 text-muted-foreground">
                               <Mail className="w-4 h-4" />
-                              <span className="text-sm">{profileData.email || "your@email.com"}</span>
+                              <span className="text-sm">
+                                {profileData.email || "your@email.com"}
+                              </span>
                             </div>
                           </>
                         ) : (
@@ -695,12 +801,20 @@ const Profile = () => {
                         </h3>
                         <div className="space-y-3">
                           <div className="flex justify-between items-center pb-2 border-b border-border">
-                            <span className="text-sm text-muted-foreground">Total Skills</span>
-                            <span className="font-bold text-primary text-lg">{profileData.skills?.length || 0}</span>
+                            <span className="text-sm text-muted-foreground">
+                              Total Skills
+                            </span>
+                            <span className="font-bold text-primary text-lg">
+                              {profileData.skills?.length || 0}
+                            </span>
                           </div>
                           <div className="flex justify-between items-center">
-                            <span className="text-sm text-muted-foreground">Platforms Connected</span>
-                            <span className="font-bold text-primary text-lg">{connectedPlatformsCount}</span>
+                            <span className="text-sm text-muted-foreground">
+                              Platforms Connected
+                            </span>
+                            <span className="font-bold text-primary text-lg">
+                              {connectedPlatformsCount}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -723,7 +837,8 @@ const Profile = () => {
                     </h3>
                     {!isEditing ? (
                       <p className="text-foreground/90 leading-relaxed bg-secondary/30 rounded-2xl p-6 border-2 border-border shadow-inner whitespace-pre-wrap">
-                        {profileData.bio || "No bio added yet. Click 'Edit Profile' to introduce yourself!"}
+                        {profileData.bio ||
+                          "No bio added yet. Click 'Edit Profile' to introduce yourself!"}
                       </p>
                     ) : (
                       <textarea
@@ -778,19 +893,28 @@ const Profile = () => {
                           Personal Website
                         </label>
                         {!isEditing ? (
-                          <a 
-                            href={profileData.website || profileData.socialLinks?.website} 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
+                          <a
+                            href={
+                              profileData.website ||
+                              profileData.socialLinks?.website
+                            }
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="block text-primary font-medium bg-secondary/30 rounded-xl px-4 py-3 border-2 border-border truncate hover:underline"
                           >
-                            {profileData.website || profileData.socialLinks?.website || "Not specified"}
+                            {profileData.website ||
+                              profileData.socialLinks?.website ||
+                              "Not specified"}
                           </a>
                         ) : (
                           <input
                             type="text"
                             name="website"
-                            value={editData.website || editData.socialLinks?.website || ""}
+                            value={
+                              editData.website ||
+                              editData.socialLinks?.website ||
+                              ""
+                            }
                             onChange={handleWebsiteChange}
                             placeholder="https://yourwebsite.com"
                             className="w-full px-4 py-2.5 bg-background border-2 border-border rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none"
@@ -799,7 +923,7 @@ const Profile = () => {
                       </div>
                     </div>
                   </motion.div>
-                  
+
                   {/* Skills Section */}
                   <motion.div
                     initial={{ opacity: 0, x: 20 }}
@@ -827,7 +951,9 @@ const Profile = () => {
                           onChange={(e) => setCurrentSkill(e.target.value)}
                           placeholder="Add a skill (e.g., React, Python, Docker)"
                           className="flex-1 px-5 py-3 bg-background border-2 border-border rounded-xl focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none"
-                          onKeyDown={(e) => e.key === 'Enter' && handleAddSkill()}
+                          onKeyDown={(e) =>
+                            e.key === "Enter" && handleAddSkill()
+                          }
                         />
                         <motion.button
                           whileHover={{ scale: 1.05 }}
@@ -842,38 +968,45 @@ const Profile = () => {
                       </div>
                     )}
 
-                    {(isEditing ? editData.skills : profileData.skills)?.length === 0 ? (
+                    {(isEditing ? editData.skills : profileData.skills)
+                      ?.length === 0 ? (
                       <div className="text-center py-12 bg-secondary/20 rounded-2xl border-2 border-dashed border-border">
-                        <p className="text-muted-foreground">No skills added yet</p>
+                        <p className="text-muted-foreground">
+                          No skills added yet
+                        </p>
                       </div>
                     ) : (
                       <div className="flex flex-wrap gap-3">
-                        {(isEditing ? editData.skills : profileData.skills).map((skill, index) => (
-                          <motion.div
-                            key={index}
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{ delay: index * 0.05 }}
-                            whileHover={{ scale: 1.03 }}
-                            className={`group relative ${
-                              isEditing
-                                ? "bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer"
-                                : "bg-secondary text-foreground hover:bg-primary/10 hover:text-primary"
-                            } px-5 py-2 rounded-full font-medium transition-all border-2 border-border flex items-center gap-2 shadow-sm`}
-                          >
-                            {!isEditing && <Check className="w-4 h-4 text-primary" />}
-                            <span>{skill}</span>
-                            {isEditing && (
-                              <button
-                                onClick={() => handleRemoveSkill(skill)}
-                                className="hover:bg-white/20 rounded-full p-1 transition-colors ml-1"
-                                aria-label="Remove skill"
-                              >
-                                <X className="w-4 h-4 text-primary-foreground" />
-                              </button>
-                            )}
-                          </motion.div>
-                        ))}
+                        {(isEditing ? editData.skills : profileData.skills).map(
+                          (skill, index) => (
+                            <motion.div
+                              key={index}
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              transition={{ delay: index * 0.05 }}
+                              whileHover={{ scale: 1.03 }}
+                              className={`group relative ${
+                                isEditing
+                                  ? "bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer"
+                                  : "bg-secondary text-foreground hover:bg-primary/10 hover:text-primary"
+                              } px-5 py-2 rounded-full font-medium transition-all border-2 border-border flex items-center gap-2 shadow-sm`}
+                            >
+                              {!isEditing && (
+                                <Check className="w-4 h-4 text-primary" />
+                              )}
+                              <span>{skill}</span>
+                              {isEditing && (
+                                <button
+                                  onClick={() => handleRemoveSkill(skill)}
+                                  className="hover:bg-white/20 rounded-full p-1 transition-colors ml-1"
+                                  aria-label="Remove skill"
+                                >
+                                  <X className="w-4 h-4 text-primary-foreground" />
+                                </button>
+                              )}
+                            </motion.div>
+                          )
+                        )}
                       </div>
                     )}
                   </motion.div>
@@ -889,18 +1022,54 @@ const Profile = () => {
                       <div className="w-1 h-6 bg-primary rounded-full"></div>
                       Social Profiles
                     </h3>
-                    
+
                     {!isEditing ? (
                       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <SocialButton icon={<SiGithub />} buttonUrl={profileData.socialLinks?.github} buttonName="GitHub" leetcodeUrl={getLeetcodeUrl} />
-                        <SocialButton icon={<SiGitlab />} buttonUrl={profileData.socialLinks?.gitlab} buttonName="GitLab" leetcodeUrl={getLeetcodeUrl} />
-                        <SocialButton icon={<SiLinkedin />} buttonUrl={profileData.socialLinks?.linkedin} buttonName="LinkedIn" leetcodeUrl={getLeetcodeUrl} />
+                        <SocialButton
+                          icon={<SiGithub />}
+                          buttonUrl={profileData.socialLinks?.github}
+                          buttonName="GitHub"
+                          leetcodeUrl={getLeetcodeUrl}
+                        />
+                        <SocialButton
+                          icon={<SiGitlab />}
+                          buttonUrl={profileData.socialLinks?.gitlab}
+                          buttonName="GitLab"
+                          leetcodeUrl={getLeetcodeUrl}
+                        />
+                        <SocialButton
+                          icon={<SiLinkedin />}
+                          buttonUrl={profileData.socialLinks?.linkedin}
+                          buttonName="LinkedIn"
+                          leetcodeUrl={getLeetcodeUrl}
+                        />
                       </div>
                     ) : (
                       <div className="grid sm:grid-cols-2 gap-6">
-                        <SocialInput labelName="GitHub" icon={<SiGithub className="w-5 h-5" />} linkName="github" editData={editData} setEditData={setEditData} error={error} />
-                        <SocialInput labelName="GitLab" icon={<SiGitlab className="w-5 h-5" />} linkName="gitlab" editData={editData} setEditData={setEditData} error={error} />
-                        <SocialInput labelName="LinkedIn" icon={<SiLinkedin className="w-5 h-5" />} linkName="linkedin" editData={editData} setEditData={setEditData} error={error} />
+                        <SocialInput
+                          labelName="GitHub"
+                          icon={<SiGithub className="w-5 h-5" />}
+                          linkName="github"
+                          editData={editData}
+                          setEditData={setEditData}
+                          error={error}
+                        />
+                        <SocialInput
+                          labelName="GitLab"
+                          icon={<SiGitlab className="w-5 h-5" />}
+                          linkName="gitlab"
+                          editData={editData}
+                          setEditData={setEditData}
+                          error={error}
+                        />
+                        <SocialInput
+                          labelName="LinkedIn"
+                          icon={<SiLinkedin className="w-5 h-5" />}
+                          linkName="linkedin"
+                          editData={editData}
+                          setEditData={setEditData}
+                          error={error}
+                        />
                       </div>
                     )}
                   </motion.div>
@@ -916,26 +1085,85 @@ const Profile = () => {
                       <div className="w-1 h-6 bg-accent rounded-full"></div>
                       Competitive Coding
                     </h3>
-                    
+
                     {!isEditing ? (
                       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <SocialButton icon={<SiLeetcode />} buttonUrl={profileData.socialLinks?.leetcode} buttonName="Leetcode" leetcodeUrl={getLeetcodeUrl} />
-                        <SocialButton icon={<SiCodechef />} buttonUrl={profileData.socialLinks?.codechef} buttonName="CodeChef" leetcodeUrl={getLeetcodeUrl} />
-                        <SocialButton icon={<SiHackerrank />} buttonUrl={profileData.socialLinks?.hackerrank} buttonName="HackerRank" leetcodeUrl={getLeetcodeUrl} />
-                        <SocialButton icon={<SiCodeforces />} buttonUrl={profileData.socialLinks?.codeforces} buttonName="Codeforces" leetcodeUrl={getLeetcodeUrl} />
-                        <SocialButton icon={<SiHackerearth />} buttonUrl={profileData.socialLinks?.hackerearth} buttonName="HackerEarth" leetcodeUrl={getLeetcodeUrl} />
+                        <SocialButton
+                          icon={<SiLeetcode />}
+                          buttonUrl={profileData.socialLinks?.leetcode}
+                          buttonName="Leetcode"
+                          leetcodeUrl={getLeetcodeUrl}
+                        />
+                        <SocialButton
+                          icon={<SiCodechef />}
+                          buttonUrl={profileData.socialLinks?.codechef}
+                          buttonName="CodeChef"
+                          leetcodeUrl={getLeetcodeUrl}
+                        />
+                        <SocialButton
+                          icon={<SiHackerrank />}
+                          buttonUrl={profileData.socialLinks?.hackerrank}
+                          buttonName="HackerRank"
+                          leetcodeUrl={getLeetcodeUrl}
+                        />
+                        <SocialButton
+                          icon={<SiCodeforces />}
+                          buttonUrl={profileData.socialLinks?.codeforces}
+                          buttonName="Codeforces"
+                          leetcodeUrl={getLeetcodeUrl}
+                        />
+                        <SocialButton
+                          icon={<SiHackerearth />}
+                          buttonUrl={profileData.socialLinks?.hackerearth}
+                          buttonName="HackerEarth"
+                          leetcodeUrl={getLeetcodeUrl}
+                        />
                       </div>
                     ) : (
                       <div className="grid sm:grid-cols-2 gap-6">
-                        <SocialInput labelName="LeetCode" icon={<SiLeetcode className="w-5 h-5" />} linkName="leetcode" editData={editData} setEditData={setEditData} error={error} />
-                        <SocialInput labelName="CodeChef" icon={<SiCodechef className="w-5 h-5" />} linkName="codechef" editData={editData} setEditData={setEditData} error={error} />
-                        <SocialInput labelName="HackerRank" icon={<SiHackerrank className="w-5 h-5" />} linkName="hackerrank" editData={editData} setEditData={setEditData} error={error} />
-                        <SocialInput labelName="Codeforces" icon={<SiCodeforces className="w-5 h-5" />} linkName="codeforces" editData={editData} setEditData={setEditData} error={error} />
-                        <SocialInput labelName="HackerEarth" icon={<SiHackerearth className="w-5 h-5" />} linkName="hackerearth" editData={editData} setEditData={setEditData} error={error} />
+                        <SocialInput
+                          labelName="LeetCode"
+                          icon={<SiLeetcode className="w-5 h-5" />}
+                          linkName="leetcode"
+                          editData={editData}
+                          setEditData={setEditData}
+                          error={error}
+                        />
+                        <SocialInput
+                          labelName="CodeChef"
+                          icon={<SiCodechef className="w-5 h-5" />}
+                          linkName="codechef"
+                          editData={editData}
+                          setEditData={setEditData}
+                          error={error}
+                        />
+                        <SocialInput
+                          labelName="HackerRank"
+                          icon={<SiHackerrank className="w-5 h-5" />}
+                          linkName="hackerrank"
+                          editData={editData}
+                          setEditData={setEditData}
+                          error={error}
+                        />
+                        <SocialInput
+                          labelName="Codeforces"
+                          icon={<SiCodeforces className="w-5 h-5" />}
+                          linkName="codeforces"
+                          editData={editData}
+                          setEditData={setEditData}
+                          error={error}
+                        />
+                        <SocialInput
+                          labelName="HackerEarth"
+                          icon={<SiHackerearth className="w-5 h-5" />}
+                          linkName="hackerearth"
+                          editData={editData}
+                          setEditData={setEditData}
+                          error={error}
+                        />
                       </div>
                     )}
                   </motion.div>
-
                 </div>
               </div>
             </div>

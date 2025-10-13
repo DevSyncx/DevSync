@@ -8,7 +8,8 @@ const path = require("path");
 const session = require("express-session");
 require("./utils/leetcodeCron");
 const passport = require("passport");
-const githubRouter = require("./routes/github.route");
+const githubRoute = require("./routes/github.route");
+
 
 // Passport config with error handling
 try {
@@ -68,12 +69,13 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // OAuth Routes (mounted at root to match Google's callback URL)
 app.use("/auth", require("./routes/auth"));
-
+app.use("/api/github", githubRoute);
+// API Routes
 // API Routes
 app.use("/api/auth", authMiddleware, require("./routes/auth"));
 app.use("/auth", authMiddleware, require("./routes/auth"));
 app.use("/api/profile", generalMiddleware, require("./routes/profile"));
-// contactRouter omitted (MongoDB removed)
+app.use("/api/contact", generalMiddleware, contactRouter);
 
 // Default route
 app.get("/", (req, res) => {
@@ -85,4 +87,3 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is up and running at http://localhost:${PORT} 🚀`);
 });
-

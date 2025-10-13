@@ -80,3 +80,4 @@ jest-*
 
 node_modules/
 # .env.example
+uploads/

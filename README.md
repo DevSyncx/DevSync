@@ -135,12 +135,57 @@ Your backend runs at 👉 [http://localhost:5000](http://localhost:5000)
 
 ```
 DevSync/
-├── frontend/              # Frontend (React + ShadCN UI)
-├── backend/               # Backend (Node.js + Express)
-├── CONTRIBUTING.md        # Contribution guidelines
-├── CODE_OF_CONDUCT.md     # Community rules
-├── LICENSE                # MIT License
-└── README.md              # Project overview
+├─ 🗄️  .github/
+│  ├─ 📄 ISSUE_TEMPLATE/ → Issue templates for contributors
+│  ├─ ⚙️  scripts/ → GitHub automation scripts (cleanup, validation, etc.)
+│  ├─ 🤖 workflows/ → GitHub Actions CI/CD workflows
+│  └─ 📑 PULL_REQUEST_TEMPLATE.md → PR submission format
+│
+├─ 📸 assets/
+│  ├─ 🖼️ screenshots/ → Setup & API reference images
+│  ├─ gssoc.png
+│  └─ img1.jpg / img2.jpg / img3.jpg
+│
+├─ 💻 backend/
+│  ├─ ⚙️  config/ → Auth & server configuration (e.g., passport.js)
+│  ├─ 📝 controllers/ → Handles API logic (e.g., contact.controller.js)
+│  ├─ 🗄️ db/ → Database connection setup
+│  ├─ 🛡️ middleware/ → Auth & rate-limit middleware
+│  ├─ 📦 models/ → MongoDB models (User, ContactMessage, etc.)
+│  ├─ 🌐 routes/ → API routes (auth, contact, profile)
+│  ├─ 📧 services/ → Email & external services
+│  ├─ 🛠️ utils/ → Helper functions (email, cron jobs, etc.)
+│  └─ 🚀 server.js → Main backend entry point
+│
+├─ 📚 docs/
+│  ├─ 🛠️ setup/ → Integration guides (Google Auth, Resend, Sheets)
+│  └─ 📄 env_guide.md → Environment variable documentation
+│
+├─ ⚛️ frontend/
+│  ├─ 🌐 public/ → Static assets (e.g., vite.svg)
+│  ├─ src/
+│  │  ├─ 🧩 Components/
+│  │  │  ├─ 🔑 auth/ → Login, Register, Forgot Password, etc.
+│  │  │  ├─ 📊 DashBoard/ → Dashboard UI components
+│  │  │  ├─ 🧭 Navbar/, Footer.jsx, Hero.jsx, About.jsx, etc.
+│  │  │  ├─ 🎨 ui/ → Reusable UI elements (buttons, loaders, toggles)
+│  │  │  └─ 👤 profile/ → User profile components
+│  │  ├─ 🌐 context/ → React Context providers (Timer, Theme)
+│  │  ├─ 🛠️ lib/ → Utility scripts & validation schemas
+│  │  ├─ 🚪 App.jsx / main.jsx / index.css → React entry files
+│  │  └─ 🎨 App.css → Global styles
+│  ├─ 📝 index.html → Root HTML
+│  ├─ ⚙️ vite.config.js → Vite config
+│  ├─ 🔧 eslint.config.js / jsconfig.json → Linting & path configs
+│  └─ 🚀 vercel.json → Deployment config
+│
+├─ 📚 docs/ → Developer documentation
+├─ ❌ .gitignore
+├─ 📝 README.md → Project overview
+├─ 📜 LICENSE / CODE_OF_CONDUCT.md / CONTRIBUTING.md
+├─ 🔧 auth-profile-implementation.md → Feature documentation
+└─ 📦 package.json → Dependencies and project metadata
+
 ```
 
 
