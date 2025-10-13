@@ -92,69 +92,32 @@ router.get(
 // Handle callback from GitHub
 router.get(
   "/github/callback",
-  (req, res, next) => {
-    console.log("GitHub callback received");
-    next();
-  },
   passport.authenticate("github", {
-    failureRedirect: `${process.env.CLIENT_URL}/register?error=github_auth`, // redirect back to register with an error
+    failureRedirect: `${process.env.CLIENT_URL || "http://localhost:5173"}/register?error=github_auth`,
     session: true,
-    failWithError: true,
-    passReqToCallback: true
+    failWithError: true
   }),
   (req, res) => {
-    console.log("GitHub auth successful, user:", req.user);
+    const user = req.user;
     
-    // Get the access token from the authentication process
-    const accessToken = req.authInfo?.accessToken;
-    
-    // Store the token explicitly in the user object and the session
-    if (accessToken) {
-      req.user.accessToken = accessToken;
-      // Also store in session directly as a backup
-      req.session.accessToken = accessToken;
-      console.log("Access token stored from authInfo");
-    } else if (req.user._json?.accessToken) {
-      req.user.accessToken = req.user._json.accessToken;
-      req.session.accessToken = req.user._json.accessToken;
-      console.log("Access token stored from _json");
-    }
-    
-    // Store GitHub authentication info in the session
-    req.session.authMethod = 'github';
+    // Create JWT for frontend auth
+    const token = jwt.sign({ user: { id: user._id } }, JWT_SECRET, { expiresIn: "7d" });
+
+    // Grab GitHub token from user object
+    const githubToken = user.accessToken || null;
+
+    // Store GitHub token in session
+    req.session.accessToken = githubToken;
+    req.session.authMethod = "github";
     req.session.isAuthenticated = true;
-    
-    // For debugging
-    console.log("Final user object with accessToken:", 
-      req.user.accessToken ? "Token available" : "Token missing");
-    
-    // Explicitly grab the access token from the strategy's authentication context
-    // This hack is needed because different passport strategies handle token passing differently
-    if (!req.user.accessToken) {
-      // Assume the access token is in the session context
-      // Look for it in the passport strategy's private state
-      if (req._passport && req._passport.session && req._passport.session.user) {
-        req.user.accessToken = req.query.access_token;
-        console.log("Extracted access token from URL params:", !!req.user.accessToken);
-      }
-    }
-    
-    req.session.save(err => {
-      if (err) {
-        console.error("Error saving session:", err);
-      }
-      // ✅ Successful authentication → redirect to frontend home page
-      res.redirect(`${process.env.CLIENT_URL}/dashboard?token=${encodeURIComponent(req.user.accessToken || '')}`);
-    });
+
+    // Redirect to frontend dashboard
+    const frontendUrl = process.env.CLIENT_URL || "http://localhost:5173";
+    res.redirect(`${frontendUrl}/dashboard?token=${token}&github_token=${githubToken}`);
   },
   (err, req, res, next) => {
     console.error("GitHub auth error:", err);
-    
-    // Redirect based on where the auth request came from
-    const authFrom = req.session.authFrom || 'login';
-    console.log(`Auth error, redirecting to ${authFrom} page`);
-    
-    res.redirect(`${process.env.CLIENT_URL}/${authFrom}?error=github`);
+    res.redirect(`${process.env.CLIENT_URL || "http://localhost:5173"}/register?error=github`);
   }
 );
 
@@ -496,46 +459,44 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-// @route   GET api/auth/me
-// @desc    Get authenticated user data
-// @access  Private
-router.get("/me", (req, res) => {
-  if (req.isAuthenticated()) {
-    console.log("User is authenticated via session:", req.user);
-    res.json(req.user);
-  } else {
-    res.status(401).json({ message: "Not logged in" });
+// @route GET api/auth/me
+// @desc Get authenticated user data
+// @access Private
+router.get("/me", auth, (req, res) => {
+  res.json({ user: req.user, authMethod: req.authMethod });
+});
+
+// @route GET api/auth/check
+// @desc Check if user is authenticated (works for JWT and session)
+// @access Public
+router.get("/check", async (req, res) => {
+  try {
+    // Try JWT first
+    const token = req.header("x-auth-token");
+    let user = null;
+    let authMethod = null;
+
+    if (token) {
+      try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        user = await User.findById(decoded.user.id).select("-password");
+        authMethod = "token";
+      } catch {}
+    } else if (req.isAuthenticated && req.isAuthenticated()) {
+      user = req.user;
+      authMethod = "session";
+    }
+
+    if (!user) return res.json({ isAuthenticated: false });
+
+    res.json({ isAuthenticated: true, authMethod, user });
+  } catch (err) {
+    console.error("Error checking auth:", err.message);
+    res.status(500).json({ isAuthenticated: false });
   }
 });
 
-// @route   GET api/auth/check
-// @desc    Check if user is authenticated (works for both JWT and session auth)
-// @access  Public
-router.get("/check", (req, res) => {
-  if (req.isAuthenticated()) {
-    return res.json({ 
-      isAuthenticated: true, 
-      authMethod: 'session',
-      user: req.user
-    });
-  }
   
-  const token = req.header('x-auth-token');
-  if (token) {
-    try {
-      const JWT_SECRET = process.env.JWT_SECRET || 'devsync_secure_jwt_secret_key_for_authentication';
-      const decoded = jwt.verify(token, JWT_SECRET);
-      return res.json({ 
-        isAuthenticated: true, 
-        authMethod: 'token',
-        user: decoded.user
-      });
-    } catch (err) {
-      console.error('Token verification error:', err.message);
-    }
-  }
-  
-  res.json({ isAuthenticated: false });
-});
+ 
 
 module.exports = router;
