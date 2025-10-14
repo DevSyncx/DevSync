@@ -1,4 +1,6 @@
 // src/Components/ui/Card.jsx
+import React from "react";
+
 export function Card({ children, className = "" }) {
   return (
     <div className={`rounded-xl border bg-white shadow p-4 ${className}`}>
@@ -9,12 +11,16 @@ export function Card({ children, className = "" }) {
 
 export function CardHeader({ children, className = "" }) {
   return (
-    <div className={`font-bold text-lg mb-2 ${className}`}>{children}</div>
+    <div className={`font-bold text-lg mb-2 ${className}`}>
+      {children}
+    </div>
   );
 }
 
 export function CardTitle({ children, className = "" }) {
-  return <h3 className={`text-xl font-semibold ${className}`}>{children}</h3>;
+  return (
+    <h3 className={`text-xl font-semibold ${className}`}>{children}</h3>
+  );
 }
 
 export function CardContent({ children, className = "" }) {
@@ -24,3 +30,4 @@ export function CardContent({ children, className = "" }) {
 export function CardFooter({ children, className = "" }) {
   return <div className={`mt-2 border-t pt-2 ${className}`}>{children}</div>;
 }
+

@@ -26,7 +26,7 @@ const ForgotPassword = () => {
       } else {
         setStatus({ type: "error", message: data.message || "Something went wrong" });
       }
-    } catch (error) {
+    } catch {
       setStatus({ type: "error", message: "Server error. Try again later." });
     } finally {
       setLoading(false);

@@ -18,7 +18,7 @@ import BackButton from "../ui/backbutton";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-export default function LeetCode({ platforms = {} }) {
+export default function LeetCode() {
   const [stats, setStats] = useState(null);
   const { leetUser } = useParams();
 
