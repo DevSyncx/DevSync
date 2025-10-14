@@ -217,7 +217,7 @@ export default function Todo() {
     <div className="flex flex-col h-screen">
       <Topbar />
       <main className="flex-1 p-6 bg-[#d1e4f3]">
-        <div className="max-w-6xl mx-auto space-y-6">
+        <div className="max-w-full mx-auto space-y-6">
           <div className="flex items-center gap-3">
             <BackButton to="/dashboard" />
             <h2 className="text-2xl font-bold text-[var(--card-foreground)] dark:text-[var(--primary)]">To-Do List</h2>

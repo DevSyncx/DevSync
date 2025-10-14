@@ -1,5 +1,7 @@
 import { useState } from "react";
-import CardWrapper from "./CardWrapper";
+import { Card, CardHeader, CardContent } from "@/Components/ui/Card";
+import { Button } from "@/Components/ui/button";
+import { Input } from "@/Components/ui/input";
 
 export default function NotesCard({ notes = [], onNotesChange }) {
   const [newNote, setNewNote] = useState("");
@@ -33,74 +35,84 @@ export default function NotesCard({ notes = [], onNotesChange }) {
   };
 
   return (
-    <CardWrapper className="p-6">
-      <h3 className="font-semibold mb-2">Notes</h3>
+    <Card className="p-4 sm:p-6 w-full sm:w-auto hover:shadow-lg transition-shadow duration-200">
+      <CardHeader>
+        <h3 className="font-semibold text-[var(--primary)]">Notes</h3>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-3">
+        {notes.length > 0 ? (
+          <ul className="space-y-2 text-sm text-[var(--card-foreground)]">
+            {notes.map((note, i) => (
+              <li
+                key={i}
+                className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2"
+              >
+                {editingIndex === i ? (
+                  <>
+                    <Input
+                      type="text"
+                      value={editingValue}
+                      onChange={(e) => setEditingValue(e.target.value)}
+                      autoFocus
+                      className="flex-1"
+                    />
+                    <div className="flex gap-2 mt-2 sm:mt-0">
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        onClick={() => saveEdit(i)}
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => setEditingIndex(null)}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <span
+                      className="cursor-pointer hover:underline flex-1"
+                      onClick={() => startEditing(i)}
+                    >
+                      {note}
+                    </span>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => removeNote(i)}
+                    >
+                      ✕
+                    </Button>
+                  </>
+                )}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-[var(--muted-foreground)] text-sm italic">
+            No notes yet.
+          </p>
+        )}
 
-      {notes.length > 0 ? (
-  <ul className="space-y-2 text-sm text-[var(--card-foreground)]">
-          {notes.map((note, i) => (
-            <li key={i} className="flex justify-between items-center gap-2">
-              {editingIndex === i ? (
-                <>
-                  <input
-                    type="text"
-                    value={editingValue}
-                    onChange={(e) => setEditingValue(e.target.value)}
-                    className="border border-[var(--input)] rounded px-2 py-1 text-sm flex-1 bg-[var(--card)] text-[var(--card-foreground)]"
-                    autoFocus
-                  />
-                  <button
-                    onClick={() => saveEdit(i)}
-                    className="text-[var(--accent)] text-xs"
-                  >
-                    Save
-                  </button>
-                  <button
-                    onClick={() => setEditingIndex(null)}
-                    className="text-[var(--muted-foreground)] text-xs"
-                  >
-                    Cancel
-                  </button>
-                </>
-              ) : (
-                <>
-                  <span
-                    className="cursor-pointer hover:underline flex-1"
-                    onClick={() => startEditing(i)}
-                  >
-                    {note}
-                  </span>
-                  <button
-                    className="text-[var(--destructive)] text-xs"
-                    onClick={() => removeNote(i)}
-                  >
-                    ✕
-                  </button>
-                </>
-              )}
-            </li>
-          ))}
-        </ul>
-      ) : (
-  <p className="text-[var(--muted-foreground)] text-sm italic">No notes yet.</p>
-      )}
-
-      {/* Add new note */}
-      <div className="flex gap-2 mt-4">
-  <input
-    type="text"
-    value={newNote}
-    onChange={(e) => setNewNote(e.target.value)}
-    placeholder="Add a new note..."
-    className="border border-[var(--input)] rounded px-1 h-8 text-sm flex-1 bg-[var(--card)] text-[var(--card-foreground)]"
-  />
-  <button
-    onClick={addNote}
-    className="bg-[var(--primary)] text-[var(--primary-foreground)] px-2 md:px-4 h-8 rounded text-sm"
-  >
-    Add
-  </button>
-</div>
-    </CardWrapper>
+        {/* Add new note */}
+        <div className="flex flex-col sm:flex-row gap-2 mt-3">
+          <Input
+            type="text"
+            value={newNote}
+            onChange={(e) => setNewNote(e.target.value)}
+            placeholder="Add a new note..."
+            className="flex-1"
+          />
+          <Button onClick={addNote} className="sm:w-auto w-full">
+            Add
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

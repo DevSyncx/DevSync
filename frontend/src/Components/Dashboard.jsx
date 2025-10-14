@@ -9,7 +9,9 @@ import TimeSpentCard from "./DashBoard/TimeSpentCard";
 import ActivityHeatmap from "./DashBoard/ActivityHeatMap";
 import NotesCard from "./DashBoard/NotesCard";
 import { useNavigate } from "react-router-dom";
-
+import { Card } from "@/Components/ui/Card";
+import { ScrollArea } from "@/Components/ui/scroll-area";
+import { Alert, AlertDescription, AlertTitle } from "@/Components/ui/alert";
 
 export default function Dashboard() {
   const [profile, setProfile] = useState(null);
@@ -18,8 +20,33 @@ export default function Dashboard() {
   const [goals, setGoals] = useState([]);
   const navigate = useNavigate();
 
+  const token = localStorage.getItem("token");
+
+  const fetchProfile = async () => {
+    if (!token) {
+      navigate("/login");
+      setLoading(false);
+      return;
+    }
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
+        headers: { "x-auth-token": token },
+      });
+      const data = await res.json();
+      if (!res.ok)
+        throw new Error(data.errors?.[0]?.msg || "Failed to load profile");
+
+      setProfile(data);
+      setGoals(data.goals || []);
+    } catch (err) {
+      console.error("Error fetching profile:", err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    // Capture token issued by backend OAuth redirect: /dashboard?token=...
     const params = new URLSearchParams(window.location.search);
     const oauthToken = params.get("token");
     if (oauthToken) {
@@ -28,115 +55,170 @@ export default function Dashboard() {
       } catch (e) {
         console.error("Failed to persist OAuth token:", e);
       }
-      // Clean up URL after capturing token (avoid keeping token in address bar)
       const cleanUrl = window.location.origin + window.location.pathname;
       window.history.replaceState({}, document.title, cleanUrl);
     }
 
-    const fetchProfile = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          navigate("/login");
-          setLoading(false);
-          return;
+    const fetchAndUpdateProfile = async () => {
+      await fetchProfile();
+
+      // After profile is loaded, add today to activity if not present
+      if (profile) {
+        const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+        if (!profile.activity.includes(today)) {
+          handleActivityAdd(today);
         }
-
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile`, {
-          headers: { "x-auth-token": token },
-        });
-
-        const data = await res.json();
-        if (!res.ok) {
-          throw new Error(data.errors?.[0]?.msg || "Failed to load profile");
-        }
-
-        setProfile(data);
-        setGoals(data.goals || []);
-      } catch (err) {
-        console.error("Error fetching profile:", err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
       }
     };
 
-    fetchProfile();
+    fetchAndUpdateProfile();
   }, [navigate]);
 
-  // Show loading state
+  // --- Handlers for real-time updates ---
+  const handleGoalsChange = async (updatedGoals) => {
+    setGoals(updatedGoals);
+    try {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/profile/goals`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", "x-auth-token": token },
+        body: JSON.stringify({ goals: updatedGoals }),
+      });
+    } catch (err) {
+      console.error("Error updating goals:", err);
+    }
+  };
+
+  const handleNotesChange = async (updatedNotes) => {
+    setProfile((prev) => ({ ...prev, notes: updatedNotes }));
+    try {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/profile/notes`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", "x-auth-token": token },
+        body: JSON.stringify({ notes: updatedNotes }),
+      });
+    } catch (err) {
+      console.error("Error updating notes:", err);
+    }
+  };
+
+  const handleActivityAdd = async (date) => {
+    setProfile((prev) => ({ ...prev, activity: [...prev.activity, date] }));
+    try {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/profile/activity`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", "x-auth-token": token },
+        body: JSON.stringify({ date }),
+      });
+    } catch (err) {
+      console.error("Error updating activity:", err);
+    }
+  };
+
+  const handleTimeUpdate = async (newTime) => {
+    setProfile((prev) => ({ ...prev, timeSpent: newTime }));
+    try {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/profile/time`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", "x-auth-token": token },
+        body: JSON.stringify({ timeSpent: newTime }),
+      });
+    } catch (err) {
+      console.error("Error updating time spent:", err);
+    }
+  };
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="flex items-center justify-center h-screen bg-background">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-primary"></div>
       </div>
     );
   }
 
-  // Show error state
   if (error) {
     return (
-      <div className="p-6 text-red-500">
-        <p>Error: {error}</p>
-        <button
-          onClick={() => window.location.reload()}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Try Again
-        </button>
+      <div className="flex items-center justify-center h-screen bg-background p-6">
+        <Alert variant="destructive" className="max-w-md w-full shadow-lg">
+          <AlertTitle>Failed to Load Dashboard</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:opacity-90 transition-shadow shadow-md"
+          >
+            Try Again
+          </button>
+        </Alert>
       </div>
     );
   }
 
-  // Show message if no profile data is available
   if (!profile) {
     return (
-      <div className="p-6">
-        <p>No profile data available. Please try logging in again.</p>
+      <div className="flex items-center justify-center h-screen bg-background p-6">
+        <Card className="p-6 text-center shadow-lg border border-border">
+          <p>No profile data available. Please try logging in again.</p>
+        </Card>
       </div>
     );
   }
 
-  // Safely destructure with default values
   const {
-    socialLinks = [],
+    socialLinks = {},
     streak = 0,
-    githubUsername = null,
     timeSpent = "0 minutes",
     activity = [],
-    notes = []
+    notes = [],
   } = profile;
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen bg-background text-foreground">
       <Topbar />
-      <div className="flex flex-1">
+      <div className="flex flex-1 overflow-hidden">
         <Sidebar />
-        <main className="flex-1 p-6 bg-[#d1e4f3]">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+        <ScrollArea className="flex-1 h-full p-4 sm:p-6 bg-muted/30">
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6 auto-rows-max">
             {/* Row 1 */}
             <ProfileCard user={profile} className="col-span-1" />
             <PlatformLinks platforms={socialLinks} className="col-span-1" />
             <StreakCard streak={streak} className="col-span-1" />
 
-          
+            {/* Row 2 */}
+            <GoalsCard goals={goals} onGoalsChange={handleGoalsChange} />
+            <TimeSpentCard time={timeSpent} onTimeUpdate={handleTimeUpdate} />
+            <NotesCard notes={notes} onNotesChange={handleNotesChange} />
 
-            {/* Row 2: Goals, Time Spent, Notes */}
-            <GoalsCard goals={goals} onGoalsChange={setGoals} />
-            <TimeSpentCard time={timeSpent} />
-            <NotesCard
-              notes={notes}
-              onNotesChange={(updatedNotes) => 
-                setProfile({ ...profile, notes: updatedNotes })
-              }
-            />
-
-            {/* Row 3: Activity heatmap full width */}
-            <div className="col-span-1 sm:col-span-2 lg:col-span-3">
-              <ActivityHeatmap activityData={activity} />
+            {/* Row 3: Heatmap full width */}
+            <div className="col-span-full">
+              <ActivityHeatmap
+                activityData={activity}
+                onAddActivity={async (day) => {
+                  try {
+                    const token = localStorage.getItem("token");
+                    const res = await fetch(
+                      `${import.meta.env.VITE_API_URL}/api/profile/activity`,
+                      {
+                        method: "PUT",
+                        headers: {
+                          "Content-Type": "application/json",
+                          "x-auth-token": token,
+                        },
+                        body: JSON.stringify({ date: day }),
+                      }
+                    );
+                    if (res.ok) {
+                      setProfile((prev) => ({
+                        ...prev,
+                        activity: [...prev.activity, day],
+                      }));
+                    }
+                  } catch (err) {
+                    console.error("Failed to add activity:", err);
+                  }
+                }}
+              />
             </div>
           </div>
-        </main>
+        </ScrollArea>
       </div>
     </div>
   );

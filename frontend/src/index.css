@@ -111,6 +111,17 @@
   --sidebar-border: oklch(0.9 0.03 250);
   --sidebar-ring: oklch(0.65 0.12 250);
   --heatmap-bg: #ebedf0;
+  --calendar-empty: var(--heatmap-bg);
+  /* fallback background for empty days */
+  --calendar-level-1: var(--chart-5);
+  /* lightest activity */
+  --calendar-level-2: var(--chart-3);
+  --calendar-level-3: var(--chart-2);
+  --calendar-level-4: var(--chart-1);
+  /* darkest activity */
+  --calendar-day-border: var(--background);
+  /* ensures contrast with card bg */
+  --calendar-month-border: var(--background);
 }
 
 .dark {
@@ -156,6 +167,13 @@
   --sidebar-border: oklch(0.25 0.05 250);
   --sidebar-ring: oklch(0.65 0.12 250);
   --heatmap-bg: #1f2937;
+  --calendar-empty: var(--heatmap-bg);
+  --calendar-level-1: var(--chart-5);
+  --calendar-level-2: var(--chart-3);
+  --calendar-level-3: var(--chart-2);
+  --calendar-level-4: var(--chart-1);
+  --calendar-day-border: var(--background);
+  --calendar-month-border: var(--background);
 }
 
 @layer base {
