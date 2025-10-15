@@ -20,9 +20,10 @@ export default function Dashboard() {
   const [goals, setGoals] = useState([]);
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("token");
+  const getAuthToken = () => localStorage.getItem("token");
 
   const fetchProfile = async () => {
+    const token = getAuthToken();
     if (!token) {
       navigate("/login");
       setLoading(false);
@@ -78,6 +79,7 @@ export default function Dashboard() {
   const handleGoalsChange = async (updatedGoals) => {
     setGoals(updatedGoals);
     try {
+      const token = getAuthToken();
       await fetch(`${import.meta.env.VITE_API_URL}/api/profile/goals`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", "x-auth-token": token },
@@ -91,6 +93,7 @@ export default function Dashboard() {
   const handleNotesChange = async (updatedNotes) => {
     setProfile((prev) => ({ ...prev, notes: updatedNotes }));
     try {
+      const token = getAuthToken();
       await fetch(`${import.meta.env.VITE_API_URL}/api/profile/notes`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", "x-auth-token": token },
@@ -104,6 +107,7 @@ export default function Dashboard() {
   const handleActivityAdd = async (date) => {
     setProfile((prev) => ({ ...prev, activity: [...prev.activity, date] }));
     try {
+      const token = getAuthToken();
       await fetch(`${import.meta.env.VITE_API_URL}/api/profile/activity`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", "x-auth-token": token },
@@ -117,6 +121,7 @@ export default function Dashboard() {
   const handleTimeUpdate = async (newTime) => {
     setProfile((prev) => ({ ...prev, timeSpent: newTime }));
     try {
+      const token = getAuthToken();
       await fetch(`${import.meta.env.VITE_API_URL}/api/profile/time`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", "x-auth-token": token },
@@ -193,7 +198,7 @@ export default function Dashboard() {
                 activityData={activity}
                 onAddActivity={async (day) => {
                   try {
-                    const token = localStorage.getItem("token");
+                    const token = getAuthToken();
                     const res = await fetch(
                       `${import.meta.env.VITE_API_URL}/api/profile/activity`,
                       {

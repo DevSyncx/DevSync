@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
+  githubId: {
+    type: String,
+    unique: true,
+    sparse: true,
+  },
    googleId: {
     type: String,
     unique: true,

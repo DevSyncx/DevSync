@@ -125,6 +125,10 @@ const Register = () => {
     window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
   };
 
+  const handleGithubRegister = () => {
+    window.location.href = `${import.meta.env.VITE_API_URL}/auth/github`;
+  };
+
   if (showVerification) {
     return (
       <EmailVerification
@@ -314,7 +318,7 @@ const Register = () => {
 
             {/* Social Login */}
             <div className="grid grid-cols-2 gap-3">
-              <button type="button" className="flex items-center cursor-pointer justify-center py-3 border border-[var(--input)] rounded-lg text-[var(--primary)] hover:bg-[var(--accent)]">
+              <button type="button" onClick={handleGithubRegister} className="flex items-center cursor-pointer justify-center py-3 border border-[var(--input)] rounded-lg text-[var(--primary)] hover:bg-[var(--accent)]">
                 <Github className="h-4 w-4 mr-2" />
                 GitHub
               </button>

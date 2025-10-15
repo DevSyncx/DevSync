@@ -8,6 +8,11 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+/* 👇 Added these font variables */
+  --font-body: "Poppins", sans-serif;
+  --font-heading: "Sora", sans-serif;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -179,10 +184,16 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    font-family: var(--font-body);
   }
 
   body {
     @apply bg-background text-foreground;
+     font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
   }
 }
 

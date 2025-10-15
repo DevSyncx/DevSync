@@ -72,6 +72,31 @@ router.get(
   }
 );
 
+// GitHub OAuth
+router.get(
+  "/github",
+  passport.authenticate("github", { scope: ["read:user", "user:email"] })
+);
+
+router.get(
+  "/github/callback",
+  passport.authenticate("github", {
+    failureRedirect: `${process.env.CLIENT_URL}/login`,
+    failureMessage: true,
+    session: true,
+  }),
+  async (req, res) => {
+    try {
+      const token = await generateJWT(req.user.id);
+      const redirectUrl = `${process.env.CLIENT_URL}/dashboard?token=${encodeURIComponent(token)}`;
+      return res.redirect(redirectUrl);
+    } catch (err) {
+      console.error('JWT generation failed after GitHub OAuth:', err);
+      return res.redirect(`${process.env.CLIENT_URL}/login?error=github_oauth_token_failed`);
+    }
+  }
+);
+
 // @route   POST api/auth/register
 // @desc    Register user
 // @access  Public

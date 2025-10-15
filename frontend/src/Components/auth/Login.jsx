@@ -78,6 +78,10 @@ const Login = () => {
     window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
   };
 
+  const handleGithubLogin = () => {
+    window.location.href = `${import.meta.env.VITE_API_URL}/auth/github`;
+  };
+
   // Show verification component if user needs to verify email
   if (showVerification) {
     return (
@@ -243,6 +247,7 @@ const Login = () => {
           <div className="grid grid-cols-2 gap-3">
             <button
               type="button"
+              onClick={handleGithubLogin}
               className="border border-[var(--input)] text-[var(--primary)] hover:bg-[var(--accent)] py-3 rounded-lg flex justify-center items-center"
             >
               <Github className="h-4 w-4 mr-2" /> GitHub
