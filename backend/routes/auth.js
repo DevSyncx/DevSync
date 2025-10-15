@@ -77,6 +77,10 @@ router.get(
   "/github",
   (req, res, next) => {
     console.log("GitHub auth route hit");
+    console.log("GitHub credentials:", {
+      clientID: process.env.GITHUB_CLIENT_ID?.substring(0, 5) + '...',
+      callbackURL: process.env.GITHUB_CALLBACK_URL
+    });
     // Store where the user came from (register or login) in the session
     if (req.query.from) {
       req.session.authFrom = req.query.from;
@@ -92,6 +96,10 @@ router.get(
 // Handle callback from GitHub
 router.get(
   "/github/callback",
+  (req, res, next) => {
+    console.log("GitHub callback received:", req.url);
+    next();
+  },
   passport.authenticate("github", {
     failureRedirect: `${process.env.CLIENT_URL || "http://localhost:5173"}/register?error=github_auth`,
     session: true,

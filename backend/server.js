@@ -10,6 +10,9 @@ require("./utils/leetcodeCron");
 const passport = require("passport");
 const githubRouter = require("./routes/github.route");
 
+// Connect to MongoDB
+require("./db/connection");
+
 // Passport config with error handling
 try {
   require("./config/passport");

@@ -38,6 +38,11 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
 // GitHub OAuth Strategy - Only use if credentials are provided
 
 if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
+  console.log("Initializing GitHub OAuth Strategy with:", {
+    clientID: process.env.GITHUB_CLIENT_ID?.substring(0, 5) + '...',
+    callbackURL: process.env.GITHUB_CALLBACK_URL
+  });
+  
   passport.use(
     new GitHubStrategy(
       {
@@ -50,6 +55,7 @@ if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
       async (req, accessToken, refreshToken, profile, done) => {
         try {
           console.log("GitHub profile received:", profile.username);
+          console.log("GitHub auth successful, processing user data");
 
           // Fetch additional GitHub data
           let githubData = {};
@@ -65,38 +71,79 @@ if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
             console.error("Error fetching GitHub user data:", err);
           }
 
-          // Upsert user in MongoDB
-          const user = await User.findOneAndUpdate(
-            { $or: [{ githubId: profile.id }, { email: profile.emails?.[0]?.value }] },
-            {
+          // Find or create user manually instead of using the static method
+          let user = await User.findOne({
+            $or: [
+              { githubId: profile.id },
+              { email: profile.emails?.[0]?.value }
+            ]
+          });
+
+          // If user exists, update GitHub information
+          if (user) {
+            console.log("Found existing user, updating GitHub info");
+            user.githubId = profile.id;
+            user.githubUsername = profile.username;
+            user.name = user.name || profile.displayName || profile.username;
+            user.accessToken = accessToken;
+            
+            // Update email if not already set
+            if (!user.email && profile.emails && profile.emails[0]) {
+              user.email = profile.emails[0].value;
+            }
+            
+            // Update avatar if using default
+            if (user.avatar === '/uploads/avatars/default-avatar.png' && profile.photos && profile.photos[0]) {
+              user.avatar = profile.photos[0].value;
+            }
+            
+            // Update GitHub in social links
+            if (!user.socialLinks) user.socialLinks = {};
+            user.socialLinks.github = profile._json?.html_url || `https://github.com/${profile.username}`;
+          } else {
+            // Create new user if not found
+            console.log("Creating new user from GitHub profile");
+            user = new User({
               githubId: profile.id,
               githubUsername: profile.username,
               name: profile.displayName || profile.username,
-              email: profile.emails?.[0]?.value,
+              email: profile.emails?.[0]?.value || `${profile.username}@github.user`,
               avatar: profile.photos?.[0]?.value || "/uploads/avatars/default-avatar.png",
               accessToken: accessToken,
-              isEmailVerified: true,
+              isEmailVerified: true, // GitHub emails are verified
               socialLinks: {
-                ...(req.user?.socialLinks || {}),
                 github: profile._json?.html_url || `https://github.com/${profile.username}`
               }
-            },
-            { upsert: true, new: true, setDefaultsOnInsert: true }
-          );
+            });
+          }
 
-          // Attach GitHub API info (optional)
-          user.platforms = [
-            {
+          // Add GitHub platform data
+          if (Object.keys(githubData).length > 0) {
+            const platformData = {
               name: 'GitHub',
               username: profile.username,
               url: profile._json?.html_url || `https://github.com/${profile.username}`,
               followers: githubData?.followers || 0,
               following: githubData?.following || 0,
-              repos: githubData?.public_repos || 0
+              repos: githubData?.public_repos || 0,
+              lastUpdated: new Date()
+            };
+            
+            // Find or create the GitHub platform entry
+            if (!user.platforms) user.platforms = [];
+            const existingPlatform = user.platforms.findIndex(p => p.name === 'GitHub');
+            
+            if (existingPlatform === -1) {
+              user.platforms.push(platformData);
+            } else {
+              user.platforms[existingPlatform] = {
+                ...user.platforms[existingPlatform],
+                ...platformData
+              };
             }
-          ];
-
-          await user.save(); // save the platforms info
+          }
+          
+          await user.save();
 
           return done(null, user);
         } catch (err) {
