@@ -109,7 +109,7 @@ router.get(
     const user = req.user;
     
     // Create JWT for frontend auth
-    const token = jwt.sign({ user: { id: user._id } }, JWT_SECRET, { expiresIn: "7d" });
+    const token = jwt.sign({ user: { id: user._id || user.id } }, JWT_SECRET, { expiresIn: "7d" });
 
     // Grab GitHub token from user object
     const githubToken = user.accessToken || null;
@@ -118,6 +118,10 @@ router.get(
     req.session.accessToken = githubToken;
     req.session.authMethod = "github";
     req.session.isAuthenticated = true;
+    
+    console.log("GitHub auth successful, redirecting with tokens");
+    console.log("JWT token available:", !!token);
+    console.log("GitHub token available:", !!githubToken);
 
     // Redirect to frontend dashboard
     const frontendUrl = process.env.CLIENT_URL || "http://localhost:5173";

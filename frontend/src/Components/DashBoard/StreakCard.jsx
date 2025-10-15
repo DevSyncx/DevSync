@@ -1,6 +1,6 @@
-import { Flame } from "lucide-react";
-import CardWrapper from "./CardWrapper";
 import React, { useEffect } from "react";
+import { Flame } from "lucide-react";
+import { Card, CardHeader, CardContent } from "@/Components/ui/Card";
 
 export default function StreakCard({ streak }) {
   const safeStreak = streak ?? 0;
@@ -30,15 +30,19 @@ export default function StreakCard({ streak }) {
   };
 
   return (
-    <CardWrapper className="flex flex-col items-center justify-center p-6 bg-[var(--card)]">
-      <Flame size={36} className="text-[var(--accent)] mb-2" />
-      <span className="font-bold text-lg text-[var(--primary)]">{safeStreak} Days</span>
-      <p className="text-sm text-[var(--muted-foreground)] mb-3">Current Streak</p>
-      
-      {/* Visual streak representation */}
-      <div className="flex items-end justify-center mt-2 w-full">
-        {renderStreakBoxes()}
-      </div>
-    </CardWrapper>
+    <Card className="flex flex-col items-center justify-center p-4 sm:p-6 w-full sm:w-auto hover:shadow-lg transition-shadow duration-200">
+      <CardHeader className="flex flex-col items-center gap-2">
+        <Flame size={36} className="text-[var(--accent)]" />
+        <span className="font-bold text-lg text-[var(--primary)]">{safeStreak} Days</span>
+      </CardHeader>
+      <CardContent className="text-center">
+        <p className="text-sm text-[var(--muted-foreground)]">Current Streak</p>
+        
+        {/* Visual streak representation */}
+        <div className="flex items-end justify-center mt-2 w-full">
+          {renderStreakBoxes()}
+        </div>
+      </CardContent>
+    </Card>
   );
 }

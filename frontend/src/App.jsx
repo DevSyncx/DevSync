@@ -23,6 +23,7 @@ import ProtectedRoute from "./Components/auth/ProtectedRoute";
 import Dashboard from "./Components/Dashboard";
 import FAQ from "./Components/FAQ";
 import Pomodoro from "./Components/DashBoard/Pomodoro";
+import Todo from "./Components/DashBoard/Todo";
 import { ArrowUp } from "lucide-react";
 import GitHubProfile from "./Components/GitHubProfile";
 import LeetCode from "./Components/DashBoard/LeetCode";
@@ -121,11 +122,21 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
-        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/pomodoro" element={<ProtectedRoute><Pomodoro /></ProtectedRoute>} />
-        <Route path='/contributors' element={<AllContributors/>}/>
-    </Routes>
+        <Route path="/todo" element={<ProtectedRoute><Todo /></ProtectedRoute>} />
+        <Route path="/contributors" element={<AllContributors />} />
+        <Route path="/dashboard/github/:username" element={<ProtectedRoute><GitHubProfile /></ProtectedRoute>} />
+        <Route path="/leetcode/:leetUser" element={<ProtectedRoute><LeetCode /></ProtectedRoute>} />
+      </Routes>
     </TimerProvider>
   );
 }

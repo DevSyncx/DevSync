@@ -79,6 +79,7 @@ app.use("/api/auth", authMiddleware, authRouter);
 app.use("/auth", authRouter); // OAuth callbacks shouldn't have middleware
 app.use("/api/profile", generalMiddleware, require("./routes/profile"));
 app.use("/api/contact", generalMiddleware, contactRouter);
+app.use("/api/tasks", require("./routes/tasks.route"));
 
 // Default route
 app.get("/", (req, res) => {
