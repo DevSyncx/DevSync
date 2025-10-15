@@ -189,3 +189,95 @@
 html {
   scroll-behavior: smooth;
 }
+
+.mobile-nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-background); /* Uses your theme color */
+  z-index: 100; /* Ensure it's on top */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.mobile-nav-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* --- Close Button --- */
+.close-btn {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: none;
+  border: none;
+  color: var(--color-foreground);
+  cursor: pointer;
+}
+
+/* --- Navigation Links --- */
+.mobile-nav-overlay nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.mobile-nav-overlay nav li {
+  margin: 1.5rem 0;
+}
+
+.mobile-nav-overlay nav a {
+  color: var(--color-foreground);
+  text-decoration: none;
+  font-size: 2rem;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.mobile-nav-overlay nav a:hover {
+  color: var(--color-primary); /* Uses your theme's primary color */
+}
+
+/* --- Footer Elements (Sign Up & Logout) --- */
+.mobile-nav-footer {
+  position: absolute;
+  bottom: 3rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  width: calc(100% - 4rem);
+  justify-content: center;
+}
+
+.signup-btn-mobile {
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+  border: none;
+  width: 100%;
+  padding: 0.8rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.logout-btn-mobile {
+  background-color: var(--color-destructive);
+  color: white;
+  border: none;
+  width: 100%;
+  padding: 0.8rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
