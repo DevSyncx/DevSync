@@ -21,9 +21,11 @@ const iconMap = {
 
 export default function ProfileCard({ user }) {
   if (!user) return null;
+  
+  // Keep the real user name but ensure consistent UI structure
   const socialLinks = user.socialLinks || {};
   const entries = Object.entries(socialLinks).filter(
-    ([, url]) => url && url.trim() !== ""
+    ([, url]) => url && typeof url === 'string' && url.trim() !== ""
   );
 
   function normalizeLeetcodeURL(url) {
@@ -62,7 +64,7 @@ export default function ProfileCard({ user }) {
               ? user.avatar.startsWith("http")
                 ? user.avatar
                 : `${import.meta.env.VITE_API_URL}${user.avatar}`
-              : `https://api.dicebear.com/6.x/micah/svg?seed=fallback`
+              : `https://api.dicebear.com/6.x/micah/svg?seed=${user.name || 'fallback'}`
           }
           alt={user.name}
           className="w-14 h-14 rounded-full object-cover"
@@ -71,47 +73,27 @@ export default function ProfileCard({ user }) {
 
         <div className="text-center">
           <h2 className="text-lg font-semibold text-[var(--primary)]">
-            {user.name}
+            {user.name || 'User'}
           </h2>
-          <p className="text-sm text-[var(--muted-foreground)]">{user.email}</p>
+          <p className="text-sm text-[var(--muted-foreground)]">{user.email || ''}</p>
         </div>
       </div>
 
-      <div className="mt-3">
+            <div className="mt-3">
         <p className="text-md font-medium text-[var(--primary)] mb-1">
           Platforms
         </p>
-        {entries.length > 0 ? (
-          <div className="flex flex-wrap gap-3">
-            {entries.map(([platformName, url]) => {
-              const Icon = iconMap[platformName.toLowerCase()];
-              if (!Icon) return null;
-
-              let href = url;
-              if (platformName.toLowerCase() === "leetcode")
-                href = leetcodeUrl(url);
-              if (platformName.toLowerCase() === "github")
-                href = githubUrl(url);
-
-              return (
-                <a
-                  key={platformName}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 flex items-center justify-center rounded-md bg-[var(--secondary)] shadow-sm hover:shadow-md transition"
-                  title={platformName}
-                >
-                  <Icon className="w-5 h-5 text-[var(--primary)]" />
-                </a>
-              );
-            })}
-          </div>
-        ) : (
-          <p className="text-sm text-[var(--muted-foreground)] italic">
-            No platforms linked yet
-          </p>
-        )}
+        <div className="flex flex-wrap gap-3">
+          {/* Always show GitHub icon */}
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 bg-[var(--card-alt)] p-2 rounded-md hover:bg-[var(--secondary)] transition-colors"
+          >
+            <SiGithub className="text-[var(--primary)]" />
+          </a>
+        </div>
       </div>
     </CardWrapper>
   );

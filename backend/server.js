@@ -9,7 +9,7 @@ const session = require("express-session");
 require("./utils/leetcodeCron");
 const passport = require("passport");
 const githubRoute = require("./routes/github.route");
-
+const contactRouter = require("./routes/contact.route");
 
 // Connect to MongoDB
 require("./db/connection");
@@ -74,9 +74,9 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/auth", require("./routes/auth"));
 app.use("/api/github", githubRoute);
 // API Routes
-// API Routes
-app.use("/api/auth", authMiddleware, require("./routes/auth"));
-app.use("/auth", authMiddleware, require("./routes/auth"));
+const authRouter = require("./routes/auth");
+app.use("/api/auth", authMiddleware, authRouter);
+app.use("/auth", authRouter); // OAuth callbacks shouldn't have middleware
 app.use("/api/profile", generalMiddleware, require("./routes/profile"));
 app.use("/api/contact", generalMiddleware, contactRouter);
 

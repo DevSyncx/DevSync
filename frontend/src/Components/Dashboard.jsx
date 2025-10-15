@@ -58,13 +58,26 @@ export default function Dashboard() {
           throw new Error(data.errors?.[0]?.msg || "Failed to load profile");
         }
         
+        console.log("Raw profile data:", JSON.stringify(data));
+        
         // Use DevSync activity data or initialize empty array
         if (!data.activity || !Array.isArray(data.activity)) {
           data.activity = [];
         }
-
-        setProfile(data);
-        setGoals(data.goals || []);
+        
+        // Normalize the profile data structure for consistent UI
+        const normalizedProfile = {
+          ...data,
+          avatar: data.avatar || `https://api.dicebear.com/6.x/micah/svg?seed=${data.name || 'user'}`,
+          socialLinks: data.socialLinks || {},
+          // Keep platforms data if it exists
+          platforms: data.platforms || []
+        };
+        
+        console.log("Normalized profile:", normalizedProfile);
+        
+        setProfile(normalizedProfile);
+        setGoals(normalizedProfile.goals || []);
       } catch (err) {
         console.error("Error fetching profile:", err);
         setError(err.message);
@@ -109,11 +122,11 @@ export default function Dashboard() {
     );
   }
 
-  // Safely destructure with default values
+  // Safely destructure with default values and force consistent values for UI
   const {
-    socialLinks = [],
+    socialLinks = { github: "https://github.com/yourUsername" },
     streak = 0,
-    githubUsername = null,
+    githubUsername = "yourUsername",
     timeSpent = "0 minutes",
     activity = [],
     notes = []
@@ -128,7 +141,7 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
             {/* Row 1 */}
             <ProfileCard user={profile} className="col-span-1" />
-            <PlatformLinks platforms={profile?.platforms || []} className="col-span-1" />
+            <PlatformLinks platforms={profile?.platforms || profile?.socialLinks || {}} className="col-span-1" />
             <StreakCard streak={streak} className="col-span-1" />
 
           
