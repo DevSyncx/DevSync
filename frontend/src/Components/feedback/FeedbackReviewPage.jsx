@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Star } from "lucide-react";
-import Navbar from "../Navbar/Navbar";
 import Footer from "../footer";
 
 // Component to display individual feedback cards
@@ -178,7 +177,7 @@ export default function FeedbackReviewPage() {
 
   return (
     <div className="min-h-screen bg-[var(--background)]">
-      <Navbar />
+    
       
       <div className="container mx-auto px-4 py-12 max-w-5xl">
         <h1 className="text-3xl font-bold mb-2 text-[var(--primary)]">Community Feedback</h1>
