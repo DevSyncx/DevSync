@@ -44,7 +44,15 @@ const Footer = () => {
             </li>
 
             <li><a href="#" className="relative inline-block transition-colors duration-200 hover:text-neutral-400 after:content-[''] after:absolute after:w-0 after:h-0.5 after:left-0 after:-bottom-1 after:bg-gradient-to-r after:from-blue-400 after:to-purple-500 after:transition-all after:duration-300 hover:after:w-full" style={{ color: "var(--card-foreground)" }}>API Reference</a></li>
-            <li><a href="#" className="relative inline-block transition-colors duration-200 hover:text-neutral-400 after:content-[''] after:absolute after:w-0 after:h-0.5 after:left-0 after:-bottom-1 after:bg-gradient-to-r after:from-blue-400 after:to-purple-500 after:transition-all after:duration-300 hover:after:w-full" style={{ color: "var(--card-foreground)" }}>Community</a></li>
+            <li>
+              <Link 
+                to="/feedback" 
+                className="relative inline-block transition-colors duration-200 hover:text-neutral-400 after:content-[''] after:absolute after:w-0 after:h-0.5 after:left-0 after:-bottom-1 after:bg-gradient-to-r after:from-blue-400 after:to-purple-500 after:transition-all after:duration-300 hover:after:w-full" 
+                style={{ color: "var(--card-foreground)" }}
+              >
+                Community Feedback
+              </Link>
+            </li>
             <li><a href="#" className="relative inline-block transition-colors duration-200 hover:text-neutral-400 after:content-[''] after:absolute after:w-0 after:h-0.5 after:left-0 after:-bottom-1 after:bg-gradient-to-r after:from-blue-400 after:to-purple-500 after:transition-all after:duration-300 hover:after:w-full" style={{ color: "var(--card-foreground)" }}>Support</a></li>
           </ul>
         </div>

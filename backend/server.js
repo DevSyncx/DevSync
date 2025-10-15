@@ -64,6 +64,7 @@ app.use("/api/auth", authMiddleware, require("./routes/auth"));
 app.use("/api/profile", generalMiddleware, require("./routes/profile"));
 app.use("/api/contact", generalMiddleware, contactRouter);
 app.use("/api/tasks", require("./routes/tasks.route"));
+app.use("/api/feedback", require("./routes/feedback"));
 
 
 // Default route

@@ -246,6 +246,7 @@ const Login = () => {
           {/* Social Login */}
           <div className="grid grid-cols-2 gap-3">
             <button
+              onClick={handleGithubLogin}
               type="button"
               onClick={handleGithubLogin}
               className="border border-[var(--input)] text-[var(--primary)] hover:bg-[var(--accent)] py-3 rounded-lg flex justify-center items-center"

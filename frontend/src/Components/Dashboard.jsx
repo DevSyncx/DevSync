@@ -8,10 +8,14 @@ import GoalsCard from "./DashBoard/GoalsCard";
 import TimeSpentCard from "./DashBoard/TimeSpentCard";
 import ActivityHeatmap from "./DashBoard/ActivityHeatMap";
 import NotesCard from "./DashBoard/NotesCard";
+import FeedbackController from "./feedback/FeedbackController";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/Components/ui/Card";
 import { ScrollArea } from "@/Components/ui/scroll-area";
 import { Alert, AlertDescription, AlertTitle } from "@/Components/ui/alert";
+import { Button } from "@/Components/ui/button";
+import { MessageSquare } from "lucide-react";
+import { useFeedback } from "@/context/FeedbackContext";
 
 export default function Dashboard() {
   const [profile, setProfile] = useState(null);
@@ -19,6 +23,7 @@ export default function Dashboard() {
   const [error, setError] = useState(null);
   const [goals, setGoals] = useState([]);
   const navigate = useNavigate();
+  const { openFeedbackPopup } = useFeedback();
 
   const getAuthToken = () => localStorage.getItem("token");
 
@@ -181,6 +186,9 @@ export default function Dashboard() {
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
         <ScrollArea className="flex-1 h-full p-4 sm:p-6 bg-muted/30">
+          {/* Add FeedbackController with the user profile */}
+          <FeedbackController user={profile} />
+          
           <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6 auto-rows-max">
             {/* Row 1 */}
             <ProfileCard user={profile} className="col-span-1" />
