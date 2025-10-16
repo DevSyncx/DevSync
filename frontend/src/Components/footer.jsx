@@ -1,5 +1,6 @@
 import { Github, Mail,Facebook ,Linkedin,Twitter} from "lucide-react";
 import { Link } from "react-router-dom"; // or use `next/link` if using Next.js
+import logo from '../assets/DevSync.svg'
 
 const Footer = () => {
   return (
@@ -7,7 +8,9 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
         {/* Brand */}
         <div>
-          <h3 className="text-3xl font-bold mb-2 tracking-tight cursor-pointer transition-all duration-300 hover:scale-105 hover:text-blue-400" style={{ color: "var(--primary)" }}>DevSync</h3>
+          <Link to="/">
+            <img src={logo} alt="DevSync Logo" className="h-12 mb=2" />
+          </Link>
           <p className="text-sm" style={{ color: "var(--muted-foreground)" }}>
             Stay ahead. Stay synced. Stay Dev.
           </p>
