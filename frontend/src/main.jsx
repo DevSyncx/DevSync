@@ -11,6 +11,7 @@ import { TimerProvider } from "./context/TimerContext.jsx";
 import { FeedbackProvider } from "./context/FeedbackContext.jsx";
 import AllContributors from './Components/AllContributors';
 import LeetCode from "./Components/DashBoard/LeetCode";
+import logo from './assets/DevSync.svg';
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -35,3 +36,6 @@ createRoot(document.getElementById("root")).render(
     </ThemeProvider>
   </StrictMode>
 );
+
+const favicon = document.getElementById("favicon");
+if (favicon) favicon.href = logo;
