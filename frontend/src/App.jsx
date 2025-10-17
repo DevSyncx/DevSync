@@ -32,6 +32,7 @@ import FeedbackReviewPage from "./Components/feedback/FeedbackReviewPage";
 
 function Home() {
   const [showTop, setShowTop] = useState(false);
+  const [assistantOpen, setAssistantOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
