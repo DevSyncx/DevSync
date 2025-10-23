@@ -151,43 +151,43 @@ export default function Todo() {
     const done = completedTasks.length;
     const percent = Math.round((done / total) * 100);
     return (
-      <div className="p-4 rounded-xl bg-[var(--card)] border border-[var(--border)] shadow-sm">
+      <div className="p-4 rounded-xl bg-[var(--card)] dark:bg-gray-800 border border-[var(--border)] dark:border-gray-700 shadow-sm">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-[var(--card-foreground)]">Goals</h3>
-          <span className="text-sm text-[var(--muted-foreground)]">{done}/{total} completed</span>
+          <h3 className="text-lg font-semibold text-[var(--card-foreground)] dark:text-gray-100">Goals</h3>
+          <span className="text-sm text-[var(--muted-foreground)] dark:text-gray-400">{done}/{total} completed</span>
         </div>
-        <div className="mt-3 w-full h-3 bg-[var(--accent)]/30 rounded-full overflow-hidden">
-          <div className="h-full bg-[var(--primary)]" style={{ width: `${percent}%` }} />
+        <div className="mt-3 w-full h-3 bg-[var(--accent)]/30 dark:bg-gray-600 rounded-full overflow-hidden">
+          <div className="h-full bg-[var(--primary)] dark:bg-blue-500" style={{ width: `${percent}%` }} />
         </div>
-        <p className="mt-2 text-sm text-[var(--muted-foreground)]">Track milestones like "Solve X LeetCode" or "Finish project".</p>
+        <p className="mt-2 text-sm text-[var(--muted-foreground)] dark:text-gray-400">Track milestones like "Solve X LeetCode" or "Finish project".</p>
       </div>
     );
   }
 
   const TaskCard = ({ task }) => (
-    <div className="p-4 rounded-xl bg-[var(--card)] border border-[var(--border)] shadow-sm flex flex-col gap-2">
+    <div className="p-4 rounded-xl bg-[var(--card)] dark:bg-gray-800 border border-[var(--border)] dark:border-gray-700 shadow-sm flex flex-col gap-2">
       <div className="flex items-start justify-between">
         <div className="flex items-start gap-3">
-          <button onClick={() => toggleComplete(task.id)} className="mt-1 p-1 rounded-full hover:bg-[var(--accent)]" aria-label="toggle-complete">
+          <button onClick={() => toggleComplete(task.id)} className="mt-1 p-1 rounded-full hover:bg-[var(--accent)] dark:hover:bg-gray-700/50" aria-label="toggle-complete">
             {task.status === "completed" ? (
-              <CheckCircle2 className="w-5 h-5 text-[var(--primary)]" />
+              <CheckCircle2 className="w-5 h-5 text-[var(--primary)] dark:text-blue-400" />
             ) : (
-              <Circle className="w-5 h-5 text-[var(--muted-foreground)]" />
+              <Circle className="w-5 h-5 text-[var(--muted-foreground)] dark:text-gray-400" />
             )}
           </button>
           <div>
-            <h4 className="font-semibold text-[var(--card-foreground)]">{task.title}</h4>
-            {task.description && <p className="text-sm text-[var(--muted-foreground)]">{task.description}</p>}
+            <h4 className="font-semibold text-[var(--card-foreground)] dark:text-gray-100">{task.title}</h4>
+            {task.description && <p className="text-sm text-[var(--muted-foreground)] dark:text-gray-400">{task.description}</p>}
             {task.deadline && (
-              <p className="text-xs mt-1 text-[var(--muted-foreground)]">Due {new Date(task.deadline).toLocaleString()}</p>
+              <p className="text-xs mt-1 text-[var(--muted-foreground)] dark:text-gray-400">Due {new Date(task.deadline).toLocaleString()}</p>
             )}
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={() => startEdit(task)} className="p-2 rounded-lg hover:bg-[var(--accent)]" aria-label="edit">
-            <Pencil className="w-4 h-4 text-[var(--primary)]" />
+          <button onClick={() => startEdit(task)} className="p-2 rounded-lg hover:bg-[var(--accent)] dark:hover:bg-gray-700/50" aria-label="edit">
+            <Pencil className="w-4 h-4 text-[var(--primary)] dark:text-blue-400" />
           </button>
-          <button onClick={() => removeTask(task.id)} className="p-2 rounded-lg hover:bg-[var(--accent)]" aria-label="delete">
+          <button onClick={() => removeTask(task.id)} className="p-2 rounded-lg hover:bg-[var(--accent)] dark:hover:bg-gray-700/50" aria-label="delete">
             <Trash2 className="w-4 h-4 text-red-500" />
           </button>
         </div>
@@ -200,15 +200,15 @@ export default function Todo() {
     const weeklyDone = Math.min(weeklyTarget, completedTasks.length);
     const percent = Math.round((weeklyDone / weeklyTarget) * 100);
     return (
-      <div className="p-4 rounded-xl bg-[var(--card)] border border-[var(--border)] shadow-sm">
+      <div className="p-4 rounded-xl bg-[var(--card)] dark:bg-gray-800 border border-[var(--border)] dark:border-gray-700 shadow-sm">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-[var(--card-foreground)]">Weekly Goals</h3>
-          <span className="text-sm text-[var(--muted-foreground)]">{weeklyDone}/{weeklyTarget} this week</span>
+          <h3 className="text-lg font-semibold text-[var(--card-foreground)] dark:text-gray-100">Weekly Goals</h3>
+          <span className="text-sm text-[var(--muted-foreground)] dark:text-gray-400">{weeklyDone}/{weeklyTarget} this week</span>
         </div>
-        <div className="mt-3 w-full h-3 bg-[var(--accent)]/30 rounded-full overflow-hidden">
-          <div className="h-full bg-[var(--primary)]" style={{ width: `${percent}%` }} />
+        <div className="mt-3 w-full h-3 bg-[var(--accent)]/30 dark:bg-gray-600 rounded-full overflow-hidden">
+          <div className="h-full bg-[var(--primary)] dark:bg-blue-500" style={{ width: `${percent}%` }} />
         </div>
-        <p className="mt-2 text-sm text-[var(--muted-foreground)]">Set targets like "Solve 7 problems" weekly.</p>
+        <p className="mt-2 text-sm text-[var(--muted-foreground)] dark:text-gray-400">Set targets like "Solve 7 problems" weekly.</p>
       </div>
     );
   }
@@ -216,19 +216,19 @@ export default function Todo() {
   return (
     <div className="flex flex-col h-screen">
       <Topbar />
-      <main className="flex-1 p-6 bg-[#d1e4f3]">
+      <main className="flex-1 p-6 bg-[#d1e4f3] dark:bg-gray-900">
         <div className="max-w-full mx-auto space-y-6">
           <div className="flex items-center gap-3">
             <BackButton to="/dashboard" />
-            <h2 className="text-2xl font-bold text-[var(--card-foreground)] dark:text-[var(--primary)]">To-Do List</h2>
+            <h2 className="text-2xl font-bold text-[var(--card-foreground)] dark:text-gray-100">To-Do List</h2>
             <div className="flex items-center gap-2 ml-auto">
               <div className="relative">
-                <select value={filter} onChange={(e)=>setFilter(e.target.value)} className="appearance-none pr-8 pl-3 py-2 rounded-lg bg-[var(--card)] text-[var(--card-foreground)] border border-[var(--input)]">
+                <select value={filter} onChange={(e)=>setFilter(e.target.value)} className="appearance-none pr-8 pl-3 py-2 rounded-lg bg-[var(--card)] dark:bg-gray-800 text-[var(--card-foreground)] dark:text-gray-100 border border-[var(--input)] dark:border-gray-700">
                   <option value="all">All</option>
                   <option value="upcoming">Upcoming deadlines</option>
                   <option value="completed">Completed</option>
                 </select>
-                <Filter className="w-4 h-4 absolute right-2 top-1/2 -translate-y-1/2 text-[var(--muted-foreground)]" />
+                <Filter className="w-4 h-4 absolute right-2 top-1/2 -translate-y-1/2 text-[var(--muted-foreground)] dark:text-gray-400" />
               </div>
               <button type="button" onClick={openAddModal} className="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] flex items-center gap-2 hover:opacity-90">
                 <Plus className="w-4 h-4" />
@@ -237,83 +237,80 @@ export default function Todo() {
             </div>
           </div>
 
-            {/* Add / Edit Modal */}
-            {showModal && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-                <div className="w-full max-w-lg p-5 rounded-xl bg-[var(--card)] border border-[var(--border)] shadow-xl">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-semibold text-[var(--card-foreground)]">{editingId ? "Edit Task" : "Add Task"}</h3>
-                    <button onClick={() => { setShowModal(false); resetForm(); }} className="px-2 py-1 rounded-md hover:bg-[var(--accent)] text-[var(--card-foreground)]">✕</button>
+          {/* Add / Edit Modal */}
+          {showModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+              <div className="w-full max-w-lg p-5 rounded-xl bg-[var(--card)] dark:bg-gray-800 border border-[var(--border)] dark:border-gray-700 shadow-xl">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-semibold text-[var(--card-foreground)] dark:text-gray-100">{editingId ? "Edit Task" : "Add Task"}</h3>
+                  <button onClick={() => { setShowModal(false); resetForm(); }} className="px-2 py-1 rounded-md hover:bg-[var(--accent)] dark:hover:bg-gray-700/50 text-[var(--card-foreground)] dark:text-gray-100">✕</button>
+                </div>
+                <form onSubmit={handleSubmitModal} className="mt-4 grid grid-cols-1 gap-3">
+                  <input value={modalData.title} onChange={(e)=>setModalData({ ...modalData, title: e.target.value })} placeholder="Title" className="px-3 py-2 rounded-lg bg-[var(--background)] dark:bg-gray-900 text-[var(--card-foreground)] dark:text-gray-100 border border-[var(--input)] dark:border-gray-600" />
+                  <textarea value={modalData.description} onChange={(e)=>setModalData({ ...modalData, description: e.target.value })} placeholder="Description" className="px-3 py-2 rounded-lg bg-[var(--background)] dark:bg-gray-900 text-[var(--card-foreground)] dark:text-gray-100 border border-[var(--input)] dark:border-gray-600" rows="3" />
+                  <div className="grid grid-cols-2 gap-3">
+                    <select value={modalData.status} onChange={(e)=>setModalData({ ...modalData, status: e.target.value })} className="px-3 py-2 rounded-lg bg-[var(--background)] dark:bg-gray-900 text-[var(--card-foreground)] dark:text-gray-100 border border-[var(--input)] dark:border-gray-600">
+                      <option value="pending">Pending</option>
+                      <option value="completed">Completed</option>
+                    </select>
+                    <input type="datetime-local" value={modalData.deadline} onChange={(e)=>setModalData({ ...modalData, deadline: e.target.value })} className="px-3 py-2 rounded-lg bg-[var(--background)] dark:bg-gray-900 text-[var(--card-foreground)] dark:text-gray-100 border border-[var(--input)] dark:border-gray-600" />
                   </div>
-                  <form onSubmit={handleSubmitModal} className="mt-4 grid grid-cols-1 gap-3">
-                    <input value={modalData.title} onChange={(e)=>setModalData({ ...modalData, title: e.target.value })} placeholder="Title" className="px-3 py-2 rounded-lg bg-[var(--background)] text-[var(--card-foreground)] border border-[var(--input)]" />
-                    <textarea value={modalData.description} onChange={(e)=>setModalData({ ...modalData, description: e.target.value })} placeholder="Description" className="px-3 py-2 rounded-lg bg-[var(--background)] text-[var(--card-foreground)] border border-[var(--input)]" rows="3" />
-                    <div className="grid grid-cols-2 gap-3">
-                      <select value={modalData.status} onChange={(e)=>setModalData({ ...modalData, status: e.target.value })} className="px-3 py-2 rounded-lg bg-[var(--background)] text-[var(--card-foreground)] border border-[var(--input)]">
-                        <option value="pending">Pending</option>
-                        <option value="completed">Completed</option>
-                      </select>
-                      <input type="datetime-local" value={modalData.deadline} onChange={(e)=>setModalData({ ...modalData, deadline: e.target.value })} className="px-3 py-2 rounded-lg bg-[var(--background)] text-[var(--card-foreground)] border border-[var(--input)]" />
-                    </div>
-                    {/* userId is resolved on the server from JWT; no input needed */}
-                    <div className="flex items-center justify-end gap-2 mt-2">
-                      <button type="button" onClick={() => { setShowModal(false); resetForm(); }} className="px-4 py-2 rounded-lg border border-[var(--input)] text-[var(--card-foreground)] hover:bg-[var(--accent)]">Cancel</button>
-                      <button type="submit" className="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)]">
-                        {editingId ? "Save Changes" : "Add Task"}
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            )}
-
-            {/* Content */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-              <div className="lg:col-span-2 space-y-4">
-                {/* Pending */}
-                <div className="p-4 rounded-xl bg-[var(--card)] border border-[var(--border)] shadow-sm">
-                  <h3 className="text-lg font-semibold text-[var(--card-foreground)] mb-3">Pending</h3>
-                  <div className="space-y-3">
-                    {filtered(pendingTasks).length === 0 ? (
-                      <p className="text-sm text-[var(--muted-foreground)]">No pending tasks.</p>
-                    ) : (
-                      filtered(pendingTasks).map(task => <TaskCard key={task.id} task={task} />)
-                    )}
+                  <div className="flex items-center justify-end gap-2 mt-2">
+                    <button type="button" onClick={() => { setShowModal(false); resetForm(); }} className="px-4 py-2 rounded-lg border border-[var(--input)] dark:border-gray-600 text-[var(--card-foreground)] dark:text-gray-100 hover:bg-[var(--accent)] dark:hover:bg-gray-700/50">Cancel</button>
+                    <button type="submit" className="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)]">
+                      {editingId ? "Save Changes" : "Add Task"}
+                    </button>
                   </div>
-                </div>
-
-                {/* Completed */}
-                <div className="p-4 rounded-xl bg-[var(--card)] border border-[var(--border)] shadow-sm">
-                  <h3 className="text-lg font-semibold text-[var(--card-foreground)] mb-3">Completed</h3>
-                  <div className="space-y-3">
-                    {filtered(completedTasks).length === 0 ? (
-                      <p className="text-sm text-[var(--muted-foreground)]">No completed tasks yet.</p>
-                    ) : (
-                      filtered(completedTasks).map(task => <TaskCard key={task.id} task={task} />)
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Right column widgets */}
-              <div className="space-y-4">
-                {/* Move Quick Tips to top for visibility */}
-                <div className="p-4 rounded-xl bg-[var(--card)] border border-[var(--border)] shadow-sm">
-                  <h3 className="text-lg font-semibold text-[var(--card-foreground)]">Quick Tips</h3>
-                  <ul className="mt-2 list-disc list-inside text-sm text-[var(--muted-foreground)] space-y-1">
-                    <li>Use deadlines to prioritize tasks.</li>
-                    <li>Break big goals into smaller, actionable items.</li>
-                    <li>Mark tasks done to track your streaks.</li>
-                  </ul>
-                </div>
-                <GoalProgress />
-                <WeeklyGoals />
+                </form>
               </div>
             </div>
+          )}
+
+          {/* Content */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="lg:col-span-2 space-y-4">
+              {/* Pending */}
+              <div className="p-4 rounded-xl bg-[var(--card)] dark:bg-gray-800 border border-[var(--border)] dark:border-gray-700 shadow-sm">
+                <h3 className="text-lg font-semibold text-[var(--card-foreground)] dark:text-gray-100 mb-3">Pending</h3>
+                <div className="space-y-3">
+                  {filtered(pendingTasks).length === 0 ? (
+                    <p className="text-sm text-[var(--muted-foreground)] dark:text-gray-400">No pending tasks.</p>
+                  ) : (
+                    filtered(pendingTasks).map(task => <TaskCard key={task.id} task={task} />)
+                  )}
+                </div>
+              </div>
+
+              {/* Completed */}
+              <div className="p-4 rounded-xl bg-[var(--card)] dark:bg-gray-800 border border-[var(--border)] dark:border-gray-700 shadow-sm">
+                <h3 className="text-lg font-semibold text-[var(--card-foreground)] dark:text-gray-100 mb-3">Completed</h3>
+                <div className="space-y-3">
+                  {filtered(completedTasks).length === 0 ? (
+                    <p className="text-sm text-[var(--muted-foreground)] dark:text-gray-400">No completed tasks yet.</p>
+                  ) : (
+                    filtered(completedTasks).map(task => <TaskCard key={task.id} task={task} />)
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Right column widgets */}
+            <div className="space-y-4">
+              {/* Move Quick Tips to top for visibility */}
+              <div className="p-4 rounded-xl bg-[var(--card)] dark:bg-gray-800 border border-[var(--border)] dark:border-gray-700 shadow-sm">
+                <h3 className="text-lg font-semibold text-[var(--card-foreground)] dark:text-gray-100">Quick Tips</h3>
+                <ul className="mt-2 list-disc list-inside text-sm text-[var(--muted-foreground)] dark:text-gray-400 space-y-1">
+                  <li>Use deadlines to prioritize tasks.</li>
+                  <li>Break big goals into smaller, actionable items.</li>
+                  <li>Mark tasks done to track your streaks.</li>
+                </ul>
+              </div>
+              <GoalProgress />
+              <WeeklyGoals />
+            </div>
+          </div>
         </div>
       </main>
     </div>
   );
 }
-
-
