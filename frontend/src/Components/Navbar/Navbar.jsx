@@ -14,6 +14,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FloatingNav } from "../ui/floating-navbar";
 import DarkModeToggle from "../ui/DarkModeToggle";
 import { useTimer } from "../../context/TimerContext";
+import logo from '../../assets/DevSync.svg'
 
 const publicNavItems = [
   { name: "Home", link: "/", icon: <Home className="h-4 w-4" /> },
@@ -153,12 +154,7 @@ const Navbar = () => {
         >
           <div className="mx-auto flex max-w-7xl items-center justify-between">
             <Link to="/">
-              <h1
-                className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight hover:scale-105 transition-transform duration-300"
-                style={{ color: "var(--primary)" }}
-              >
-                DevSync
-              </h1>
+              <img src={logo} alt="DevSync Logo" className="h-10 md:h-12 lg:h-14" />
             </Link>
 
             <nav className="hidden lg:flex space-x-6 lg:space-x-8 items-center">
