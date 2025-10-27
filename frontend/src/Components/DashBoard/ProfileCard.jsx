@@ -28,7 +28,7 @@ export default function ProfileCard({ user }) {
 
   const socialLinks = user.socialLinks || {};
   const entries = Object.entries(socialLinks).filter(
-    ([_, url]) => url?.trim() !== ""
+    ([_, url]) => url?.trim() !== "",
   );
 
   const normalizeLeetcodeURL = (url) => {

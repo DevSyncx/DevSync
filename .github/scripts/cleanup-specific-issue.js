@@ -17,7 +17,9 @@ async function deleteIssueVectors() {
 
   if (!ISSUE_TO_DELETE) {
     console.error("❌ Please provide an issue number:");
-    console.error("   Usage: ISSUE_NUMBER=6 node scripts/cleanup-specific-issue.js");
+    console.error(
+      "   Usage: ISSUE_NUMBER=6 node scripts/cleanup-specific-issue.js",
+    );
     console.error("   Or:    node scripts/cleanup-specific-issue.js 6");
     process.exit(1);
   }
@@ -27,10 +29,12 @@ async function deleteIssueVectors() {
     console.log("✅ Connected to Pinecone index");
 
     // Find all vectors for this issue
-    console.log(`🔍 Searching for vectors related to issue #${ISSUE_TO_DELETE}...`);
-    
+    console.log(
+      `🔍 Searching for vectors related to issue #${ISSUE_TO_DELETE}...`,
+    );
+
     const vectorsToDelete = [];
-    
+
     try {
       // First, try using metadata filter
       const queryResponse = await index.query({
@@ -39,40 +43,48 @@ async function deleteIssueVectors() {
         includeValues: false,
         includeMetadata: true,
         filter: {
-          issue_number: parseInt(ISSUE_TO_DELETE)
-        }
+          issue_number: parseInt(ISSUE_TO_DELETE),
+        },
       });
 
       if (queryResponse.matches && queryResponse.matches.length > 0) {
         for (const match of queryResponse.matches) {
           vectorsToDelete.push(match.id);
           console.log(`   📌 Found vector via filter: ${match.id}`);
-          console.log(`      Metadata:`, JSON.stringify(match.metadata, null, 2));
+          console.log(
+            `      Metadata:`,
+            JSON.stringify(match.metadata, null, 2),
+          );
         }
       } else {
-        console.log("   🔄 Filter query returned no results, trying list approach...");
-        
+        console.log(
+          "   🔄 Filter query returned no results, trying list approach...",
+        );
+
         // Fallback: List all vectors and filter
         let paginationToken = null;
-        
+
         do {
           const listOptions = { limit: 100 };
           if (paginationToken) {
             listOptions.paginationToken = paginationToken;
           }
-          
+
           const listResponse = await index.listPaginated(listOptions);
-          
+
           if (listResponse.vectors) {
             for (const vector of listResponse.vectors) {
               if (vector.metadata?.issue_number === parseInt(ISSUE_TO_DELETE)) {
                 vectorsToDelete.push(vector.id);
                 console.log(`   📌 Found vector via list: ${vector.id}`);
-                console.log(`      Metadata:`, JSON.stringify(vector.metadata, null, 2));
+                console.log(
+                  `      Metadata:`,
+                  JSON.stringify(vector.metadata, null, 2),
+                );
               }
             }
           }
-          
+
           paginationToken = listResponse.pagination?.next;
         } while (paginationToken);
       }
@@ -81,10 +93,14 @@ async function deleteIssueVectors() {
       throw searchError;
     }
 
-    console.log(`\nFound ${vectorsToDelete.length} vector(s) to delete for Issue #${ISSUE_TO_DELETE}`);
+    console.log(
+      `\nFound ${vectorsToDelete.length} vector(s) to delete for Issue #${ISSUE_TO_DELETE}`,
+    );
 
     if (vectorsToDelete.length === 0) {
-      console.log(`ℹ️  No vectors found for Issue #${ISSUE_TO_DELETE}. Nothing to delete.`);
+      console.log(
+        `ℹ️  No vectors found for Issue #${ISSUE_TO_DELETE}. Nothing to delete.`,
+      );
       return;
     }
 
@@ -96,23 +112,28 @@ async function deleteIssueVectors() {
 
     // Confirm deletion
     console.log(`\n⚠️  This action cannot be undone!`);
-    
+
     // Delete the vectors
     console.log(`\n🗑️  Deleting ${vectorsToDelete.length} vector(s)...`);
-    
+
     try {
       await index.deleteMany(vectorsToDelete);
-      console.log(`✅ Successfully deleted ${vectorsToDelete.length} vector(s) for Issue #${ISSUE_TO_DELETE}`);
+      console.log(
+        `✅ Successfully deleted ${vectorsToDelete.length} vector(s) for Issue #${ISSUE_TO_DELETE}`,
+      );
     } catch (deleteError) {
       console.error(`❌ Error deleting vectors:`, deleteError.message);
       throw deleteError;
     }
 
     console.log(`\n=== Cleanup Summary ===`);
-    console.log(`📊 Issue #${ISSUE_TO_DELETE} vectors deleted: ${vectorsToDelete.length}`);
+    console.log(
+      `📊 Issue #${ISSUE_TO_DELETE} vectors deleted: ${vectorsToDelete.length}`,
+    );
     console.log(`✅ Database cleanup completed successfully`);
-    console.log(`\n🎯 You can now edit Issue #${ISSUE_TO_DELETE} to test the update functionality!`);
-
+    console.log(
+      `\n🎯 You can now edit Issue #${ISSUE_TO_DELETE} to test the update functionality!`,
+    );
   } catch (error) {
     console.error("❌ Error during cleanup:", error);
     process.exit(1);
@@ -121,7 +142,7 @@ async function deleteIssueVectors() {
 
 // Handle command line arguments
 const args = process.argv.slice(2);
-if (args.includes('--help') || args.includes('-h')) {
+if (args.includes("--help") || args.includes("-h")) {
   console.log(`
 📖 Usage: 
   ISSUE_NUMBER=6 node scripts/cleanup-specific-issue.js
@@ -142,7 +163,7 @@ if (args.includes('--help') || args.includes('-h')) {
 }
 
 // Run the cleanup script
-deleteIssueVectors().catch(error => {
+deleteIssueVectors().catch((error) => {
   console.error("💥 Cleanup script failed:", error);
   process.exit(1);
 });

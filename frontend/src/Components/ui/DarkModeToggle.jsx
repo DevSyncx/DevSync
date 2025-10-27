@@ -11,9 +11,7 @@ export default function DarkModeToggle() {
       onClick={toggleTheme}
       aria-label="Toggle dark mode"
       className={`flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300 cursor-pointer hover:scale-110   ${
-        isDark
-          ? "bg-[ --background]"
-          : "bg-[--foreground]"
+        isDark ? "bg-[ --background]" : "bg-[--foreground]"
       }`}
     >
       {isDark ? <Moon className="w-6 h-6" /> : <Sun className="w-6 h-6" />}

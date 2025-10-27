@@ -1,5 +1,11 @@
 import React from "react";
-import { CheckSquare, Clock, Settings, Menu, MessageSquare } from "lucide-react";
+import {
+  CheckSquare,
+  Clock,
+  Settings,
+  Menu,
+  MessageSquare,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger } from "@/Components/ui/sheet";
 import { Button } from "@/Components/ui/button";
@@ -42,7 +48,7 @@ export default function Sidebar() {
                   {label}
                 </Button>
               ))}
-              
+
               {/* Feedback Button */}
               <Button
                 variant="ghost"
@@ -71,7 +77,7 @@ export default function Sidebar() {
               {label}
             </Button>
           ))}
-          
+
           {/* Feedback Button */}
           <Button
             variant="ghost"

@@ -56,8 +56,8 @@ const leetcodeSchema = new mongoose.Schema(
     ],
     lastUpdated: { type: Date, default: Date.now },
   },
-  
-  { timestamps: true }
+
+  { timestamps: true },
 );
 
 const LeetCode = mongoose.model("LeetCode", leetcodeSchema);

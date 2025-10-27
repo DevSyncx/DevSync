@@ -24,7 +24,7 @@ async function retryApiCall(apiCall, maxRetries = 3, delay = 1000) {
       if (i === maxRetries - 1) throw error;
       if (error.status === 429 || error.status >= 500) {
         console.log(
-          `API call failed (attempt ${i + 1}), retrying in ${delay}ms...`
+          `API call failed (attempt ${i + 1}), retrying in ${delay}ms...`,
         );
         await new Promise((resolve) => setTimeout(resolve, delay));
         delay *= 2; // Exponential backoff
@@ -37,21 +37,21 @@ async function retryApiCall(apiCall, maxRetries = 3, delay = 1000) {
 
 async function cleanupClosedIssue() {
   console.log(
-    `\n=== Cleaning up closed issue #${ISSUE_NUMBER} from vector database ===`
+    `\n=== Cleaning up closed issue #${ISSUE_NUMBER} from vector database ===`,
   );
   console.log(`Repository: ${OWNER}/${REPO}`);
   console.log(`Pinecone Index: ${indexName}`);
 
   if (!OWNER || !REPO) {
     console.error(
-      "❌ Repository owner and name must be specified via GITHUB_REPOSITORY or GITHUB_OWNER/GITHUB_REPO environment variables"
+      "❌ Repository owner and name must be specified via GITHUB_REPOSITORY or GITHUB_OWNER/GITHUB_REPO environment variables",
     );
     process.exit(1);
   }
 
   if (!ISSUE_NUMBER) {
     console.error(
-      "❌ Issue number must be specified via ISSUE_NUMBER environment variable"
+      "❌ Issue number must be specified via ISSUE_NUMBER environment variable",
     );
     process.exit(1);
   }
@@ -83,7 +83,7 @@ async function cleanupClosedIssue() {
 
     // Query Pinecone to find vectors for this issue with retry logic
     console.log(
-      `🔍 Searching for vectors related to issue #${ISSUE_NUMBER}...`
+      `🔍 Searching for vectors related to issue #${ISSUE_NUMBER}...`,
     );
 
     const vectorsToDelete = [];
@@ -110,7 +110,7 @@ async function cleanupClosedIssue() {
         } else {
           // Fallback to listing all vectors (paginated approach)
           console.log(
-            "   🔄 Filter query returned no results, trying list approach..."
+            "   🔄 Filter query returned no results, trying list approach...",
           );
           let paginationToken = null;
 
@@ -138,7 +138,7 @@ async function cleanupClosedIssue() {
     } catch (error) {
       console.error(
         "❌ Failed to search vectors from Pinecone:",
-        error.message
+        error.message,
       );
       throw error;
     }
@@ -147,7 +147,7 @@ async function cleanupClosedIssue() {
 
     if (vectorsToDelete.length === 0) {
       console.log(
-        `ℹ️  No vectors found for issue #${ISSUE_NUMBER}. It may have been a duplicate issue that was never added to the vector database.`
+        `ℹ️  No vectors found for issue #${ISSUE_NUMBER}. It may have been a duplicate issue that was never added to the vector database.`,
       );
 
       // Still post a cleanup confirmation comment with retry logic
@@ -171,7 +171,7 @@ async function cleanupClosedIssue() {
 
     // Delete the vectors from Pinecone with retry logic
     console.log(
-      `🗑️  Deleting ${vectorsToDelete.length} vector(s) from Pinecone...`
+      `🗑️  Deleting ${vectorsToDelete.length} vector(s) from Pinecone...`,
     );
 
     try {
@@ -179,7 +179,7 @@ async function cleanupClosedIssue() {
         return await index.deleteMany(vectorsToDelete);
       });
       console.log(
-        `✅ Successfully deleted ${vectorsToDelete.length} vector(s) from Pinecone`
+        `✅ Successfully deleted ${vectorsToDelete.length} vector(s) from Pinecone`,
       );
     } catch (deleteError) {
       console.error(`❌ Error deleting vectors:`, deleteError.message);

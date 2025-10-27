@@ -65,11 +65,9 @@ RESEND_API_KEY=<your-resend-api-key>             # Must have full access permiss
 
 ## ⚠️ Notes
 
-- **Do not commit `.env` files** to Git. Always add `.env` to `.gitignore`.  
-- Ensure `ADMIN_EMAIL` matches the registered email for services like Resend.  
-- After setting environment variables, test **Google OAuth login** and **email functionality**.  
-- For detailed setup instructions, follow the guides below:  
-  - [Google OAuth Setup](./setup/google_auth_setup.md)  
+- **Do not commit `.env` files** to Git. Always add `.env` to `.gitignore`.
+- Ensure `ADMIN_EMAIL` matches the registered email for services like Resend.
+- After setting environment variables, test **Google OAuth login** and **email functionality**.
+- For detailed setup instructions, follow the guides below:
+  - [Google OAuth Setup](./setup/google_auth_setup.md)
   - [Resend API Setup](./setup/resend_setup.md)
-
-

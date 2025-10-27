@@ -1,17 +1,17 @@
 // src/Components/DashBoard/Pomodoro.jsx
-import React from 'react';
+import React from "react";
 import { useTimer } from "../../context/TimerContext";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const Pomodoro = () => {
   const navigate = useNavigate();
   const { timeLeft, isWork, startTimer, pauseTimer, resetTimer } = useTimer();
 
   const formatTime = (seconds) => {
-    const mins = String(Math.floor(seconds / 60)).padStart(2, '0');
-    const secs = String(seconds % 60).padStart(2, '0');
+    const mins = String(Math.floor(seconds / 60)).padStart(2, "0");
+    const secs = String(seconds % 60).padStart(2, "0");
     return `${mins}:${secs}`;
-  };  
+  };
 
   return (
     <section className="min-h-screen bg-[#DCE6EC] flex flex-col items-center justify-center px-4 md:px-10">
@@ -28,10 +28,10 @@ const Pomodoro = () => {
 
       <h4
         className={`absolute top-20 px-4 py-2 sm:px-6 sm:py-2 rounded text-white text-lg sm:text-xl md:text-2xl ${
-          isWork ? 'bg-green-500' : 'bg-blue-500'
+          isWork ? "bg-green-500" : "bg-blue-500"
         }`}
       >
-        {isWork ? 'Work Session' : 'Take a Break'}
+        {isWork ? "Work Session" : "Take a Break"}
       </h4>
 
       <div className="text-center mt-20 w-full">

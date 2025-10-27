@@ -74,8 +74,8 @@ export default function GoalsCard() {
                 completed: !goal.completed,
                 status: goal.completed ? "pending" : "completed",
               }
-            : g
-        )
+            : g,
+        ),
       );
     } catch (err) {
       console.error("Update error:", err);
@@ -98,8 +98,7 @@ export default function GoalsCard() {
   const pendingGoals = goals.filter((g) => !g.completed);
   const completedGoals = goals.filter((g) => g.completed);
 
-  const listClass =
-    "max-h-64 overflow-y-auto space-y-3 pr-2 scrollbar-hidden"; // hide scrollbar
+  const listClass = "max-h-64 overflow-y-auto space-y-3 pr-2 scrollbar-hidden"; // hide scrollbar
 
   return (
     <Card className="w-full sm:w-auto p-4 sm:p-6 hover:shadow-xl transition-shadow duration-200">

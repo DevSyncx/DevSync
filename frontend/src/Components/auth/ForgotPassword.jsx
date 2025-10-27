@@ -13,18 +13,24 @@ const ForgotPassword = () => {
     setStatus(null);
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/forgot-password`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/forgot-password`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        },
+      );
 
       const data = await res.json();
 
       if (res.ok) {
         setStatus({ type: "success", message: data.message });
       } else {
-        setStatus({ type: "error", message: data.message || "Something went wrong" });
+        setStatus({
+          type: "error",
+          message: data.message || "Something went wrong",
+        });
       }
     } catch (error) {
       setStatus({ type: "error", message: "Server error. Try again later." });

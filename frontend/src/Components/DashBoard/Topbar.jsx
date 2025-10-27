@@ -69,9 +69,7 @@ export default function Topbar() {
             <DropdownMenuItem onClick={() => navigate("/settings")}>
               Settings
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleLogout}>
-              Logout
-            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 

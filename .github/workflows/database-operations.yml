@@ -4,17 +4,17 @@ on:
   workflow_dispatch:
     inputs:
       action:
-        description: 'Database operation to perform'
+        description: "Database operation to perform"
         required: true
-        default: 'populate-issues'
+        default: "populate-issues"
         type: choice
         options:
-        - 'populate-issues'
-        - 'cleanup-duplicates'
-        - 'debug-database'
-        - 'clear-all-vectors'
+          - "populate-issues"
+          - "cleanup-duplicates"
+          - "debug-database"
+          - "clear-all-vectors"
       force:
-        description: 'Force action (required for destructive operations)'
+        description: "Force action (required for destructive operations)"
         required: false
         default: false
         type: boolean
@@ -26,7 +26,7 @@ permissions:
 jobs:
   database-operation:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

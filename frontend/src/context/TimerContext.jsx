@@ -15,7 +15,9 @@ export function TimerProvider({ children }) {
 
   const [isRunning, setIsRunning] = useState(false);
   const [isWork, setIsWork] = useState(true);
-  const [sessions, setSessions] = useState(() => Number(localStorage.getItem("pomodoroSessions")) || 0);
+  const [sessions, setSessions] = useState(
+    () => Number(localStorage.getItem("pomodoroSessions")) || 0,
+  );
 
   const [endTimestamp, setEndTimestamp] = useState(() => {
     const saved = localStorage.getItem("pomodoroEndTimestamp");
@@ -53,10 +55,17 @@ export function TimerProvider({ children }) {
   }, [isRunning, endTimestamp]);
 
   // Persist timer info
-  useEffect(() => localStorage.setItem("pomodoroTimeLeft", timeLeft), [timeLeft]);
-  useEffect(() => localStorage.setItem("pomodoroSessions", sessions), [sessions]);
+  useEffect(
+    () => localStorage.setItem("pomodoroTimeLeft", timeLeft),
+    [timeLeft],
+  );
+  useEffect(
+    () => localStorage.setItem("pomodoroSessions", sessions),
+    [sessions],
+  );
   useEffect(() => {
-    if (endTimestamp) localStorage.setItem("pomodoroEndTimestamp", endTimestamp);
+    if (endTimestamp)
+      localStorage.setItem("pomodoroEndTimestamp", endTimestamp);
   }, [endTimestamp]);
 
   const handleSessionEnd = () => {
@@ -68,14 +77,16 @@ export function TimerProvider({ children }) {
         : shortBreak
       : workTime;
 
-    setIsWork(prev => !prev);
+    setIsWork((prev) => !prev);
     setTimeLeft(nextTime);
     setEndTimestamp(Date.now() + nextTime * 1000);
     setIsRunning(true);
 
     if ("Notification" in window && Notification.permission === "granted") {
       new Notification(
-        isWork ? "Work session complete! Time for a break 🎉" : "Break over! Back to work 💻"
+        isWork
+          ? "Work session complete! Time for a break 🎉"
+          : "Break over! Back to work 💻",
       );
     }
   };

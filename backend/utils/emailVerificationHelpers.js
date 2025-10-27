@@ -1,9 +1,10 @@
-const { sendVerificationEmail } = require('../services/emailService');
+const { sendVerificationEmail } = require("../services/emailService");
 const crypto = require("crypto");
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 // Use a fallback JWT secret if env variable is missing
-const JWT_SECRET = process.env.JWT_SECRET || 'devsync_secure_jwt_secret_key_for_authentication';
+const JWT_SECRET =
+  process.env.JWT_SECRET || "devsync_secure_jwt_secret_key_for_authentication";
 
 /**
  * Generate a 6-digit verification code
@@ -60,7 +61,7 @@ const handleVerificationEmail = async (email, verificationCode) => {
   }
 
   try {
-    console.log('Sending For Email Verifcation ...')
+    console.log("Sending For Email Verifcation ...");
     await sendVerificationEmail(email, verificationCode);
     console.log(`Verification code for ${email}: ${verificationCode}`);
   } catch (emailError) {
@@ -74,5 +75,5 @@ module.exports = {
   generateJWT,
   formatUserResponse,
   setVerificationToken,
-  handleVerificationEmail
+  handleVerificationEmail,
 };

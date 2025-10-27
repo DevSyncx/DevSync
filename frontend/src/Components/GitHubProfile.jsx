@@ -23,7 +23,7 @@ const GitHubProfile = () => {
         const backendUrl =
           import.meta.env.VITE_API_URL || "http://localhost:5000";
         const res = await fetch(
-          `${backendUrl}/api/github/${normalizedUsername}`
+          `${backendUrl}/api/github/${normalizedUsername}`,
         );
         const json = await res.json();
 
@@ -115,7 +115,7 @@ const GitHubProfile = () => {
 
     const totalSize = Object.values(languages).reduce(
       (sum, val) => sum + val,
-      0
+      0,
     );
 
     return (

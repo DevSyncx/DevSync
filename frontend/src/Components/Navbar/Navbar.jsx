@@ -17,77 +17,93 @@ import { useTimer } from "../../context/TimerContext";
 
 const publicNavItems = [
   { name: "Home", link: "/", icon: <Home className="h-4 w-4" /> },
-  { name: "Features", link: "#features", icon: <Sparkle className="h-4 w-4" /> },
+  {
+    name: "Features",
+    link: "#features",
+    icon: <Sparkle className="h-4 w-4" />,
+  },
   { name: "About us", link: "#about", icon: <Info className="h-4 w-4" /> },
-  { name: "Github", link: "https://github.com/DevSyncx/DevSync.git", icon: <Github className="h-4 w-4" /> },
+  {
+    name: "Github",
+    link: "https://github.com/DevSyncx/DevSync.git",
+    icon: <Github className="h-4 w-4" />,
+  },
   { name: "Contact Us", link: "#contact", icon: <Phone className="h-4 w-4" /> },
   { name: "FAQ", link: "#faq", icon: <HelpCircle className="h-4 w-4" /> },
 ];
 
 // --- Mobile Navigation Overlay Component (defined in the same file) ---
-const MobileNavOverlay = ({ isOpen, onClose, navItems, isAuthenticated, handleLogout }) => {
-    const overlayClasses = `mobile-nav-overlay ${isOpen ? "open" : ""}`;
+const MobileNavOverlay = ({
+  isOpen,
+  onClose,
+  navItems,
+  isAuthenticated,
+  handleLogout,
+}) => {
+  const overlayClasses = `mobile-nav-overlay ${isOpen ? "open" : ""}`;
 
-    const handleLinkClick = () => {
-      onClose();
-    };
-    
-    const handleLogoutClick = () => {
-      handleLogout();
-      onClose();
-    }
+  const handleLinkClick = () => {
+    onClose();
+  };
 
-    return (
-      <div className={overlayClasses}>
-        <button onClick={onClose} className="absolute top-8 right-8 text-foreground">
-          <X size={32} />
-        </button>
-        <nav className="flex flex-col items-center justify-center h-full">
-          <ul>
-            {!isAuthenticated ? (
-              navItems.map((item) => (
-                <li key={item.name}>
-                  <a href={item.link} onClick={handleLinkClick}>
-                    {item.name}
-                  </a>
-                </li>
-              ))
-            ) : (
-              <>
-                <li>
-                  <Link to="/profile" onClick={handleLinkClick}>
-                    Profile
-                  </Link>
-                </li>
-                {/* Add other authenticated links here */}
-              </>
-            )}
-          </ul>
-        </nav>
+  const handleLogoutClick = () => {
+    handleLogout();
+    onClose();
+  };
 
-        <div className="mobile-nav-footer">
+  return (
+    <div className={overlayClasses}>
+      <button
+        onClick={onClose}
+        className="absolute top-8 right-8 text-foreground"
+      >
+        <X size={32} />
+      </button>
+      <nav className="flex flex-col items-center justify-center h-full">
+        <ul>
           {!isAuthenticated ? (
-            <>
-              <Link to="/register" className="w-full">
-                <button onClick={handleLinkClick} className="signup-btn-mobile">
-                  Sign Up
-                </button>
-              </Link>
-              <DarkModeToggle />
-            </>
+            navItems.map((item) => (
+              <li key={item.name}>
+                <a href={item.link} onClick={handleLinkClick}>
+                  {item.name}
+                </a>
+              </li>
+            ))
           ) : (
             <>
-              <button onClick={handleLogoutClick} className="logout-btn-mobile">
-                Logout
-              </button>
-              <DarkModeToggle />
+              <li>
+                <Link to="/profile" onClick={handleLinkClick}>
+                  Profile
+                </Link>
+              </li>
+              {/* Add other authenticated links here */}
             </>
           )}
-        </div>
-      </div>
-    );
-}; 
+        </ul>
+      </nav>
 
+      <div className="mobile-nav-footer">
+        {!isAuthenticated ? (
+          <>
+            <Link to="/register" className="w-full">
+              <button onClick={handleLinkClick} className="signup-btn-mobile">
+                Sign Up
+              </button>
+            </Link>
+            <DarkModeToggle />
+          </>
+        ) : (
+          <>
+            <button onClick={handleLogoutClick} className="logout-btn-mobile">
+              Logout
+            </button>
+            <DarkModeToggle />
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
 
 // --- Main Navbar Component ---
 const Navbar = () => {
@@ -98,21 +114,21 @@ const Navbar = () => {
 
   const navigate = useNavigate();
   const { timeLeft, isRunning } = useTimer();
-  
+
   useEffect(() => {
     setIsAuthenticated(!!localStorage.getItem("token"));
   }, []);
-  
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024) {
         setMenuOpen(false);
       }
     };
-    
-    window.addEventListener('resize', handleResize);
-    
-    return () => window.removeEventListener('resize', handleResize);
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
@@ -162,57 +178,57 @@ const Navbar = () => {
             </Link>
 
             <nav className="hidden lg:flex space-x-6 lg:space-x-8 items-center">
-               {!isAuthenticated &&
-                 publicNavItems.map((item) => (
-                   <a
-                     key={item.name}
-                     href={item.link}
-                     className="relative text-[15px] md:text-[16px] lg:text-[17px] font-medium transition-all duration-300 group flex items-center gap-2"
-                     style={{ color: "var(--card-foreground)" }}
-                   >
-                     {item.icon} <span>{item.name}</span>
-                     <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-gradient-to-r from-[var(--primary)] to-purple-500 transition-all duration-500 group-hover:w-full"></span>
-                   </a>
-                 ))}
+              {!isAuthenticated &&
+                publicNavItems.map((item) => (
+                  <a
+                    key={item.name}
+                    href={item.link}
+                    className="relative text-[15px] md:text-[16px] lg:text-[17px] font-medium transition-all duration-300 group flex items-center gap-2 hover:pb-1"
+                    style={{ color: "var(--card-foreground)" }}
+                  >
+                    {item.icon} <span>{item.name}</span>
+                    <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-gradient-to-r from-[var(--primary)] to-purple-500 transition-all duration-500 group-hover:w-full"></span>
+                  </a>
+                ))}
 
-               {isAuthenticated && isRunning && (
-                 <div
-                   onClick={() => navigate("/pomodoro")}
-                   className="flex items-center gap-2 cursor-pointer px-3 py-1 rounded-lg transition-all duration-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:shadow-md hover:shadow-[var(--primary)]/30"
-                 >
-                   <Clock className="w-5 h-5 text-blue-500 animate-pulse" />
-                   <span className="text-sm font-mono">{displayTime}</span>
-                 </div>
-               )}
+              {isAuthenticated && isRunning && (
+                <div
+                  onClick={() => navigate("/pomodoro")}
+                  className="flex items-center gap-2 cursor-pointer px-3 py-1 rounded-lg transition-all duration-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:shadow-md hover:shadow-[var(--primary)]/30"
+                >
+                  <Clock className="w-5 h-5 text-blue-500 animate-pulse" />
+                  <span className="text-sm font-mono">{displayTime}</span>
+                </div>
+              )}
 
-               {isAuthenticated ? (
-                 <div className="flex items-center gap-3 ml-4">
-                   <Link
-                     to="/profile"
-                     className="flex items-center gap-2 text-[16px] lg:text-[17px] font-medium relative group"
-                     style={{ color: "var(--primary)" }}
-                   >
-                     <UserCircle className="h-4 w-4" /> <span>Profile</span>
-                     <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-gradient-to-r from-[var(--primary)] to-purple-500 transition-all duration-500 group-hover:w-full"></span>
-                   </Link>
-                   <button
-                     onClick={handleLogout}
-                     className="text-[16px] lg:text-[17px] font-medium text-red-500 transition-colors duration-300 hover:text-red-600"
-                   >
-                     Logout
-                   </button>
-                   <DarkModeToggle />
-                 </div>
-               ) : (
-                 <div className="flex items-center gap-3 ml-4">
-                   <Link to="/register">
-                     <button className="px-4 md:px-5 lg:px-6 py-2 rounded-md font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer text-sm md:text-base">
-                       Sign Up
-                     </button>
-                   </Link>
-                   <DarkModeToggle />
-                 </div>
-               )}
+              {isAuthenticated ? (
+                <div className="flex items-center gap-3 ml-4">
+                  <Link
+                    to="/profile"
+                    className="flex items-center gap-2 text-[16px] lg:text-[17px] font-medium relative group"
+                    style={{ color: "var(--primary)" }}
+                  >
+                    <UserCircle className="h-4 w-4" /> <span>Profile</span>
+                    <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-gradient-to-r from-[var(--primary)] to-purple-500 transition-all duration-500 group-hover:w-full"></span>
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="text-[16px] lg:text-[17px] font-medium text-red-500 transition-colors duration-300 hover:text-red-600"
+                  >
+                    Logout
+                  </button>
+                  <DarkModeToggle />
+                </div>
+              ) : (
+                <div className="flex items-center gap-3 ml-4">
+                  <Link to="/register">
+                    <button className="px-4 md:px-5 lg:px-6 py-2 rounded-md font-semibold bg-[var(--primary)] text-[var(--primary-foreground)] shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer text-sm md:text-base">
+                      Sign Up
+                    </button>
+                  </Link>
+                  <DarkModeToggle />
+                </div>
+              )}
             </nav>
 
             <div className="lg:hidden">
@@ -222,7 +238,9 @@ const Navbar = () => {
               >
                 <span
                   className={`block h-1 w-full rounded transform transition duration-300 ease-in-out ${
-                    menuOpen ? "rotate-45 translate-y-[9px] bg-white" : "bg-current"
+                    menuOpen
+                      ? "rotate-45 translate-y-[9px] bg-white"
+                      : "bg-current"
                   }`}
                 />
                 <span
@@ -232,7 +250,9 @@ const Navbar = () => {
                 />
                 <span
                   className={`block h-1 w-full rounded transform transition duration-300 ease-in-out ${
-                    menuOpen ? "-rotate-45 -translate-y-[9px] bg-white" : "bg-current"
+                    menuOpen
+                      ? "-rotate-45 -translate-y-[9px] bg-white"
+                      : "bg-current"
                   }`}
                 />
               </button>
@@ -257,4 +277,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

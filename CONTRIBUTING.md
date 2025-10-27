@@ -17,7 +17,6 @@ We welcome all kinds of contributions — from code improvements and documentati
 - [Contributor Guidelines – Issue & PR Management](#-Contributor-Guidelines)
 - [Community Standards](#-Community-Standards)
 
-
 ---
 
 ## 🛠 Getting Started
@@ -28,8 +27,11 @@ We welcome all kinds of contributions — from code improvements and documentati
    ```bash
    git clone https://github.com/your-username/DevSync.git
    cd DevSync
+   ```
+
 3. **Setup Frontend**
-```bash 
+
+```bash
 #move into the frontend directory
 cd frontend
 #install frontend dependencies
@@ -38,9 +40,9 @@ npm install
 npm run dev  # Starts frontend on http://localhost:5173
 ```
 
-
 4. **Setup backtend**
-```bash 
+
+```bash
 #move into the backend directory
 cd backend
 #install backend dependencies
@@ -48,7 +50,6 @@ npm install
 # Run the app
 npm run dev   # Starts frontend on http://localhost:5173
 ```
-
 
 ---
 
@@ -71,6 +72,7 @@ Here are some ways you can contribute:
 - Follow naming conventions already used in the codebase.
 - For UI components, use the existing **Shadcn UI** structure.
 - Keep commits **atomic** and **descriptive**.
+
 ---
 
 ## 🚀 Submitting Changes
@@ -88,11 +90,13 @@ Here are some ways you can contribute:
 git add .
 git commit -m "Add: Meaningful description of your change"
 ```
+
 3. **Push to your fork**:
 
- ```bash
+```bash
 git push origin feature/your-feature-name
 ```
+
 4. Open a Pull Request (PR) to the main branch.
 
 💬 If your PR fixes an issue, mention it with Fixes #issue-number in the PR description.
@@ -100,6 +104,7 @@ git push origin feature/your-feature-name
 ---
 
 ### 🐞 Reporting Bugs
+
 Please include the following in your bug reports:
 
 - ✅ **Clear and descriptive title** of the bug.
@@ -110,6 +115,7 @@ Please include the following in your bug reports:
 - 🔁 Include **steps to reproduce** the issue.
 
 ### 🌟 Requesting Features or Enhancements
+
 Want to suggest something cool or improve the UX/UI? Here’s what to include:
 
 - ✅ A descriptive **title** and a clear explanation of the idea.
@@ -118,6 +124,7 @@ Want to suggest something cool or improve the UX/UI? Here’s what to include:
 - 🔗 If related to backend/API, mention the **endpoints or data flow**.
 
 ### 📚 Improving Documentation
+
 Spotted unclear, outdated, or missing documentation?
 
 - ✏️ Point out the exact **section or file** to update.
@@ -125,23 +132,24 @@ Spotted unclear, outdated, or missing documentation?
 - 💬 Ask for clarification in case something is confusing.
 
 ### 🏷️ Labels and Levels
+
 All issues are tagged to help contributors choose wisely:
 
-| Level   | Suitable For        | Points |
-|---------|---------------------|--------|
-| `L-1`   | Beginners            | 3      |
-| `L-2`   | Intermediate tasks   | 7      |
-| `L-3`   | Advanced/complex     | 10     |
+| Level | Suitable For       | Points |
+| ----- | ------------------ | ------ |
+| `L-1` | Beginners          | 3      |
+| `L-2` | Intermediate tasks | 7      |
+| `L-3` | Advanced/complex   | 10     |
 
 ## 🕒 Issue Completion Timeline
 
 To ensure smooth progress and timely contributions during GSSoC, we’ve defined expected completion times for issues based on their difficulty levels:
 
-| Level | Difficulty    |Expected Completion Time |
-|-------|---------------|-------------------------|
-| Level 1 | Beginner    |       **2-3 days**      |
-| Level 2 | Intermediate|       **4-6 days**      |
-| Level 3 | Advanced    |       **7-10 days**     |
+| Level   | Difficulty   | Expected Completion Time |
+| ------- | ------------ | ------------------------ |
+| Level 1 | Beginner     | **2-3 days**             |
+| Level 2 | Intermediate | **4-6 days**             |
+| Level 3 | Advanced     | **7-10 days**            |
 
 ## 📌 Contributor Guidelines
 

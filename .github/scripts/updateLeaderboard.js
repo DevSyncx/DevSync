@@ -16,8 +16,8 @@ const LEVEL_POINTS = {
 function normalizeLabel(label) {
   return label
     .toLowerCase()
-    .replace(/\s+/g, "")   // remove spaces
-    .replace(/-/g, "");    // remove dashes
+    .replace(/\s+/g, "") // remove spaces
+    .replace(/-/g, ""); // remove dashes
 }
 
 async function fetchAllPRs() {
@@ -30,11 +30,11 @@ async function fetchAllPRs() {
     per_page: 100,
   });
 
-  prs.forEach(pr => {
+  prs.forEach((pr) => {
     if (!pr.merged_at) return; // only merged PRs
 
-    const labels = pr.labels.map(l => normalizeLabel(l.name));
-    let level = labels.find(l => l.startsWith("level"));
+    const labels = pr.labels.map((l) => normalizeLabel(l.name));
+    let level = labels.find((l) => l.startsWith("level"));
     if (!level) return;
 
     const points = LEVEL_POINTS[level] || 0;
@@ -62,12 +62,7 @@ async function updateGoogleSheet(contributors) {
 
   let rows = [["Username", "PR Numbers", "Levels", "Total Points"]];
   for (let [user, data] of Object.entries(contributors)) {
-    rows.push([
-      user,
-      data.prs.join(", "),
-      data.levels.join(", "),
-      data.total,
-    ]);
+    rows.push([user, data.prs.join(", "), data.levels.join(", "), data.total]);
   }
 
   await sheets.spreadsheets.values.update({

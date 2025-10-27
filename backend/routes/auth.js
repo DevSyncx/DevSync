@@ -9,7 +9,13 @@ const crypto = require("crypto");
 require("dotenv").config();
 const passport = require("passport");
 const { sendVerificationEmail } = require("../services/emailService");
-const { generateVerificationCode, generateJWT, formatUserResponse, setVerificationToken, handleVerificationEmail } = require("../utils/emailVerificationHelpers")
+const {
+  generateVerificationCode,
+  generateJWT,
+  formatUserResponse,
+  setVerificationToken,
+  handleVerificationEmail,
+} = require("../utils/emailVerificationHelpers");
 
 // Helper function to generate avatar URL from email or name
 const generateAvatarUrl = (email, name) => {
@@ -23,7 +29,7 @@ const generateAvatarUrl = (email, name) => {
   // DiceBear (modern styled avatars)
   const diceBearStyle = "micah"; // Options: avataaars, bottts, initials, micah, miniavs, etc.
   const diceBearUrl = `https://api.dicebear.com/6.x/${diceBearStyle}/svg?seed=${encodeURIComponent(
-    identifier
+    identifier,
   )}`;
 
   return diceBearUrl;
@@ -35,47 +41,49 @@ const JWT_SECRET =
 
 router.get(
   "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
+  passport.authenticate("google", { scope: ["profile", "email"] }),
 );
 
 // Handle callback from Google
 router.get(
   "/callback",
   (req, res, next) => {
-    console.log('OAuth callback received. Starting authentication...');
-    console.log('Query params:', req.query);
+    console.log("OAuth callback received. Starting authentication...");
+    console.log("Query params:", req.query);
     next();
   },
   passport.authenticate("google", {
     // Redirect failures to the frontend login for better UX
     failureRedirect: `${process.env.CLIENT_URL}/login`,
-    failureMessage: true,      // Enable failure messages
+    failureMessage: true, // Enable failure messages
     session: true,
   }),
   async (req, res, next) => {
     try {
-      console.log('OAuth successful, user:', req.user);
+      console.log("OAuth successful, user:", req.user);
       // Issue JWT and redirect to frontend with token as query param
       // Frontend reads ?token=... on /dashboard and stores it
       const token = await generateJWT(req.user.id);
       const redirectUrl = `${process.env.CLIENT_URL}/dashboard?token=${encodeURIComponent(token)}`;
       return res.redirect(redirectUrl);
     } catch (err) {
-      console.error('JWT generation failed after OAuth:', err);
-      return res.redirect(`${process.env.CLIENT_URL}/login?error=oauth_token_failed`);
+      console.error("JWT generation failed after OAuth:", err);
+      return res.redirect(
+        `${process.env.CLIENT_URL}/login?error=oauth_token_failed`,
+      );
     }
   },
   // Error handler for the authentication
   (err, req, res, next) => {
-    console.error('OAuth error:', err);
+    console.error("OAuth error:", err);
     res.redirect(`${process.env.CLIENT_URL}/login?error=oauth_failed`);
-  }
+  },
 );
 
 // GitHub OAuth
 router.get(
   "/github",
-  passport.authenticate("github", { scope: ["read:user", "user:email"] })
+  passport.authenticate("github", { scope: ["read:user", "user:email"] }),
 );
 
 router.get(
@@ -91,10 +99,12 @@ router.get(
       const redirectUrl = `${process.env.CLIENT_URL}/dashboard?token=${encodeURIComponent(token)}`;
       return res.redirect(redirectUrl);
     } catch (err) {
-      console.error('JWT generation failed after GitHub OAuth:', err);
-      return res.redirect(`${process.env.CLIENT_URL}/login?error=github_oauth_token_failed`);
+      console.error("JWT generation failed after GitHub OAuth:", err);
+      return res.redirect(
+        `${process.env.CLIENT_URL}/login?error=github_oauth_token_failed`,
+      );
     }
-  }
+  },
 );
 
 // @route   POST api/auth/register
@@ -133,7 +143,11 @@ router.post(
             needsVerification: true,
           });
         } else {
-            return res.status(500).json({ errors: [{ msg: "User already exists. Please Sign in!!" }] });
+          return res
+            .status(500)
+            .json({
+              errors: [{ msg: "User already exists. Please Sign in!!" }],
+            });
         }
       }
 
@@ -166,16 +180,14 @@ router.post(
         needsVerification: true,
         email: user.email,
       });
-
     } catch (err) {
       console.error(err.message);
-      if(err.message === 'Invalid Email ID')
-      {
+      if (err.message === "Invalid Email ID") {
         return res.status(400).json({ errors: [{ msg: "Invalid Email ID" }] });
       }
       return res.status(500).json({ errors: [{ msg: "Server error" }] });
     }
-  }
+  },
 );
 
 // @route   POST api/auth/forgot-password
@@ -201,7 +213,7 @@ router.post("/forgot-password", async (req, res) => {
     await sendVerificationEmail(
       user.email,
       "Password Reset Request",
-      `<p>You requested a password reset. Click <a href="${resetLink}">here</a> to reset your password.</p>`
+      `<p>You requested a password reset. Click <a href="${resetLink}">here</a> to reset your password.</p>`,
     );
 
     res.json({ message: "Password reset link sent to your email." });
@@ -210,7 +222,6 @@ router.post("/forgot-password", async (req, res) => {
     res.status(500).json({ errors: [{ msg: "Server error" }] });
   }
 });
-
 
 // @route   POST api/auth/reset-password/:token
 // @desc    Reset password using token
@@ -246,7 +257,6 @@ router.post("/reset-password/:token", async (req, res) => {
     res.status(500).json({ errors: [{ msg: "Server error" }] });
   }
 });
-
 
 // @route   POST api/auth/verify-email
 // @desc    Verify user email with code
@@ -307,7 +317,6 @@ router.post("/verify-email", async (req, res) => {
       console.error("JWT generation error:", jwtError);
       res.status(500).json({ errors: [{ msg: "Error generating token" }] });
     }
-
   } catch (err) {
     console.error("Email verification error:", err.message);
     res
@@ -353,7 +362,6 @@ router.post("/resend-verification", async (req, res) => {
         ],
       });
     }
-
   } catch (err) {
     console.error("Resend verification error:", err.message);
     res.status(500).json({ errors: [{ msg: "Server error during resend" }] });
@@ -383,8 +391,10 @@ router.post(
       if (!user) {
         return res
           .status(400)
-          .json({ errors: [{ msg: "User not found. Please Sign up first!!" }] });
-      } 
+          .json({
+            errors: [{ msg: "User not found. Please Sign up first!!" }],
+          });
+      }
 
       // Check password
       const isMatch = await bcrypt.compare(password, user.password);
@@ -419,7 +429,7 @@ router.post(
       console.error(err.message);
       res.status(500).json({ errors: [{ msg: "Server error" }] });
     }
-  }
+  },
 );
 
 // @route   GET api/auth

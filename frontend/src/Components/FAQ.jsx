@@ -2,44 +2,54 @@ import React, { useState } from "react";
 
 export default function FAQ() {
   const faqs = [
-    { 
+    {
       question: "What is DevSync?",
-      answer: "DevSync is a unified productivity tracker for developers. It aggregates your coding activity, contributions, and daily goals from multiple platforms into a single dashboard, helping you track growth, stay consistent, and showcase your development journey." 
+      answer:
+        "DevSync is a unified productivity tracker for developers. It aggregates your coding activity, contributions, and daily goals from multiple platforms into a single dashboard, helping you track growth, stay consistent, and showcase your development journey.",
     },
-    { 
-      question: "Which platforms does DevSync support?", 
-      answer: "DevSync supports a growing list of coding and development platforms. Currently, it integrates with popular platforms like GitHub, LeetCode, and other major coding platforms. More integrations will be added over time." 
+    {
+      question: "Which platforms does DevSync support?",
+      answer:
+        "DevSync supports a growing list of coding and development platforms. Currently, it integrates with popular platforms like GitHub, LeetCode, and other major coding platforms. More integrations will be added over time.",
     },
-    { 
-      question: "How is DevSync different?", 
-      answer: "While platforms like GitHub, LeetCode, and Wakatime track specific activities, DevSync consolidates all your coding stats, streaks, and growth across multiple platforms into a single, easy-to-read dashboard, providing a holistic view of your developer progress." 
+    {
+      question: "How is DevSync different?",
+      answer:
+        "While platforms like GitHub, LeetCode, and Wakatime track specific activities, DevSync consolidates all your coding stats, streaks, and growth across multiple platforms into a single, easy-to-read dashboard, providing a holistic view of your developer progress.",
     },
-    { 
-      question: "Can I connect multiple platforms?", 
-      answer: "Yes! DevSync allows you to connect multiple supported platforms simultaneously, giving you a unified view of all your coding activity and progress in one place." 
+    {
+      question: "Can I connect multiple platforms?",
+      answer:
+        "Yes! DevSync allows you to connect multiple supported platforms simultaneously, giving you a unified view of all your coding activity and progress in one place.",
     },
-    { 
-      question: "How to set up locally?", 
+    {
+      question: "How to set up locally?",
       answer: (
         <>
-          1. Fork the repository and clone it to your machine.<br />
-          2. Install dependencies for the frontend and backend using <code>npm install</code>.<br />
-          3. Run the development servers:<br />
-          &nbsp;&nbsp;- Frontend: <code>npm run dev</code><br />
-          &nbsp;&nbsp;- Backend: <code>npm run dev</code><br />
+          1. Fork the repository and clone it to your machine.
+          <br />
+          2. Install dependencies for the frontend and backend using{" "}
+          <code>npm install</code>.<br />
+          3. Run the development servers:
+          <br />
+          &nbsp;&nbsp;- Frontend: <code>npm run dev</code>
+          <br />
+          &nbsp;&nbsp;- Backend: <code>npm run dev</code>
+          <br />
         </>
-      ) 
+      ),
     },
-    { 
-      question: "Do I need an account?", 
-      answer: "Yes, you will need to sign in using your GitHub or other supported accounts to sync your coding activity." 
+    {
+      question: "Do I need an account?",
+      answer:
+        "Yes, you will need to sign in using your GitHub or other supported accounts to sync your coding activity.",
     },
   ];
 
   const [openIndex, setOpenIndex] = useState(null);
 
   return (
-    <section id ="faq" className="max-w-4xl mx-auto py-16 px-6 font-sans">
+    <section id="faq" className="max-w-4xl mx-auto py-16 px-6 font-sans">
       <h2 className="text-4xl font-bold font-heading text-center mb-4 text-gray-900 dark:text-gray-100">
         Frequently Asked Questions
       </h2>
@@ -65,7 +75,12 @@ export default function FAQ() {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
               </svg>
             </button>
             {openIndex === idx && (

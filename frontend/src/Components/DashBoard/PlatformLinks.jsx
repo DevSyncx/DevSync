@@ -46,7 +46,7 @@ const githubUrl = (url) => {
 export default function PlatformLinks({ platforms }) {
   // Filter out empty or falsy URLs
   const platformEntries = Object.entries(platforms).filter(
-    ([, url]) => url && url.trim() !== ""
+    ([, url]) => url && url.trim() !== "",
   );
 
   return (
@@ -60,8 +60,8 @@ export default function PlatformLinks({ platforms }) {
             name.toLowerCase() === "leetcode"
               ? leetcodeUrl(url)
               : name.toLowerCase() === "github"
-              ? githubUrl(normalizeGitHubURL(url))
-              : url;
+                ? githubUrl(normalizeGitHubURL(url))
+                : url;
 
           return (
             <a

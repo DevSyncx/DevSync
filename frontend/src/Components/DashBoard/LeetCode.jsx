@@ -16,7 +16,15 @@ import ReactCalendarHeatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
 import BackButton from "../ui/backbutton";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+);
 
 export default function LeetCode({ platforms = {} }) {
   const [stats, setStats] = useState(null);
@@ -26,10 +34,13 @@ export default function LeetCode({ platforms = {} }) {
     const fetchStats = async () => {
       if (!leetUser) return;
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile/leetcode/${leetUser}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-        });
+        const res = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/profile/leetcode/${leetUser}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+          },
+        );
         if (!res.ok) throw new Error(`API error: ${res.status}`);
         const json = await res.json();
         setStats(json.data);
@@ -53,10 +64,12 @@ export default function LeetCode({ platforms = {} }) {
     submissionCalendar,
   } = stats;
 
-  const calendarData = Object.entries(submissionCalendar).map(([timestamp, count]) => ({
-    date: new Date(Number(timestamp) * 1000).toISOString().split("T")[0],
-    count: parseInt(count, 10),
-  }));
+  const calendarData = Object.entries(submissionCalendar).map(
+    ([timestamp, count]) => ({
+      date: new Date(Number(timestamp) * 1000).toISOString().split("T")[0],
+      count: parseInt(count, 10),
+    }),
+  );
 
   const startDate = new Date("2025-01-01");
   const endDate = new Date();
@@ -64,7 +77,7 @@ export default function LeetCode({ platforms = {} }) {
   const attendedContests = contestHistory.filter((c) => c.attended);
 
   const labels = attendedContests.map((c) =>
-    new Date(c.contest.startTime).toLocaleDateString()
+    new Date(c.contest.startTime).toLocaleDateString(),
   );
 
   const data = {
@@ -86,7 +99,10 @@ export default function LeetCode({ platforms = {} }) {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { position: "top", labels: { color: "#FFA116", font: { size: 12 } } },
+      legend: {
+        position: "top",
+        labels: { color: "#FFA116", font: { size: 12 } },
+      },
       title: {
         display: true,
         text: "LeetCode Contest Rating Over Time",
@@ -123,7 +139,7 @@ export default function LeetCode({ platforms = {} }) {
 
   return (
     <>
-    <BackButton />
+      <BackButton />
       <div className="w-full min-h-screen p-10 bg-[var(--card)] rounded-lg shadow-lg border border-[var(--border)] space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
@@ -138,7 +154,8 @@ export default function LeetCode({ platforms = {} }) {
               </h3>
               {profile?.ranking && (
                 <p className="text-sm text-muted-foreground mt-1">
-                  Global Rank: <span className="font-semibold">#{profile.ranking}</span>
+                  Global Rank:{" "}
+                  <span className="font-semibold">#{profile.ranking}</span>
                 </p>
               )}
               {badges.length > 0 && (
@@ -146,7 +163,11 @@ export default function LeetCode({ platforms = {} }) {
                   {badges.map(({ id, icon, displayName }) => (
                     <img
                       key={id}
-                      src={icon && icon.startsWith("https://") ? icon : `https://leetcode.com${icon || ''}`}
+                      src={
+                        icon && icon.startsWith("https://")
+                          ? icon
+                          : `https://leetcode.com${icon || ""}`
+                      }
                       alt={displayName}
                       title={displayName}
                       className="w-6 h-6 rounded"
@@ -168,37 +189,58 @@ export default function LeetCode({ platforms = {} }) {
 
         <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg p-4 shadow-sm">
-            <h3 className="text-lg font-semibold mb-4 text-[var(--primary)]">Problems Solved</h3>
+            <h3 className="text-lg font-semibold mb-4 text-[var(--primary)]">
+              Problems Solved
+            </h3>
             <div className="grid grid-cols-3 gap-4 text-center">
               {stats.submitStatsGlobal?.map(({ difficulty, count }) => (
                 <div key={difficulty}>
-                  <p className="text-sm capitalize text-muted-foreground">{difficulty}</p>
-                  <p className={`text-2xl font-bold ${difficultyColor[difficulty] || ""}`}>{count}</p>
+                  <p className="text-sm capitalize text-muted-foreground">
+                    {difficulty}
+                  </p>
+                  <p
+                    className={`text-2xl font-bold ${difficultyColor[difficulty] || ""}`}
+                  >
+                    {count}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
 
           <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg p-4 shadow-sm col-span-2">
-            <h3 className="text-lg font-semibold mb-4 text-[var(--primary)]">Recent Submissions</h3>
+            <h3 className="text-lg font-semibold mb-4 text-[var(--primary)]">
+              Recent Submissions
+            </h3>
             {recentSubmissions.length > 0 ? (
               <ul className="space-y-2 text-sm text-muted-foreground max-h-[130px] overflow-y-auto">
-                {recentSubmissions.slice(0, 3).map(({ id, title, timestamp }) => (
-                  <li key={id} className="flex justify-between whitespace-nowrap">
-                    <span className="truncate">{title}</span>
-                    <span className="ml-3 text-xs">{new Date(timestamp).toLocaleDateString()}</span>
-                  </li>
-                ))}
+                {recentSubmissions
+                  .slice(0, 3)
+                  .map(({ id, title, timestamp }) => (
+                    <li
+                      key={id}
+                      className="flex justify-between whitespace-nowrap"
+                    >
+                      <span className="truncate">{title}</span>
+                      <span className="ml-3 text-xs">
+                        {new Date(timestamp).toLocaleDateString()}
+                      </span>
+                    </li>
+                  ))}
               </ul>
             ) : (
-              <p className="text-xs text-muted-foreground">No recent activity found.</p>
+              <p className="text-xs text-muted-foreground">
+                No recent activity found.
+              </p>
             )}
           </div>
         </section>
 
         <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg p-4 shadow-sm">
-            <h3 className="text-lg font-semibold mb-4 text-[var(--primary)]">Submission Heatmap</h3>
+            <h3 className="text-lg font-semibold mb-4 text-[var(--primary)]">
+              Submission Heatmap
+            </h3>
             <ReactCalendarHeatmap
               startDate={startDate}
               endDate={endDate}
@@ -211,41 +253,57 @@ export default function LeetCode({ platforms = {} }) {
                 return "fill-green-300";
               }}
               tooltipDataAttrs={(value) => ({
-                "data-tip": value ? `Submissions: ${value.count}` : "No submissions",
+                "data-tip": value
+                  ? `Submissions: ${value.count}`
+                  : "No submissions",
               })}
             />
           </div>
 
           <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg p-4 shadow-sm">
-            <h3 className="text-lg font-semibold mb-4 text-[var(--primary)]">Contest Stats</h3>
+            <h3 className="text-lg font-semibold mb-4 text-[var(--primary)]">
+              Contest Stats
+            </h3>
             {contestRating?.badge && (
-
               <div className="flex items-center gap-3 mb-3 text-muted-foreground flex-wrap">
-                { contestRating.badge.icon != "/default_icon.png"  && <img
-                  src={"https://leetcode.com" + contestRating.badge.icon}
-                  alt={contestRating.badge.name}
-                  title={contestRating.badge.name}
-                  className="w-5 h-5"
-                />}
+                {contestRating.badge.icon != "/default_icon.png" && (
+                  <img
+                    src={"https://leetcode.com" + contestRating.badge.icon}
+                    alt={contestRating.badge.name}
+                    title={contestRating.badge.name}
+                    className="w-5 h-5"
+                  />
+                )}
                 <span>{contestRating.badge.name}</span>
-                {contestRating.badge.expired && <span className="text-red-400">(Expired)</span>}
+                {contestRating.badge.expired && (
+                  <span className="text-red-400">(Expired)</span>
+                )}
               </div>
             )}
 
             <div className="space-y-1 text-sm text-muted-foreground">
               <p>Contests: {contestRating?.attendedContestsCount ?? "N/A"}</p>
               <p>Rating: {contestRating?.rating ?? "N/A"}</p>
-              <p>Rank: {contestRating?.globalRanking ? `#${contestRating.globalRanking}` : "N/A"}</p>
+              <p>
+                Rank:{" "}
+                {contestRating?.globalRanking
+                  ? `#${contestRating.globalRanking}`
+                  : "N/A"}
+              </p>
               <p>
                 Top %:{" "}
-                {contestRating?.topPercentage ? `${contestRating.topPercentage.toFixed(2)}%` : "N/A"}
+                {contestRating?.topPercentage
+                  ? `${contestRating.topPercentage.toFixed(2)}%`
+                  : "N/A"}
               </p>
             </div>
           </div>
         </section>
 
         <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg p-4 shadow-sm">
-          <h3 className="text-lg font-semibold mb-4 text-[var(--primary)]">Contest Rating History</h3>
+          <h3 className="text-lg font-semibold mb-4 text-[var(--primary)]">
+            Contest Rating History
+          </h3>
           {attendedContests.length > 0 ? (
             <div className="relative w-full h-[250px]">
               <Line data={data} options={options} />

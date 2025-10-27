@@ -19,7 +19,7 @@ const contactMessageSchema = new mongoose.Schema(
       minlength: 10,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const ContactMessage = mongoose.model("ContactMessage", contactMessageSchema);

@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       issue_number:
-        description: 'Issue number to manually check for duplicates'
+        description: "Issue number to manually check for duplicates"
         required: true
         type: number
 

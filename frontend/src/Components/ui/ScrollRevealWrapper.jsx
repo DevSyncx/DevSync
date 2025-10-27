@@ -2,7 +2,11 @@
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 
-export default function ScrollRevealWrapper({ children, delay = 0, className = "" }) {
+export default function ScrollRevealWrapper({
+  children,
+  delay = 0,
+  className = "",
+}) {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
   return (

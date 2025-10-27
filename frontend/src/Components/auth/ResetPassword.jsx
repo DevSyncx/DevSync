@@ -15,18 +15,24 @@ const ResetPassword = () => {
     setLoading(true);
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/reset-password/${token}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/reset-password/${token}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password }),
+        },
+      );
 
       const data = await res.json();
       if (res.ok) {
         setStatus({ type: "success", message: "Password reset successful!" });
         setTimeout(() => navigate("/login"), 2000);
       } else {
-        setStatus({ type: "error", message: data.message || "Invalid or expired token" });
+        setStatus({
+          type: "error",
+          message: data.message || "Invalid or expired token",
+        });
       }
     } catch {
       setStatus({ type: "error", message: "Server error. Try again." });

@@ -28,13 +28,14 @@ const Contact = () => {
   const onSubmit = async (values) => {
     const { name, email, message } = values;
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/contact`, {
-        
-        method: "POST",
-        body: JSON.stringify({ name, email, message }),
-        headers: { "Content-Type": "application/json" },
-      });
-    
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/contact`,
+        {
+          method: "POST",
+          body: JSON.stringify({ name, email, message }),
+          headers: { "Content-Type": "application/json" },
+        },
+      );
 
       if (response.ok) {
         reset();
@@ -52,7 +53,7 @@ const Contact = () => {
   };
 
   return (
-  <div className="min-h-screen flex items-center justify-center px-4 font-inter bg-[var(--background)]">
+    <div className="min-h-screen flex items-center justify-center px-4 font-inter bg-[var(--background)]">
       <div className="grid md:grid-cols-2 gap-10 w-full max-w-6xl items-center">
         <motion.div
           initial={{ opacity: 0, x: -40 }}
@@ -63,15 +64,21 @@ const Contact = () => {
           <div className="shadow-md rounded-xl p-6 flex items-center space-x-4 bg-[var(--card)]">
             <Mail className="w-10 h-10 text-[var(--primary)]" />
             <div>
-              <h3 className="text-lg font-semibold text-[var(--card-foreground)]">Email Us</h3>
-              <p className="text-[var(--muted-foreground)]">anonym.notifys@gmail.com</p>
+              <h3 className="text-lg font-semibold text-[var(--card-foreground)]">
+                Email Us
+              </h3>
+              <p className="text-[var(--muted-foreground)]">
+                anonym.notifys@gmail.com
+              </p>
             </div>
           </div>
 
           <div className="shadow-md rounded-xl p-6 flex items-center space-x-4 bg-[var(--card)]">
             <Clock className="w-10 h-10 text-[var(--accent)]" />
             <div>
-              <h3 className="text-lg font-semibold text-[var(--card-foreground)]">Response Time</h3>
+              <h3 className="text-lg font-semibold text-[var(--card-foreground)]">
+                Response Time
+              </h3>
               <p className="text-[var(--muted-foreground)]">Within 24 hours</p>
             </div>
           </div>
@@ -79,8 +86,12 @@ const Contact = () => {
           <div className="shadow-md rounded-xl p-6 flex items-center space-x-4 bg-[var(--card)]">
             <Headphones className="w-10 h-10 text-[var(--accent)]" />
             <div>
-              <h3 className="text-lg font-semibold text-[var(--card-foreground)]">24x7 Online Support</h3>
-              <p className="text-[var(--muted-foreground)]">Always here to help you</p>
+              <h3 className="text-lg font-semibold text-[var(--card-foreground)]">
+                24x7 Online Support
+              </h3>
+              <p className="text-[var(--muted-foreground)]">
+                Always here to help you
+              </p>
             </div>
           </div>
         </motion.div>
@@ -93,7 +104,9 @@ const Contact = () => {
         >
           <div className="flex items-center justify-center mb-6 space-x-2">
             <MessageCircle className="w-10 h-10 text-blue-600 animate-bounce" />
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Contact Us</h1>
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+              Contact Us
+            </h1>
           </div>
 
           <div className="text-center w-full z-10">
@@ -120,7 +133,7 @@ const Contact = () => {
                       {...register("name")}
                       className={`w-full pl-10 pr-4 py-2 border ${
                         errors.name ? "border-red-500" : "border-gray-300"
-                      } rounded-lg focus:ring-blue-500 focus:border-blue-500 transition`}
+                      } rounded-lg focus:ring-blue-500 focus:border-blue-500 placeholder-gray-500 transition`}
                       placeholder="Your Name"
                     />
                     {errors.name && (
@@ -138,7 +151,7 @@ const Contact = () => {
                       {...register("email")}
                       className={`w-full pl-10 pr-4 py-2 border ${
                         errors.email ? "border-red-500" : "border-gray-300"
-                      } rounded-lg focus:ring-blue-500 focus:border-blue-500 transition`}
+                      } rounded-lg focus:ring-blue-500 focus:border-blue-500 placeholder-gray-500 transition`}
                       placeholder="you@example.com"
                     />
                     {errors.email && (
@@ -156,7 +169,7 @@ const Contact = () => {
                       rows="5"
                       className={`w-full pl-10 pr-4 py-2 border ${
                         errors.message ? "border-red-500" : "border-gray-300"
-                      } rounded-lg focus:ring-blue-500 focus:border-blue-500 transition`}
+                      } rounded-lg focus:ring-blue-500 focus:border-blue-500 placeholder-gray-500 transition`}
                       placeholder="Type your message..."
                     ></textarea>
                     {errors.message && (
@@ -232,7 +245,7 @@ const Contact = () => {
                       href="mailto:info@example.com"
                       className="text-blue-600 hover:underline"
                     >
-                     anonym.notifys@gmail.com
+                      anonym.notifys@gmail.com
                     </a>
                   </p>
                 </motion.div>

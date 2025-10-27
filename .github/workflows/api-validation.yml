@@ -4,15 +4,15 @@ on:
   workflow_dispatch:
     inputs:
       validation_scope:
-        description: 'Which APIs to validate'
+        description: "Which APIs to validate"
         required: true
-        default: 'all-apis'
+        default: "all-apis"
         type: choice
         options:
-        - 'all-apis'
-        - 'pinecone-only'
-        - 'github-only'
-        - 'gemini-only'
+          - "all-apis"
+          - "pinecone-only"
+          - "github-only"
+          - "gemini-only"
 
 permissions:
   issues: read
@@ -21,7 +21,7 @@ permissions:
 jobs:
   validate-apis:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

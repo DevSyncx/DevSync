@@ -4,7 +4,7 @@ import { useFeedback } from "../../context/FeedbackContext";
 
 export default function FeedbackButton() {
   const { openFeedbackPopup } = useFeedback();
-  
+
   return (
     <button
       onClick={openFeedbackPopup}

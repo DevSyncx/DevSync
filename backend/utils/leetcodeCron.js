@@ -1,24 +1,24 @@
-const cron = require('node-cron');
-const LeetCode = require('../models/Leetcode'); 
-const axios = require('axios');
+const cron = require("node-cron");
+const LeetCode = require("../models/Leetcode");
+const axios = require("axios");
 
-console.log('✅ leetcodeCron.js file loaded');
+console.log("✅ leetcodeCron.js file loaded");
 
 const batchLimit = 50; // number users should update for the each hour
 
 const runLeetCodeBatchUpdate = async () => {
   try {
-    console.log('Starting batch update for LeetCode users...');
+    console.log("Starting batch update for LeetCode users...");
 
     const sixHoursAgo = new Date(Date.now() - 6 * 60 * 60 * 1000);
     const usersToUpdate = await LeetCode.find({
-      lastUpdated: { $lt: sixHoursAgo }
+      lastUpdated: { $lt: sixHoursAgo },
     }).limit(batchLimit);
 
     const totalUsers = usersToUpdate.length;
 
     if (totalUsers === 0) {
-      console.log('No users need updating at the moment.');
+      console.log("No users need updating at the moment.");
       return;
     }
 
@@ -37,20 +37,18 @@ const runLeetCodeBatchUpdate = async () => {
       }
     }
 
-    console.log('Batch update completed.');
-    console.log(`Summary: Total: ${totalUsers}, Successfully updated: ${successCount}, Failed: ${failCount}`);
+    console.log("Batch update completed.");
+    console.log(
+      `Summary: Total: ${totalUsers}, Successfully updated: ${successCount}, Failed: ${failCount}`,
+    );
   } catch (err) {
-    console.error('Error in batch update:', err);
+    console.error("Error in batch update:", err);
   }
 };
 
-
-
 runLeetCodeBatchUpdate(); //comment this function to stop cronjon on server start / restart
 
-cron.schedule('0 * * * *', runLeetCodeBatchUpdate); // execute on each one hour
-
-
+cron.schedule("0 * * * *", runLeetCodeBatchUpdate); // execute on each one hour
 
 const updateUserLeetCodeProfile = async (username) => {
   try {
@@ -110,10 +108,10 @@ const updateUserLeetCodeProfile = async (username) => {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
 
-    const json = response.data;  
+    const json = response.data;
 
     if (!json.data?.matchedUser) {
       console.error(`User ${username} not found.`);
@@ -129,17 +127,20 @@ const updateUserLeetCodeProfile = async (username) => {
         ranking: json.data.matchedUser.profile?.ranking,
         avatar: json.data.matchedUser.profile?.userAvatar,
       },
-      submitStatsGlobal: json.data.matchedUser.submitStatsGlobal.acSubmissionNum.map(sub => ({
-        difficulty: sub.difficulty,
-        count: sub.count,
-      })),
-      badges: json.data.matchedUser.badges.map(badge => ({
+      submitStatsGlobal:
+        json.data.matchedUser.submitStatsGlobal.acSubmissionNum.map((sub) => ({
+          difficulty: sub.difficulty,
+          count: sub.count,
+        })),
+      badges: json.data.matchedUser.badges.map((badge) => ({
         id: badge.id,
         displayName: badge.displayName,
         icon: badge.icon,
       })),
-      submissionCalendar: JSON.parse(json.data.matchedUser.submissionCalendar || "{}"),
-      recentSubmissions: json.data.recentAcSubmissionList.map(sub => ({
+      submissionCalendar: JSON.parse(
+        json.data.matchedUser.submissionCalendar || "{}",
+      ),
+      recentSubmissions: json.data.recentAcSubmissionList.map((sub) => ({
         id: sub.id,
         title: sub.title,
         titleSlug: sub.titleSlug,
@@ -157,7 +158,7 @@ const updateUserLeetCodeProfile = async (username) => {
           expired: contestRanking.badge?.expired || false,
         },
       },
-      contestHistory: contestHistory.map(contest => ({
+      contestHistory: contestHistory.map((contest) => ({
         attended: contest.attended || false,
         rating: contest.rating || 0,
         contest: {
@@ -170,11 +171,9 @@ const updateUserLeetCodeProfile = async (username) => {
     const user = await LeetCode.findOneAndUpdate(
       { username },
       { ...result, lastUpdated: new Date() },
-      { new: true }
+      { new: true },
     );
-
   } catch (err) {
     console.error(`Error updating ${username}:`, err);
   }
 };
-

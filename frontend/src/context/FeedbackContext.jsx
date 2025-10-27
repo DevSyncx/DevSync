@@ -4,21 +4,21 @@ const FeedbackContext = createContext(null);
 
 export function FeedbackProvider({ children }) {
   const [showFeedbackPopup, setShowFeedbackPopup] = useState(false);
-  
+
   const openFeedbackPopup = () => {
     setShowFeedbackPopup(true);
   };
-  
+
   const closeFeedbackPopup = () => {
     setShowFeedbackPopup(false);
   };
-  
+
   return (
-    <FeedbackContext.Provider 
-      value={{ 
-        showFeedbackPopup, 
-        openFeedbackPopup, 
-        closeFeedbackPopup 
+    <FeedbackContext.Provider
+      value={{
+        showFeedbackPopup,
+        openFeedbackPopup,
+        closeFeedbackPopup,
       }}
     >
       {children}

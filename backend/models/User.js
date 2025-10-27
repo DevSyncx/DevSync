@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
@@ -7,7 +7,7 @@ const UserSchema = new Schema({
     unique: true,
     sparse: true,
   },
-   googleId: {
+  googleId: {
     type: String,
     unique: true,
     sparse: true, // multiple nulls allowed
@@ -19,12 +19,12 @@ const UserSchema = new Schema({
   },
   name: {
     type: String,
-    required: true, 
+    required: true,
   },
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   isEmailVerified: {
     type: Boolean,
@@ -33,22 +33,22 @@ const UserSchema = new Schema({
   emailVerificationExpires: Date,
   password: {
     type: String,
-     required: function () {
+    required: function () {
       return !this.googleId && !this.githubId;
-     },
+    },
   },
   avatar: {
     type: String,
-    default: '/uploads/avatars/default-avatar.png'
+    default: "/uploads/avatars/default-avatar.png",
   },
   bio: {
-    type: String
+    type: String,
   },
   location: {
-    type: String
+    type: String,
   },
   skills: {
-    type: [String]
+    type: [String],
   },
   socialLinks: {
     github: String,
@@ -60,44 +60,44 @@ const UserSchema = new Schema({
     hackerrank: String,
     leetcode: String,
     codeforces: String,
-    hackerearth: String
+    hackerearth: String,
   },
   projects: [
     {
       name: {
         type: String,
-        required: true
+        required: true,
       },
       description: {
         type: String,
-        required: true
+        required: true,
       },
       link: {
-        type: String
+        type: String,
       },
       date: {
         type: Date,
-        default: Date.now
-      }
-    }
+        default: Date.now,
+      },
+    },
   ],
 
   // ✅ New fields for dashboard
   streak: {
     type: Number,
-    default: 0
+    default: 0,
   },
   timeSpent: {
     type: String,
-    default: "0 minutes"
+    default: "0 minutes",
   },
   activity: {
     type: [Object], // e.g. [{ date: '2025-08-27', count: 3 }]
-    default: []
+    default: [],
   },
   goals: {
     type: [String],
-    default: []
+    default: [],
   },
 
   // ✅ Fields for forgot/reset password
@@ -106,8 +106,8 @@ const UserSchema = new Schema({
 
   date: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model("User", UserSchema);

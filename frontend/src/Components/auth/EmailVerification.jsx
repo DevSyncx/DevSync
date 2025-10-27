@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Mail, ArrowLeft, RefreshCw, CheckCircle, Clock } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Mail, ArrowLeft, RefreshCw, CheckCircle, Clock } from "lucide-react";
 
 const EmailVerification = ({ userId, email, onVerificationSuccess }) => {
-  const [verificationCode, setVerificationCode] = useState('');
+  const [verificationCode, setVerificationCode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isResending, setIsResending] = useState(false);
-  const [error, setError] = useState('');
-  const [message, setMessage] = useState('');
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const [timeLeft, setTimeLeft] = useState(900); // 15 minutes in seconds
 
   // Countdown timer
@@ -25,69 +25,71 @@ const EmailVerification = ({ userId, email, onVerificationSuccess }) => {
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
   };
 
   // Auto-focus first input
   useEffect(() => {
-    const firstInput = document.getElementById('verification-input');
+    const firstInput = document.getElementById("verification-input");
     if (firstInput) firstInput.focus();
   }, []);
 
   const handleInputChange = (e) => {
-    const value = e.target.value.replace(/\D/g, ''); // Only numbers
+    const value = e.target.value.replace(/\D/g, ""); // Only numbers
     if (value.length <= 6) {
       setVerificationCode(value);
-      setError(''); // Clear error when user types
+      setError(""); // Clear error when user types
     }
   };
 
   const handleVerify = async (e) => {
     e.preventDefault();
-    
+
     if (verificationCode.length !== 6) {
-      setError('Please enter the complete 6-digit code');
+      setError("Please enter the complete 6-digit code");
       return;
     }
 
     setIsLoading(true);
-    setError('');
-    setMessage('');
+    setError("");
+    setMessage("");
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/verify-email`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/verify-email`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId,
+            verificationCode,
+          }),
         },
-        body: JSON.stringify({
-          userId,
-          verificationCode
-        })
-      });
+      );
 
       let data;
       try {
         data = await response.json();
       } catch {
-        throw new Error('Invalid server response');
+        throw new Error("Invalid server response");
       }
 
       if (!response.ok) {
-        throw new Error(data.errors?.[0]?.msg || 'Invalid verification code');
+        throw new Error(data.errors?.[0]?.msg || "Invalid verification code");
       }
 
       // Store token and call success handler
-      localStorage.setItem('token', data.token);
+      localStorage.setItem("token", data.token);
       setMessage(data.message);
-      
+
       // Small delay to show success message
       setTimeout(() => {
         onVerificationSuccess(data.user);
       }, 1500);
-
     } catch (err) {
-      setError(err.message || 'Verification failed. Please try again.');
+      setError(err.message || "Verification failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -95,35 +97,37 @@ const EmailVerification = ({ userId, email, onVerificationSuccess }) => {
 
   const handleResend = async () => {
     setIsResending(true);
-    setError('');
-    setMessage('');
+    setError("");
+    setMessage("");
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/resend-verification`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/auth/resend-verification`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId }),
         },
-        body: JSON.stringify({ userId })
-      });
+      );
 
       let data;
       try {
         data = await response.json();
       } catch {
-        throw new Error('Invalid server response');
+        throw new Error("Invalid server response");
       }
 
       if (!response.ok) {
-        throw new Error(data.errors?.[0]?.msg || 'Failed to resend code');
+        throw new Error(data.errors?.[0]?.msg || "Failed to resend code");
       }
 
-      setMessage('New verification code sent to your email!');
+      setMessage("New verification code sent to your email!");
       setTimeLeft(900); // Reset timer
-      setVerificationCode(''); // Clear current code
-
+      setVerificationCode(""); // Clear current code
     } catch (err) {
-      setError(err.message || 'Failed to resend code. Please try again.');
+      setError(err.message || "Failed to resend code. Please try again.");
     } finally {
       setIsResending(false);
     }
@@ -194,8 +198,8 @@ const EmailVerification = ({ userId, email, onVerificationSuccess }) => {
         {/* Verification Form */}
         <form onSubmit={handleVerify} className="space-y-6">
           <div>
-            <label 
-              htmlFor="verification-input" 
+            <label
+              htmlFor="verification-input"
               className="block text-sm font-medium text-[var(--primary)] mb-3 text-center"
             >
               Enter verification code
@@ -245,7 +249,7 @@ const EmailVerification = ({ userId, email, onVerificationSuccess }) => {
                 Verifying...
               </>
             ) : (
-              'Verify Email'
+              "Verify Email"
             )}
           </button>
         </form>
@@ -274,7 +278,8 @@ const EmailVerification = ({ userId, email, onVerificationSuccess }) => {
           </button>
           {timeLeft > 840 && (
             <p className="text-xs text-[var(--primary)]/50 mt-1">
-              Please wait {Math.ceil((timeLeft - 840) / 60)} minute(s) before requesting a new code
+              Please wait {Math.ceil((timeLeft - 840) / 60)} minute(s) before
+              requesting a new code
             </p>
           )}
         </div>
@@ -282,7 +287,15 @@ const EmailVerification = ({ userId, email, onVerificationSuccess }) => {
         {/* Help Text */}
         <div className="mt-6 text-center text-xs text-[var(--primary)]/60">
           <p>Check your spam folder if you don't see the email.</p>
-          <p className="mt-1">Need help? <Link to="/contact" className="text-[var(--primary)] hover:underline">Contact support</Link></p>
+          <p className="mt-1">
+            Need help?{" "}
+            <Link
+              to="/contact"
+              className="text-[var(--primary)] hover:underline"
+            >
+              Contact support
+            </Link>
+          </p>
         </div>
       </motion.div>
     </div>

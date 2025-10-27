@@ -12,7 +12,7 @@ const indexName = process.env.PINECONE_INDEX;
 
 // Add delay to respect API rate limits
 function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function cleanupDuplicates() {
@@ -29,7 +29,7 @@ async function cleanupDuplicates() {
       vector: Array(1024).fill(0.1),
       topK: 1000, // Should be enough for all vectors
       includeMetadata: true,
-      includeValues: false
+      includeValues: false,
     });
 
     if (!allVectors.matches || allVectors.matches.length === 0) {
@@ -41,7 +41,7 @@ async function cleanupDuplicates() {
 
     // Group vectors by issue number
     const vectorsByIssue = new Map();
-    
+
     for (const vector of allVectors.matches) {
       const issueNumber = vector.metadata?.issue_number;
       if (issueNumber) {
@@ -60,30 +60,32 @@ async function cleanupDuplicates() {
 
     for (const [issueNumber, vectors] of vectorsByIssue) {
       console.log(`\n📋 Issue #${issueNumber}: ${vectors.length} vector(s)`);
-      
+
       if (vectors.length === 1) {
         console.log(`  ✅ No duplicates for issue #${issueNumber}`);
         vectorsToKeep.push(vectors[0]);
       } else {
-        console.log(`  🔍 Found ${vectors.length} vectors, selecting which to keep...`);
-        
+        console.log(
+          `  🔍 Found ${vectors.length} vectors, selecting which to keep...`,
+        );
+
         // Sort vectors: prefer non-timestamped IDs (clean format)
         vectors.sort((a, b) => {
           const aHasTimestamp = /-\d{13}/.test(a.id);
           const bHasTimestamp = /-\d{13}/.test(b.id);
-          
+
           if (!aHasTimestamp && bHasTimestamp) return -1; // a comes first (keep a)
-          if (aHasTimestamp && !bHasTimestamp) return 1;  // b comes first (keep b)
+          if (aHasTimestamp && !bHasTimestamp) return 1; // b comes first (keep b)
           return a.id.localeCompare(b.id); // alphabetical if both same type
         });
-        
+
         const toKeep = vectors[0];
         const toDelete = vectors.slice(1);
-        
+
         console.log(`    ✅ Keeping: ${toKeep.id}`);
         vectorsToKeep.push(toKeep);
-        
-        toDelete.forEach(v => {
+
+        toDelete.forEach((v) => {
           console.log(`    🗑️  Deleting: ${v.id}`);
           vectorsToDelete.push(v.id);
         });
@@ -100,10 +102,12 @@ async function cleanupDuplicates() {
     }
 
     // Confirm before deletion
-    console.log(`\n⚠️  About to delete ${vectorsToDelete.length} duplicate vectors.`);
+    console.log(
+      `\n⚠️  About to delete ${vectorsToDelete.length} duplicate vectors.`,
+    );
     console.log("🔍 Vectors to delete:");
-    vectorsToDelete.forEach(id => console.log(`  - ${id}`));
-    
+    vectorsToDelete.forEach((id) => console.log(`  - ${id}`));
+
     // Delete in batches
     console.log("\n🧹 Starting cleanup...");
     const batchSize = 100; // Pinecone delete limit
@@ -111,38 +115,45 @@ async function cleanupDuplicates() {
 
     for (let i = 0; i < vectorsToDelete.length; i += batchSize) {
       const batch = vectorsToDelete.slice(i, i + batchSize);
-      
+
       try {
         await index.deleteMany(batch);
         deleted += batch.length;
-        console.log(`  🗑️  Deleted batch: ${batch.length} vectors (total: ${deleted}/${vectorsToDelete.length})`);
-        
+        console.log(
+          `  🗑️  Deleted batch: ${batch.length} vectors (total: ${deleted}/${vectorsToDelete.length})`,
+        );
+
         // Add delay between batches
         await delay(1000);
       } catch (error) {
         console.error(`  ❌ Failed to delete batch:`, error.message);
-        console.error(`     Batch IDs: ${batch.join(', ')}`);
+        console.error(`     Batch IDs: ${batch.join(", ")}`);
       }
     }
 
     console.log(`\n🎉 Cleanup completed!`);
-    console.log(`✅ Deleted: ${deleted}/${vectorsToDelete.length} duplicate vectors`);
-    console.log(`📊 Remaining vectors: ${vectorsToKeep.length} (one per issue)`);
-    
+    console.log(
+      `✅ Deleted: ${deleted}/${vectorsToDelete.length} duplicate vectors`,
+    );
+    console.log(
+      `📊 Remaining vectors: ${vectorsToKeep.length} (one per issue)`,
+    );
+
     // Verify cleanup
     console.log("\n🔍 Verifying cleanup...");
     await delay(2000); // Wait for Pinecone to sync
-    
+
     const finalStats = await index.describeIndexStats();
     const finalCount = finalStats.totalRecordCount || 0;
     console.log(`📊 Final vector count: ${finalCount}`);
-    
+
     if (finalCount === vectorsToKeep.length) {
       console.log("✅ Cleanup verification successful!");
     } else {
-      console.log(`⚠️  Expected ${vectorsToKeep.length} vectors, but found ${finalCount}`);
+      console.log(
+        `⚠️  Expected ${vectorsToKeep.length} vectors, but found ${finalCount}`,
+      );
     }
-
   } catch (error) {
     console.error("❌ Error during cleanup:", error);
     process.exit(1);
@@ -151,7 +162,7 @@ async function cleanupDuplicates() {
 
 // Handle command line arguments
 const args = process.argv.slice(2);
-if (args.includes('--help') || args.includes('-h')) {
+if (args.includes("--help") || args.includes("-h")) {
   console.log(`
 📖 Usage: node scripts/cleanup-duplicates.js
 
@@ -171,7 +182,7 @@ if (args.includes('--help') || args.includes('-h')) {
 }
 
 // Confirmation prompt for safety
-if (!args.includes('--force')) {
+if (!args.includes("--force")) {
   console.log(`
 ⚠️  WARNING: This script will delete duplicate vectors from your Pinecone index!
 
@@ -189,7 +200,7 @@ To see help: node scripts/cleanup-duplicates.js --help
 }
 
 // Run the cleanup
-cleanupDuplicates().catch(error => {
+cleanupDuplicates().catch((error) => {
   console.error("💥 Script failed:", error);
   process.exit(1);
 });

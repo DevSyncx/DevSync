@@ -19,7 +19,7 @@ const Loader = ({ className, size = "md" }: LoaderProps) => {
         className={cn(
           "animate-spin rounded-full border-4 border-muted border-t-primary",
           sizes[size],
-          className
+          className,
         )}
       />
     </div>

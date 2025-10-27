@@ -1,7 +1,7 @@
 <!-- GSSoC banner and project insights -->
 <h1 align="center">
   DevSync
-</h1> 
+</h1>
 
 <table align="center">
     <thead align="center">
@@ -30,12 +30,10 @@
 
 # 🚀 DevSync — Developer Productivity Dashboard
 
-
 From pull requests to pomodoros — DevSync's got you covered.  
 Stay ahead. Stay synced. stay **DevSynced**
 
 **DevSync** is a unified productivity tracker for developers. It aggregates your coding activity, daily goals, and contribution metrics from various platforms into a single, elegant dashboard — designed to help you track growth, stay consistent, and showcase your development journey.
-
 
 ## 📋 Table of Contents
 
@@ -53,42 +51,35 @@ Stay ahead. Stay synced. stay **DevSynced**
 - [👩‍💻 Maintainers](#-maintainers)
 - [⭐ Support This Project](#-support-this-project)
 
-
 ## 🔍 Overview
 
 In today’s fragmented developer ecosystem, tracking your contributions across multiple platforms can be overwhelming.  
 **DevSync** simplifies this by:
 
-- Consolidating your stats, streaks, and growth in one place.  
-- Offering visual productivity logs and heatmaps.  
-- Letting you manage tasks and goals alongside coding activity.  
+- Consolidating your stats, streaks, and growth in one place.
+- Offering visual productivity logs and heatmaps.
+- Letting you manage tasks and goals alongside coding activity.
 
-Whether you’re preparing for internships, building a personal brand, or staying accountable — **DevSync** empowers you with **data-driven insights** at a glance.  
-
-
+Whether you’re preparing for internships, building a personal brand, or staying accountable — **DevSync** empowers you with **data-driven insights** at a glance.
 
 ## ✨ Features
 
-- 📈 **Unified Developer Insights** – Track problems solved, commits, issues, ratings, and more.  
-- 🔥 **Cross-Platform Heatmaps** – Visualize your coding streaks and consistency.  
-- 🧩 **Modular Platform Support** – Easily add integrations for new coding platforms.  
-- ✅ **Task & Goal Tracker** – Stay on top of daily, weekly, and long-term goals.  
-- 🧾 **Timeline Logs** – Get auto-generated summaries (daily/weekly/monthly).  
-- 🪪 **Public Shareable Profile (Coming Soon)** – Showcase your journey to recruiters or peers.  
-
-
+- 📈 **Unified Developer Insights** – Track problems solved, commits, issues, ratings, and more.
+- 🔥 **Cross-Platform Heatmaps** – Visualize your coding streaks and consistency.
+- 🧩 **Modular Platform Support** – Easily add integrations for new coding platforms.
+- ✅ **Task & Goal Tracker** – Stay on top of daily, weekly, and long-term goals.
+- 🧾 **Timeline Logs** – Get auto-generated summaries (daily/weekly/monthly).
+- 🪪 **Public Shareable Profile (Coming Soon)** – Showcase your journey to recruiters or peers.
 
 ## 🏗 Tech Stack
 
-| Layer       | Technology                         |
-|-------------|-------------------------------------|
-| Frontend    | React, Tailwind CSS, ShadCN UI      |
-| Backend     | Node.js, Express, REST API          |
-| Database    | MongoDB                             |
-| Auth        | JWT / OAuth                         |
-| Deployment  | Vercel / Render                     |
-
-
+| Layer      | Technology                     |
+| ---------- | ------------------------------ |
+| Frontend   | React, Tailwind CSS, ShadCN UI |
+| Backend    | Node.js, Express, REST API     |
+| Database   | MongoDB                        |
+| Auth       | JWT / OAuth                    |
+| Deployment | Vercel / Render                |
 
 ## 📸 Screenshots
 
@@ -96,18 +87,18 @@ Whether you’re preparing for internships, building a personal brand, or stayin
 ![About DevSync](assets/img2.jpg "About DevSync")
 ![Contact Us](assets/img3.jpg "Contact Us")
 
-
 ## 🛠️ Setup & Installation
 
-### 1. Fork the Repository  
+### 1. Fork the Repository
+
 Click the **Fork** button (top-right) to get your copy of the repo.
 
-### 2. Clone Your Fork  
+### 2. Clone Your Fork
 
 ```bash
 git clone https://github.com/<your-username>/DevSync.git
 cd DevSync
-````
+```
 
 ### 3. Setup Frontend
 
@@ -128,8 +119,6 @@ npm run dev
 ```
 
 Your backend runs at 👉 [http://localhost:5000](http://localhost:5000)
-
-
 
 ## 📁 Folder Structure
 
@@ -188,24 +177,19 @@ DevSync/
 
 ```
 
-
 ## 🤝 Contributing
 
 We ❤️ contributions!
 
-* Read the [Contributing Guide](./CONTRIBUTING.md).
-* Check open issues or raise new ones.
-* Submit pull requests with clear descriptions.
+- Read the [Contributing Guide](./CONTRIBUTING.md).
+- Check open issues or raise new ones.
+- Submit pull requests with clear descriptions.
 
 Every contribution counts — from bug fixes to new features!
-
-
 
 ## 📜 License
 
 This project is licensed under the [MIT License](./LICENSE).
-
-
 
 ## 📄 Code of Conduct
 
@@ -216,18 +200,16 @@ We enforce a [Code of Conduct](./CODE_OF_CONDUCT.md) to maintain a safe, inclusi
 For detailed setup instructions, please follow the full documentation here:  
 [📄 DevSync Setup Docs](./docs)
 
- 
 ## 👩‍💻 Maintainers
 
-* **Annanya Tiwary** – [GitHub](https://github.com/Annanyatiwary4)
-
+- **Annanya Tiwary** – [GitHub](https://github.com/Annanyatiwary4)
 
 ## ⭐ Support This Project
 
 If **DevSync** inspired you:
 
-* Star ⭐ the repo on [GitHub](https://github.com/DevSyncx/DevSync)
-* Share it with your friends & community
-* Contribute by fixing issues or adding features
+- Star ⭐ the repo on [GitHub](https://github.com/DevSyncx/DevSync)
+- Share it with your friends & community
+- Contribute by fixing issues or adding features
 
 Together, let’s make developer productivity smarter 🚀

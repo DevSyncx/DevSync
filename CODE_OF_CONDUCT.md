@@ -51,7 +51,6 @@ This Code of Conduct applies within all project spaces, including:
 If you observe or experience behavior that violates this Code of Conduct, please report it privately by contacting  
 📧 [**Annanya Tiwary**](mailto:anonym.notifys@gmail.com)
 
-
 All reports will be handled with discretion. We are committed to protecting reporters from retaliation.
 
 ---

@@ -30,7 +30,6 @@
 #         run: |
 #           echo '${{ secrets.GOOGLE_CREDENTIALS }}' > ${{ github.workspace }}/credentials.json
 
-
 #       - name: Run leaderboard script
 #         env:
 #           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

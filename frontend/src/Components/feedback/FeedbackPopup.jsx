@@ -9,7 +9,13 @@ import {
 } from "@/Components/ui/dialog";
 import StarRating from "@/Components/ui/StarRating";
 import { Textarea } from "@/Components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/Components/ui/select";
 import { Checkbox } from "@/Components/ui/checkbox";
 import { Button } from "@/Components/ui/button";
 import { Sparkles } from "lucide-react";
@@ -19,10 +25,15 @@ const feedbackCategories = [
   { id: "features", label: "Features" },
   { id: "bugs", label: "Bug Reports" },
   { id: "suggestions", label: "Suggestions" },
-  { id: "other", label: "Other" }
+  { id: "other", label: "Other" },
 ];
 
-export default function FeedbackPopup({ open, onOpenChange, onSubmit, userInfo }) {
+export default function FeedbackPopup({
+  open,
+  onOpenChange,
+  onSubmit,
+  userInfo,
+}) {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [category, setCategory] = useState("other");
@@ -64,7 +75,7 @@ export default function FeedbackPopup({ open, onOpenChange, onSubmit, userInfo }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (!validate()) return;
 
     // If user is not logged in, we'll always treat it as anonymous
@@ -76,7 +87,7 @@ export default function FeedbackPopup({ open, onOpenChange, onSubmit, userInfo }
       comment: comment.trim(),
       category,
       isAnonymous: actualIsAnonymous,
-      date: new Date().toISOString()
+      date: new Date().toISOString(),
     };
 
     onSubmit(feedbackData);
@@ -88,7 +99,7 @@ export default function FeedbackPopup({ open, onOpenChange, onSubmit, userInfo }
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-yellow-500" /> 
+              <Sparkles className="h-5 w-5 text-yellow-500" />
               We'd Love Your Feedback
             </DialogTitle>
             <DialogDescription>
@@ -99,14 +110,17 @@ export default function FeedbackPopup({ open, onOpenChange, onSubmit, userInfo }
           <div className="grid gap-4 py-4">
             {/* Rating */}
             <div className="flex flex-col gap-2">
-              <label htmlFor="rating" className="text-sm font-medium text-[var(--primary)]">
+              <label
+                htmlFor="rating"
+                className="text-sm font-medium text-[var(--primary)]"
+              >
                 How would you rate your experience?
               </label>
               <div className="flex justify-center py-2">
-                <StarRating 
-                  value={rating} 
-                  onChange={handleRatingChange} 
-                  size={28} 
+                <StarRating
+                  value={rating}
+                  onChange={handleRatingChange}
+                  size={28}
                   activeColor="gold"
                 />
               </div>
@@ -117,7 +131,10 @@ export default function FeedbackPopup({ open, onOpenChange, onSubmit, userInfo }
 
             {/* Category */}
             <div className="flex flex-col gap-2">
-              <label htmlFor="category" className="text-sm font-medium text-[var(--primary)]">
+              <label
+                htmlFor="category"
+                className="text-sm font-medium text-[var(--primary)]"
+              >
                 Feedback Category
               </label>
               <Select value={category} onValueChange={setCategory}>
@@ -136,7 +153,10 @@ export default function FeedbackPopup({ open, onOpenChange, onSubmit, userInfo }
 
             {/* Comment */}
             <div className="flex flex-col gap-2">
-              <label htmlFor="comment" className="text-sm font-medium text-[var(--primary)]">
+              <label
+                htmlFor="comment"
+                className="text-sm font-medium text-[var(--primary)]"
+              >
                 Your Feedback
               </label>
               <Textarea
@@ -153,10 +173,10 @@ export default function FeedbackPopup({ open, onOpenChange, onSubmit, userInfo }
 
             {/* Anonymous Option */}
             <div className="flex items-center space-x-2">
-              <Checkbox 
-                id="anonymous" 
-                checked={isAnonymous} 
-                onCheckedChange={(checked) => setIsAnonymous(!!checked)} 
+              <Checkbox
+                id="anonymous"
+                checked={isAnonymous}
+                onCheckedChange={(checked) => setIsAnonymous(!!checked)}
               />
               <label
                 htmlFor="anonymous"
@@ -168,10 +188,17 @@ export default function FeedbackPopup({ open, onOpenChange, onSubmit, userInfo }
           </div>
 
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+            >
               Close
             </Button>
-            <Button type="submit" className="bg-[var(--primary)] hover:bg-opacity-90 text-white">
+            <Button
+              type="submit"
+              className="bg-[var(--primary)] hover:bg-opacity-90 text-white"
+            >
               Submit Feedback
             </Button>
           </DialogFooter>

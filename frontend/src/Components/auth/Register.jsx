@@ -82,7 +82,7 @@ const Register = () => {
             email: formData.email,
             password: formData.password,
           }),
-        }
+        },
       );
 
       let data;
@@ -140,7 +140,7 @@ const Register = () => {
   }
 
   return (
-  <div className="min-h-screen bg-[var(--background)] flex items-center justify-center p-4 relative">
+    <div className="min-h-screen bg-[var(--background)] flex items-center justify-center p-4 relative">
       {/* Back to Home */}
       <Link
         to="/"
@@ -156,12 +156,18 @@ const Register = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="w-full max-w-md"
       >
-  <div className="bg-[ var(--card-foreground)] backdrop-blur-xl border border-[var(--border)] rounded-3xl shadow-xl p-8">
+        <div className="bg-[ var(--card-foreground)] backdrop-blur-xl border border-[var(--border)] rounded-3xl shadow-xl p-8">
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-extrabold text-[var(--primary)] mb-2 tracking-tight">DevSync</h1>
-            <p className="text-sm text-[var(--muted-foreground)] mb-6">Stay ahead. Stay synced. Stay Dev.</p>
-            <h2 className="text-2xl font-semibold text-[var(--primary)] mb-2">Create account</h2>
+            <h1 className="text-4xl font-extrabold text-[var(--primary)] mb-2 tracking-tight">
+              DevSync
+            </h1>
+            <p className="text-sm text-[var(--muted-foreground)] mb-6">
+              Stay ahead. Stay synced. Stay Dev.
+            </p>
+            <h2 className="text-2xl font-semibold text-[var(--primary)] mb-2">
+              Create account
+            </h2>
           </div>
 
           {/* Error Alert */}
@@ -175,7 +181,9 @@ const Register = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Name */}
             <div className="space-y-2">
-              <label htmlFor="name" className="text-[var(--primary)]">Full Name</label>
+              <label htmlFor="name" className="text-[var(--primary)]">
+                Full Name
+              </label>
               <div className="relative">
                 <input
                   id="name"
@@ -193,7 +201,9 @@ const Register = () => {
 
             {/* Email */}
             <div className="space-y-2">
-              <label htmlFor="email" className="text-[var(--primary)]">Email</label>
+              <label htmlFor="email" className="text-[var(--primary)]">
+                Email
+              </label>
               <div className="relative">
                 <input
                   id="email"
@@ -211,7 +221,9 @@ const Register = () => {
 
             {/* Password */}
             <div className="space-y-2">
-              <label htmlFor="password" className="text-[var(--primary)]">Password</label>
+              <label htmlFor="password" className="text-[var(--primary)]">
+                Password
+              </label>
               <div className="relative">
                 <input
                   id="password"
@@ -246,17 +258,21 @@ const Register = () => {
                         passwordStrength === 0
                           ? "w-1/4 bg-red-500"
                           : passwordStrength === 1
-                          ? "w-1/4 bg-red-500"
-                          : passwordStrength === 2
-                          ? "w-2/4 bg-yellow-400"
-                          : passwordStrength === 3
-                          ? "w-3/4 bg-blue-500"
-                          : "w-full bg-green-500"
+                            ? "w-1/4 bg-red-500"
+                            : passwordStrength === 2
+                              ? "w-2/4 bg-yellow-400"
+                              : passwordStrength === 3
+                                ? "w-3/4 bg-blue-500"
+                                : "w-full bg-green-500"
                       } transition-all duration-300`}
                     />
                   </div>
                   <p className="text-sm mt-1 font-medium text-[var(--primary)]">
-                    {["Too weak", "Weak", "Fair", "Good", "Strong"][passwordStrength]}
+                    {
+                      ["Too weak", "Weak", "Fair", "Good", "Strong"][
+                        passwordStrength
+                      ]
+                    }
                   </p>
                 </div>
               )}
@@ -264,7 +280,12 @@ const Register = () => {
 
             {/* Confirm Password */}
             <div className="space-y-2">
-              <label htmlFor="confirmPassword" className="text-[var(--primary)]">Confirm Password</label>
+              <label
+                htmlFor="confirmPassword"
+                className="text-[var(--primary)]"
+              >
+                Confirm Password
+              </label>
               <div className="relative">
                 <input
                   id="confirmPassword"
@@ -274,8 +295,9 @@ const Register = () => {
                   onChange={handleChange}
                   placeholder="Confirm your password"
                   required
-                  className={`w-full pl-10 pr-10 py-3 bg-[var(--card)] border ${passwordMatch ? "border-[var(--input)]" : "border-red-500"
-                    } rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] text-[var(--card-foreground)]`}
+                  className={`w-full pl-10 pr-10 py-3 bg-[var(--card)] border ${
+                    passwordMatch ? "border-[var(--input)]" : "border-red-500"
+                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] text-[var(--card-foreground)]`}
                 />
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]" />
                 <button
@@ -318,7 +340,11 @@ const Register = () => {
 
             {/* Social Login */}
             <div className="grid grid-cols-2 gap-3">
-              <button type="button" onClick={handleGithubRegister} className="flex items-center cursor-pointer justify-center py-3 border border-[var(--input)] rounded-lg text-[var(--primary)] hover:bg-[var(--accent)]">
+              <button
+                type="button"
+                onClick={handleGithubRegister}
+                className="flex items-center cursor-pointer justify-center py-3 border border-[var(--input)] rounded-lg text-[var(--primary)] hover:bg-[var(--accent)]"
+              >
                 <Github className="h-4 w-4 mr-2" />
                 GitHub
               </button>
@@ -330,7 +356,8 @@ const Register = () => {
                   }/auth/google`;
                 }}
                 type="button"
-                className="flex items-center cursor-pointer justify-center py-3 border border-[var(--input)] rounded-lg text-[var(--primary)] hover:bg-[var(--accent)]">
+                className="flex items-center cursor-pointer justify-center py-3 border border-[var(--input)] rounded-lg text-[var(--primary)] hover:bg-[var(--accent)]"
+              >
                 <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24">
                   <path
                     fill="currentColor"
@@ -355,8 +382,13 @@ const Register = () => {
 
             {/* Sign in link */}
             <div className="text-center">
-              <span className="text-[var(--muted-foreground)]">Already have an account? </span>
-              <Link to="/login" className="text-[var(--primary)] hover:text-[var(--primary)]/80 font-medium">
+              <span className="text-[var(--muted-foreground)]">
+                Already have an account?{" "}
+              </span>
+              <Link
+                to="/login"
+                className="text-[var(--primary)] hover:text-[var(--primary)]/80 font-medium"
+              >
                 Sign in
               </Link>
             </div>

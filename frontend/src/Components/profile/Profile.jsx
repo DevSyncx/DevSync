@@ -242,7 +242,7 @@ const Profile = () => {
             headers: {
               "x-auth-token": token,
             },
-          }
+          },
         );
 
         if (!response.ok) {
@@ -352,7 +352,7 @@ const Profile = () => {
             headers: {
               "x-auth-token": token,
             },
-          }
+          },
         );
 
         if (!response.ok) {
@@ -447,7 +447,7 @@ const Profile = () => {
             method: "POST",
             headers: { "x-auth-token": token },
             body: formData,
-          }
+          },
         );
 
         if (!avatarResponse.ok) {
@@ -489,7 +489,7 @@ const Profile = () => {
             "x-auth-token": token,
           },
           body: JSON.stringify(requestBody),
-        }
+        },
       );
 
       if (!response.ok) {
@@ -543,15 +543,15 @@ const Profile = () => {
 
   const connectedPlatformsCount = profileData.socialLinks
     ? Object.values(profileData.socialLinks).filter(
-        (link) => link && link.trim() !== ""
+        (link) => link && link.trim() !== "",
       ).length
     : 0;
 
   const currentAvatarSrc = avatarPreview
     ? avatarPreview
     : profileData.avatar?.startsWith("http")
-    ? profileData.avatar
-    : `${import.meta.env.VITE_API_URL}${profileData.avatar}`;
+      ? profileData.avatar
+      : `${import.meta.env.VITE_API_URL}${profileData.avatar}`;
 
   // ... (Loading and Error screens remain the same) ...
 
@@ -998,7 +998,7 @@ const Profile = () => {
                                 </button>
                               )}
                             </motion.div>
-                          )
+                          ),
                         )}
                       </div>
                     )}

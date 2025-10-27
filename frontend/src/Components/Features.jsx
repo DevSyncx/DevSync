@@ -15,12 +15,14 @@ export function FeaturesSection() {
   const features = [
     {
       title: "Unified Developer Dashboard",
-      description: "Track GitHub, LeetCode, Codeforces, and more from a single dashboard.",
+      description:
+        "Track GitHub, LeetCode, Codeforces, and more from a single dashboard.",
       icon: <Activity />,
     },
     {
       title: "Smart Productivity Logs",
-      description: "Log tasks, wins, blockers, and progress with daily summaries.",
+      description:
+        "Log tasks, wins, blockers, and progress with daily summaries.",
       icon: <BookOpen />,
     },
     {
@@ -35,17 +37,20 @@ export function FeaturesSection() {
     },
     {
       title: "DSA Progress Tracking",
-      description: "Keep tabs on your problem-solving journey across platforms.",
+      description:
+        "Keep tabs on your problem-solving journey across platforms.",
       icon: <Brain />,
     },
     {
       title: "Interactive Visualizations",
-      description: "Understand your productivity via dynamic graphs and charts.",
+      description:
+        "Understand your productivity via dynamic graphs and charts.",
       icon: <BarChart3 />,
     },
     {
       title: "Community Collaboration",
-      description: "Connect, share logs, and grow together with other developers.",
+      description:
+        "Connect, share logs, and grow together with other developers.",
       icon: <MessageCircle />,
     },
     {
@@ -56,7 +61,10 @@ export function FeaturesSection() {
   ];
 
   return (
-    <div id="features" className=" bg-[#101e35] border border-[#1c2e4a] rounded-3xl p-8 md:p-12 shadow-lg">
+    <div
+      id="features"
+      className=" bg-[#101e35] border border-[#1c2e4a] rounded-3xl p-8 md:p-12 shadow-lg"
+    >
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 relative z-10 py-10 max-w-7xl mx-auto">
         {features.map((feature, index) => (
           <Feature key={feature.title} {...feature} index={index} />
@@ -66,12 +74,7 @@ export function FeaturesSection() {
   );
 }
 
-const Feature = ({
-  title,
-  description,
-  icon,
-  index,
-}) => {
+const Feature = ({ title, description, icon, index }) => {
   return (
     <div
       className={cn(
@@ -79,7 +82,7 @@ const Feature = ({
         "transition-all duration-300 ease-in-out", // Added for smooth transitions
         (index === 0 || index === 4) && "lg:border-l dark:border-neutral-500",
         index < 4 && "lg:border-b dark:border-neutral-800",
-        "hover:bg-[#1a2b47] hover:shadow-xl rounded-lg" // Background and shadow on hover
+        "hover:bg-[#1a2b47] hover:shadow-xl rounded-lg", // Background and shadow on hover
       )}
     >
       {/* Absolute positioned overlay for a subtle highlight effect */}

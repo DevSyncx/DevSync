@@ -8,7 +8,6 @@ require("./utils/leetcodeCron");
 const passport = require("passport");
 const githubRoute = require("./routes/github.route");
 
-
 // Database connection
 require("./db/connection");
 
@@ -16,14 +15,19 @@ require("./db/connection");
 try {
   require("./config/passport");
 } catch (err) {
-  console.warn("Google OAuth is not configured properly. Skipping Passport strategy.");
+  console.warn(
+    "Google OAuth is not configured properly. Skipping Passport strategy.",
+  );
 }
 
 // Import routes
 const contactRouter = require("./routes/contact.route");
 
 // Rate limiter middleware placeholders
-const { generalMiddleware, authMiddleware } = require("./middleware/rateLimit/index");
+const {
+  generalMiddleware,
+  authMiddleware,
+} = require("./middleware/rateLimit/index");
 
 // Initialize Express
 const app = express();
@@ -36,7 +40,7 @@ app.use(
   cors({
     origin: process.env.CLIENT_URL || "http://localhost:5173",
     credentials: true,
-  })
+  }),
 );
 
 // Session setup
@@ -46,7 +50,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false }, // set true if using HTTPS
-  })
+  }),
 );
 
 // Initialize Passport
@@ -65,7 +69,6 @@ app.use("/api/profile", generalMiddleware, require("./routes/profile"));
 app.use("/api/contact", generalMiddleware, contactRouter);
 app.use("/api/tasks", require("./routes/tasks.route"));
 app.use("/api/feedback", require("./routes/feedback"));
-
 
 // Default route
 app.get("/", (req, res) => {

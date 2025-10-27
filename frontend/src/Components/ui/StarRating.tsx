@@ -22,7 +22,7 @@ export default function StarRating({
   className,
 }: StarRatingProps) {
   const [hoverValue, setHoverValue] = useState<number | null>(null);
-  
+
   const stars = Array.from({ length: count }, (_, i) => i + 1);
 
   const handleMouseMove = (newValue: number) => {
@@ -43,7 +43,7 @@ export default function StarRating({
   };
 
   return (
-    <div 
+    <div
       className={cn("flex gap-1", className)}
       onMouseLeave={handleMouseLeave}
     >

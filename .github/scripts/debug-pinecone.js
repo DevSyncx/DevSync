@@ -16,12 +16,12 @@ async function debugPinecone() {
 
   try {
     const index = pinecone.Index(indexName);
-    
+
     // Get index stats
     console.log("\n1. Index Statistics:");
     const stats = await index.describeIndexStats();
     console.log("Full stats object:", JSON.stringify(stats, null, 2));
-    
+
     // Try to query some vectors
     console.log("\n2. Sample Query (first 10 vectors):");
     try {
@@ -29,9 +29,9 @@ async function debugPinecone() {
         vector: Array(1024).fill(0.1),
         topK: 10,
         includeMetadata: true,
-        includeValues: false
+        includeValues: false,
       });
-      
+
       console.log(`Found ${queryResult.matches?.length || 0} vectors`);
       if (queryResult.matches && queryResult.matches.length > 0) {
         queryResult.matches.forEach((match, i) => {
@@ -44,28 +44,40 @@ async function debugPinecone() {
     } catch (queryError) {
       console.error("Query failed:", queryError.message);
     }
-    
+
     // Try specific fetch for known IDs
     console.log("\n3. Testing specific ID fetch:");
-    const testIds = ['issue-1', 'issue-3', 'issue-4', 'issue-5', 'issue-6', 'issue-7', 'issue-8'];
-    
+    const testIds = [
+      "issue-1",
+      "issue-3",
+      "issue-4",
+      "issue-5",
+      "issue-6",
+      "issue-7",
+      "issue-8",
+    ];
+
     try {
       const fetchResult = await index.fetch(testIds);
-      console.log(`Fetch result keys: ${Object.keys(fetchResult.vectors || {}).join(', ')}`);
-      
+      console.log(
+        `Fetch result keys: ${Object.keys(fetchResult.vectors || {}).join(", ")}`,
+      );
+
       if (fetchResult.vectors) {
         Object.entries(fetchResult.vectors).forEach(([id, vector]) => {
           console.log(`  Found: ${id}`);
           if (vector.metadata) {
             console.log(`    Issue #: ${vector.metadata.issue_number}`);
-            console.log(`    Title: ${vector.metadata.title?.substring(0, 50)}...`);
+            console.log(
+              `    Title: ${vector.metadata.title?.substring(0, 50)}...`,
+            );
           }
         });
       }
     } catch (fetchError) {
       console.error("Fetch failed:", fetchError.message);
     }
-    
+
     // Try with different ID patterns (in case they have timestamps)
     console.log("\n4. Checking for timestamped IDs:");
     try {
@@ -73,13 +85,15 @@ async function debugPinecone() {
         vector: Array(1024).fill(0.1),
         topK: 100,
         includeMetadata: true,
-        includeValues: false
+        includeValues: false,
       });
-      
+
       if (allQuery.matches && allQuery.matches.length > 0) {
         console.log("All vector IDs found:");
-        allQuery.matches.forEach(match => {
-          console.log(`  - ${match.id} (issue #${match.metadata?.issue_number || 'unknown'})`);
+        allQuery.matches.forEach((match) => {
+          console.log(
+            `  - ${match.id} (issue #${match.metadata?.issue_number || "unknown"})`,
+          );
         });
       } else {
         console.log("No vectors found in query");
@@ -87,7 +101,6 @@ async function debugPinecone() {
     } catch (allQueryError) {
       console.error("All query failed:", allQueryError.message);
     }
-    
   } catch (error) {
     console.error("Debug failed:", error);
   }

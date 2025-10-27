@@ -188,7 +188,7 @@ export default function Dashboard() {
         <ScrollArea className="flex-1 h-full p-4 sm:p-6 bg-muted/30">
           {/* Add FeedbackController with the user profile */}
           <FeedbackController user={profile} />
-          
+
           <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6 auto-rows-max">
             {/* Row 1 */}
             <ProfileCard user={profile} className="col-span-1" />
@@ -216,7 +216,7 @@ export default function Dashboard() {
                           "x-auth-token": token,
                         },
                         body: JSON.stringify({ date: day }),
-                      }
+                      },
                     );
                     if (res.ok) {
                       setProfile((prev) => ({
