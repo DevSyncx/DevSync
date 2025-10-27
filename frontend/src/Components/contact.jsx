@@ -120,7 +120,7 @@ const Contact = () => {
                       {...register("name")}
                       className={`w-full pl-10 pr-4 py-2 border ${
                         errors.name ? "border-red-500" : "border-gray-300"
-                      } rounded-lg focus:ring-blue-500 focus:border-blue-500 transition`}
+                      } rounded-lg focus:ring-blue-500 focus:border-blue-500 placeholder-gray-500 transition`}
                       placeholder="Your Name"
                     />
                     {errors.name && (
@@ -138,7 +138,7 @@ const Contact = () => {
                       {...register("email")}
                       className={`w-full pl-10 pr-4 py-2 border ${
                         errors.email ? "border-red-500" : "border-gray-300"
-                      } rounded-lg focus:ring-blue-500 focus:border-blue-500 transition`}
+                      } rounded-lg focus:ring-blue-500 focus:border-blue-500 placeholder-gray-500 transition`}
                       placeholder="you@example.com"
                     />
                     {errors.email && (
@@ -156,7 +156,7 @@ const Contact = () => {
                       rows="5"
                       className={`w-full pl-10 pr-4 py-2 border ${
                         errors.message ? "border-red-500" : "border-gray-300"
-                      } rounded-lg focus:ring-blue-500 focus:border-blue-500 transition`}
+                      } rounded-lg focus:ring-blue-500 focus:border-blue-500 placeholder-gray-500 transition`}
                       placeholder="Type your message..."
                     ></textarea>
                     {errors.message && (

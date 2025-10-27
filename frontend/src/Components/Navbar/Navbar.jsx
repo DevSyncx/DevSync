@@ -167,7 +167,7 @@ const Navbar = () => {
                    <a
                      key={item.name}
                      href={item.link}
-                     className="relative text-[15px] md:text-[16px] lg:text-[17px] font-medium transition-all duration-300 group flex items-center gap-2"
+                     className="relative text-[15px] md:text-[16px] lg:text-[17px] font-medium transition-all duration-300 group flex items-center gap-2 hover:pb-1"
                      style={{ color: "var(--card-foreground)" }}
                    >
                      {item.icon} <span>{item.name}</span>
