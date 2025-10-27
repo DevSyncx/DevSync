@@ -14,9 +14,9 @@ export default function BackButton({ to = null }) {
     <button
       onClick={handleClick}
       aria-label="Go back"
-      className="p-2 cursor-pointer rounded-lg hover:bg-[var(--accent)]"
+      className="p-2 cursor-pointer"
     >
-      <ArrowLeft className="h-5 w-5 text-[var(--foreground)]" />
+      <ArrowLeft className="h-5 w-5  text-[var(--foreground)]" />
     </button>
   );
 }

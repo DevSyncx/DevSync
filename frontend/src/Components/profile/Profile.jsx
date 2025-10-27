@@ -590,7 +590,9 @@ const Profile = () => {
   return (
     // Outer Container: Full Viewport Height
     <div className="h-screen w-full bg-background flex flex-col">
-      <BackButton />
+       <div className="w-max">
+        <BackButton />
+      </div>
       {/* Success Popup */}
       <SuccessPopup
         isVisible={showSuccessPopup}
@@ -599,22 +601,7 @@ const Profile = () => {
       />
 
       {/* Content Wrapper: Flex-grow to fill space below Navbar, using full width */}
-      <div className="flex-grow overflow-y-auto mt-[72px] pb-12 pt-6 px-4 md:px-12">
-        {/* Header Section: Removed max-w-6xl mx-auto */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8 text-center"
-        >
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent">
-            Developer Profile
-          </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Showcase your skills and connect with the developer community
-          </p>
-        </motion.div>
-
-        {/* Main Profile Content Container (Removed Card Styling and max-w-6xl) */}
+      <div className="flex-grow overflow-y-auto pb-12 px-4 md:px-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

@@ -164,10 +164,10 @@ const Navbar = () => {
     <div className="w-full font-sans">
       {!showFloating && (
         <header
-          className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b px-4 md:px-6 py-3 md:py-4 shadow-md"
+          className="fixed top-0 inset-x-0 z-50 w-full backdrop-blur-xl border-b px-4 md:px-6 py-3 md:py-4 shadow-md"
           style={{ background: "var(--card)", borderColor: "var(--border)" }}
         >
-          <div className="mx-auto mr-1 flex max-w-7xl items-center justify-between">
+          <div className="mx-auto flex max-w-7xl items-center justify-between">
             <Link to="/">
               <h1
                 className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight hover:scale-105 transition-transform duration-300"
