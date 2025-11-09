@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import Topbar from "./Topbar";
 import BackButton from "../ui/backbutton";
 import { Plus, Pencil, Trash2, CheckCircle2, Circle, Filter } from "lucide-react";
+import Sidebar from "./Sidebar"; // ✅ Add this after Topbar import
+
 
 // Mock-only UI for GSSOC To-Do page. Uses local state; backend wiring will follow.
 export default function Todo() {
@@ -214,121 +216,199 @@ export default function Todo() {
   }
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col flex-1">
+      {" "}
       <Topbar />
-      <main className="flex-1 p-6 bg-[#d1e4f3] dark:bg-gray-900">
-        <div className="max-w-full mx-auto space-y-6">
-          <div className="flex items-center gap-3">
-            <BackButton to="/dashboard" />
-            <h2 className="text-2xl font-bold text-[var(--card-foreground)] dark:text-gray-100">To-Do List</h2>
-            <div className="flex items-center gap-2 ml-auto">
-              <div className="relative">
-                <select value={filter} onChange={(e)=>setFilter(e.target.value)} className="appearance-none pr-8 pl-3 py-2 rounded-lg bg-[var(--card)] dark:bg-gray-800 text-[var(--card-foreground)] dark:text-gray-100 border border-[var(--input)] dark:border-gray-700">
-                  <option value="all">All</option>
-                  <option value="upcoming">Upcoming deadlines</option>
-                  <option value="completed">Completed</option>
-                </select>
-                <Filter className="w-4 h-4 absolute right-2 top-1/2 -translate-y-1/2 text-[var(--muted-foreground)] dark:text-gray-400" />
-              </div>
-              <button type="button" onClick={openAddModal} className="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] flex items-center gap-2 hover:opacity-90">
-                <Plus className="w-4 h-4" />
-                Add
-              </button>
-            </div>
-          </div>
-
-          {/* Add / Edit Modal */}
-          {showModal && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-              <div className="w-full max-w-lg p-5 rounded-xl bg-[var(--card)] dark:bg-gray-800 border border-[var(--border)] dark:border-gray-700 shadow-xl">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-semibold text-[var(--card-foreground)] dark:text-gray-100">{editingId ? "Edit Task" : "Add Task"}</h3>
-                  <button onClick={() => { setShowModal(false); resetForm(); }} className="px-2 py-1 rounded-md hover:bg-[var(--accent)] dark:hover:bg-gray-700/50 text-[var(--card-foreground)] dark:text-gray-100">✕</button>
+      <div className="flex min-h-screen bg-[#d1e4f3] dark:bg-gray-900">
+        {" "}
+        <Sidebar /> {/* sidebar stays left */}
+        <main className="flex-1 p-6 bg-[#d1e4f3] dark:bg-gray-900">
+          <div className="max-w-full mx-auto space-y-6">
+            <div className="flex items-center gap-3">
+              <BackButton to="/dashboard" />
+              <h2 className="text-2xl font-bold text-[var(--card-foreground)] dark:text-gray-100">
+                To-Do List
+              </h2>
+              <div className="flex items-center gap-2 ml-auto">
+                <div className="relative">
+                  <select
+                    value={filter}
+                    onChange={(e) => setFilter(e.target.value)}
+                    className="appearance-none pr-8 pl-3 py-2 rounded-lg bg-[var(--card)] dark:bg-gray-800 text-[var(--card-foreground)] dark:text-gray-100 border border-[var(--input)] dark:border-gray-700"
+                  >
+                    <option value="all">All</option>
+                    <option value="upcoming">Upcoming deadlines</option>
+                    <option value="completed">Completed</option>
+                  </select>
+                  <Filter className="w-4 h-4 absolute right-2 top-1/2 -translate-y-1/2 text-[var(--muted-foreground)] dark:text-gray-400" />
                 </div>
-                <form onSubmit={handleSubmitModal} className="mt-4 grid grid-cols-1 gap-3">
-                  <input value={modalData.title} onChange={(e)=>setModalData({ ...modalData, title: e.target.value })} placeholder="Title" className="px-3 py-2 rounded-lg bg-[var(--background)] dark:bg-gray-900 text-[var(--card-foreground)] dark:text-gray-100 border border-[var(--input)] dark:border-gray-600" />
-                  <textarea value={modalData.description} onChange={(e)=>setModalData({ ...modalData, description: e.target.value })} placeholder="Description" className="px-3 py-2 rounded-lg bg-[var(--background)] dark:bg-gray-900 text-[var(--card-foreground)] dark:text-gray-100 border border-[var(--input)] dark:border-gray-600" rows="3" />
-                  <div className="grid grid-cols-2 gap-3">
-                    <select value={modalData.status} onChange={(e)=>setModalData({ ...modalData, status: e.target.value })} className="px-3 py-2 rounded-lg bg-[var(--background)] dark:bg-gray-900 text-[var(--card-foreground)] dark:text-gray-100 border border-[var(--input)] dark:border-gray-600">
-                      <option value="pending">Pending</option>
-                      <option value="completed">Completed</option>
-                    </select>
-                    <input type="datetime-local" value={modalData.deadline} onChange={(e)=>setModalData({ ...modalData, deadline: e.target.value })} className="px-3 py-2 rounded-lg bg-[var(--background)] dark:bg-gray-900 text-[var(--card-foreground)] dark:text-gray-100 border border-[var(--input)] dark:border-gray-600" />
-                  </div>
-                  <div className="flex items-center justify-end gap-2 mt-2">
-                    <button type="button" onClick={() => { setShowModal(false); resetForm(); }} className="px-4 py-2 rounded-lg border border-[var(--input)] dark:border-gray-600 text-[var(--card-foreground)] dark:text-gray-100 hover:bg-[var(--accent)] dark:hover:bg-gray-700/50">Cancel</button>
-                    <button type="submit" className="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)]">
-                      {editingId ? "Save Changes" : "Add Task"}
+                <button
+                  type="button"
+                  onClick={openAddModal}
+                  className="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)] flex items-center gap-2 hover:opacity-90"
+                >
+                  <Plus className="w-4 h-4" />
+                  Add
+                </button>
+              </div>
+            </div>
+
+            {/* Add / Edit Modal */}
+            {showModal && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+                <div className="w-full max-w-lg p-5 rounded-xl bg-[var(--card)] dark:bg-gray-800 border border-[var(--border)] dark:border-gray-700 shadow-xl">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xl font-semibold text-[var(--card-foreground)] dark:text-gray-100">
+                      {editingId ? "Edit Task" : "Add Task"}
+                    </h3>
+                    <button
+                      onClick={() => {
+                        setShowModal(false);
+                        resetForm();
+                      }}
+                      className="px-2 py-1 rounded-md hover:bg-[var(--accent)] dark:hover:bg-gray-700/50 text-[var(--card-foreground)] dark:text-gray-100"
+                    >
+                      ✕
                     </button>
                   </div>
-                </form>
+                  <form
+                    onSubmit={handleSubmitModal}
+                    className="mt-4 grid grid-cols-1 gap-3"
+                  >
+                    <input
+                      value={modalData.title}
+                      onChange={(e) =>
+                        setModalData({ ...modalData, title: e.target.value })
+                      }
+                      placeholder="Title"
+                      className="px-3 py-2 rounded-lg bg-[var(--background)] dark:bg-gray-900 text-[var(--card-foreground)] dark:text-gray-100 border border-[var(--input)] dark:border-gray-600"
+                    />
+                    <textarea
+                      value={modalData.description}
+                      onChange={(e) =>
+                        setModalData({
+                          ...modalData,
+                          description: e.target.value,
+                        })
+                      }
+                      placeholder="Description"
+                      className="px-3 py-2 rounded-lg bg-[var(--background)] dark:bg-gray-900 text-[var(--card-foreground)] dark:text-gray-100 border border-[var(--input)] dark:border-gray-600"
+                      rows="3"
+                    />
+                    <div className="grid grid-cols-2 gap-3">
+                      <select
+                        value={modalData.status}
+                        onChange={(e) =>
+                          setModalData({ ...modalData, status: e.target.value })
+                        }
+                        className="px-3 py-2 rounded-lg bg-[var(--background)] dark:bg-gray-900 text-[var(--card-foreground)] dark:text-gray-100 border border-[var(--input)] dark:border-gray-600"
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
+                      </select>
+                      <input
+                        type="datetime-local"
+                        value={modalData.deadline}
+                        onChange={(e) =>
+                          setModalData({
+                            ...modalData,
+                            deadline: e.target.value,
+                          })
+                        }
+                        className="px-3 py-2 rounded-lg bg-[var(--background)] dark:bg-gray-900 text-[var(--card-foreground)] dark:text-gray-100 border border-[var(--input)] dark:border-gray-600"
+                      />
+                    </div>
+                    <div className="flex items-center justify-end gap-2 mt-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowModal(false);
+                          resetForm();
+                        }}
+                        className="px-4 py-2 rounded-lg border border-[var(--input)] dark:border-gray-600 text-[var(--card-foreground)] dark:text-gray-100 hover:bg-[var(--accent)] dark:hover:bg-gray-700/50"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className="px-4 py-2 rounded-lg bg-[var(--primary)] text-[var(--primary-foreground)]"
+                      >
+                        {editingId ? "Save Changes" : "Add Task"}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+
+            {/* Content */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              <div className="lg:col-span-2 space-y-4">
+                {/* --- Pending Tasks Section --- */}
+                {/* Only show this section if filter is 'all' OR 'upcoming' */}
+                {(filter === "all" || filter === "upcoming") && (
+                  <div className="p-4 rounded-xl bg-[var(--card)] dark:bg-gray-800 border border-[var(--border)] dark:border-gray-700 shadow-sm">
+                    <h3 className="text-lg font-semibold text-[var(--card-foreground)] dark:text-gray-100 mb-3">
+                      Pending
+                    </h3>
+                    <div className="space-y-3">
+                      {/* Inner check: Show tasks or "No tasks" message */}
+                      {filtered(pendingTasks).length === 0 ? (
+                        <p className="text-sm text-[var(--muted-foreground)] dark:text-gray-400">
+                          No pending tasks yet.
+                        </p>
+                      ) : (
+                        filtered(pendingTasks).map((task) => (
+                          <TaskCard key={task._id || task.id} task={task} />
+                        ))
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* --- Completed Tasks Section --- */}
+                {/* Only show this section if filter is 'all' OR 'completed' */}
+                {(filter === "all" || filter === "completed") && (
+                  <div className="p-4 rounded-xl bg-[var(--card)] dark:bg-gray-800 border border-[var(--border)] dark:border-gray-700 shadow-sm">
+                    <h3 className="text-lg font-semibold text-[var(--card-foreground)] dark:text-gray-100 mb-3">
+                      Completed
+                    </h3>
+                    <div className="space-y-3">
+                      {/* Inner check: Show tasks or "No tasks" message */}
+                      {filtered(completedTasks).length === 0 ? (
+                        <p className="text-sm text-[var(--muted-foreground)] dark:text-gray-400">
+                          No completed tasks yet.
+                        </p>
+                      ) : (
+                        filtered(completedTasks).map((task) => (
+                          <TaskCard key={task._id || task.id} task={task} />
+                        ))
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Right column widgets */}
+              <div className="space-y-4">
+                {/* Move Quick Tips to top for visibility */}
+                <div className="p-4 rounded-xl bg-[var(--card)] dark:bg-gray-800 border border-[var(--border)] dark:border-gray-700 shadow-sm">
+                  <h3 className="text-lg font-semibold text-[var(--card-foreground)] dark:text-gray-100">
+                    Quick Tips
+                  </h3>
+                  <ul className="mt-2 list-disc list-inside text-sm text-[var(--muted-foreground)] dark:text-gray-400 space-y-1">
+                    <li>Use deadlines to prioritize tasks.</li>
+                    <li>Break big goals into smaller, actionable items.</li>
+                    <li>Mark tasks done to track your streaks.</li>
+                  </ul>
+                </div>
+                <GoalProgress />
+                <WeeklyGoals />
               </div>
             </div>
-          )}
-
-          {/* Content */}
-         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-    <div className="lg:col-span-2 space-y-4">
-      
-      {/* --- Pending Tasks Section --- */}
-      {/* Only show this section if filter is 'all' OR 'upcoming' */}
-      {(filter === 'all' || filter === 'upcoming') && (
-        <div className="p-4 rounded-xl bg-[var(--card)] dark:bg-gray-800 border border-[var(--border)] dark:border-gray-700 shadow-sm">
-          <h3 className="text-lg font-semibold text-[var(--card-foreground)] dark:text-gray-100 mb-3">
-            Pending
-          </h3>
-          <div className="space-y-3">
-            {/* Inner check: Show tasks or "No tasks" message */}
-            {filtered(pendingTasks).length === 0 ? (
-              <p className="text-sm text-[var(--muted-foreground)] dark:text-gray-400">
-                No pending tasks yet.
-              </p>
-            ) : (
-              filtered(pendingTasks).map(task => <TaskCard key={task._id || task.id} task={task} />)
-            )}
           </div>
-        </div>
-      )}
-
-      {/* --- Completed Tasks Section --- */}
-      {/* Only show this section if filter is 'all' OR 'completed' */}
-      {(filter === 'all' || filter === 'completed') && (
-        <div className="p-4 rounded-xl bg-[var(--card)] dark:bg-gray-800 border border-[var(--border)] dark:border-gray-700 shadow-sm">
-          <h3 className="text-lg font-semibold text-[var(--card-foreground)] dark:text-gray-100 mb-3">
-            Completed
-          </h3>
-          <div className="space-y-3">
-            {/* Inner check: Show tasks or "No tasks" message */}
-            {filtered(completedTasks).length === 0 ? (
-              <p className="text-sm text-[var(--muted-foreground)] dark:text-gray-400">
-                No completed tasks yet.
-              </p>
-            ) : (
-              filtered(completedTasks).map(task => <TaskCard key={task._id || task.id} task={task} />)
-            )}
-          </div>
-        </div>
-      )}
-
-    </div>
-
-    {/* Right column widgets */}
-    <div className="space-y-4">
-      {/* Move Quick Tips to top for visibility */}
-      <div className="p-4 rounded-xl bg-[var(--card)] dark:bg-gray-800 border border-[var(--border)] dark:border-gray-700 shadow-sm">
-        <h3 className="text-lg font-semibold text-[var(--card-foreground)] dark:text-gray-100">Quick Tips</h3>
-        <ul className="mt-2 list-disc list-inside text-sm text-[var(--muted-foreground)] dark:text-gray-400 space-y-1">
-          <li>Use deadlines to prioritize tasks.</li>
-          <li>Break big goals into smaller, actionable items.</li>
-          <li>Mark tasks done to track your streaks.</li>
-        </ul>
+        </main>
       </div>
-      <GoalProgress />
-      <WeeklyGoals />
-    </div>
-  </div>
-        </div>
-      </main>
     </div>
   );
 }
