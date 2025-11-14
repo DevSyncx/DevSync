@@ -7,14 +7,11 @@ import StreakCard from "./DashBoard/StreakCard";
 import GoalsCard from "./DashBoard/GoalsCard";
 import TimeSpentCard from "./DashBoard/TimeSpentCard";
 import ActivityHeatmap from "./DashBoard/ActivityHeatMap";
-import NotesCard from "./DashBoard/NotesCard";
 import FeedbackController from "./feedback/FeedbackController";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/Components/ui/Card";
 import { ScrollArea } from "@/Components/ui/scroll-area";
 import { Alert, AlertDescription, AlertTitle } from "@/Components/ui/alert";
-import { Button } from "@/Components/ui/button";
-import { MessageSquare } from "lucide-react";
 import { useFeedback } from "@/context/FeedbackContext";
 import TotalProblemsCard from "./DashBoard/NotesCard";
 
@@ -24,6 +21,7 @@ export default function Dashboard() {
   const [error, setError] = useState(null);
   const [goals, setGoals] = useState([]);
 
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
   const { openFeedbackPopup } = useFeedback();
 
@@ -211,11 +209,17 @@ const calculateStreak = (activityDates) => {
   } = profile;
 
   return (
-    <div className="flex flex-col h-screen bg-background text-foreground">
-      <Topbar />
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar />
-        <ScrollArea className="flex-1 h-full p-4 sm:p-6 bg-muted/30">
+ 
+      <div className="flex flex-col h-screen bg-background text-foreground">
+      <Topbar onMenuClick={() => setIsSidebarOpen((prev) => !prev)} />
+
+      <div className="flex flex-1 overflow-hidden relative">
+        <Sidebar
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
+        />
+
+        <ScrollArea className="flex-1 h-full p-4 sm:p-6 bg-muted/30 z-0">
           {/* Add FeedbackController with the user profile */}
           <FeedbackController user={profile} />
           

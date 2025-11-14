@@ -13,7 +13,7 @@ import {
   Legend,
 } from "chart.js";
 
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ReactCalendarHeatmap from "react-calendar-heatmap";
 import "react-calendar-heatmap/dist/styles.css";
 import BackButton from "../ui/backbutton";
@@ -109,8 +109,9 @@ export default function LeetCode({ platforms = {} }) {
 
   return (
     <>
-      <BackButton />
-      <div className="w-full min-h-screen p-10 bg-[var(--card)] rounded-lg shadow-lg border border-[var(--border)] space-y-6">
+    <Link to="/dashboard" ><BackButton /></Link>
+      
+      <div className="w-full min-h-screen p-10 bg-[var(--background)] rounded-lg shadow-lg border border-[var(--border)] space-y-6">
         {/* Profile Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
@@ -151,7 +152,7 @@ export default function LeetCode({ platforms = {} }) {
             href={`https://leetcode.com/${username}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-[#FFA116] text-black px-4 py-2 rounded-md text-sm font-semibold hover:opacity-90 transition"
+            className="bg-[var(--primary)] text-[var(--foreground)] px-4 py-2 rounded-md text-sm font-semibold hover:opacity-90 transition cursor-pointer"
           >
             View on LeetCode
           </a>
@@ -221,7 +222,7 @@ function ContestStatsCard({ contestRating }) {
   };
 
   return (
-    <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg p-4 shadow-sm">
+    <div className="bg-[var(--card)] border border-[var(--border)] rounded-lg p-4 shadow-sm transform transition-transform transition-shadow duration-200 hover:scale-105 hover:shadow-lg hover:border-[var(--primary)] cursor-pointer">
       <h3 className="text-lg font-semibold mb-4 text-[var(--primary)]">
         Contest Stats
       </h3>
@@ -376,7 +377,7 @@ function EnhancedHeatmap({ submissionCalendar }) {
   }, [calendarData]);
 
   return (
-    <div className="relative bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 shadow-sm overflow-hidden">
+    <div className="relative bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 shadow-sm overflow-hidden transform transition-transform transition-shadow duration-200 hover:scale-102 hover:shadow-lg hover:border-[var(--primary)] cursor-pointer">
       <h3 className="text-lg font-semibold mb-4 text-[var(--primary)] flex justify-between items-center">
         Submission Heatmap
         {availableYears.length > 1 && (
@@ -553,7 +554,7 @@ export function ContestRatingHistory({ attendedContests = [], data = [] }) {
   return (
     <Card
       ref={containerRef}
-      className="bg-[var(--card)] border border-[var(--border)] shadow-md relative overflow-visible"
+      className="bg-[var(--card)] border border-[var(--border)] shadow-md relative overflow-visible transform transition-transform transition-shadow duration-200 hover:scale-102 hover:shadow-lg hover:border-[var(--primary)] cursor-pointer"
     >
       <CardHeader>
         <CardTitle className="text-[var(--primary)] text-lg">
@@ -717,8 +718,9 @@ function ProblemsSolvedCard({ stats }) {
           return (
             <div
               key={difficulty}
-              className="bg-[var(--bg)] border border-[var(--border)] rounded-md p-4 flex flex-col items-center hover:shadow-md transition"
-            >
+              className="bg-[var(--bg)] border border-[var(--border)] rounded-md p-4 flex flex-col items-center transform transition-transform transition-shadow duration-200 hover:scale-105 hover:shadow-lg hover:border-[var(--primary)] cursor-pointer"
+               >
+
               <p className="capitalize text-sm text-muted-foreground mb-2">
                 {difficulty}
               </p>

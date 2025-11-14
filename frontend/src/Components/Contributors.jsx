@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
 
 const ContributorsSection = () => {
   const [contributors, setContributors] = useState([]);
@@ -17,9 +18,7 @@ const ContributorsSection = () => {
         const response = await fetch(
           `https://api.github.com/repos/${OWNER}/${REPO}/contributors?per_page=100`
         );
-        if (!response.ok) {
-          throw new Error(`GitHub API error: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
         const data = await response.json();
         setContributors(data);
       } catch (err) {
@@ -33,49 +32,53 @@ const ContributorsSection = () => {
   }, []);
 
   return (
-    <div className="bg-[#0B1120] text-white my-8 py-12 pb-20 px-6 relative">
-      <h2 className="text-3xl font-bold text-center mb-8 text-blue-400">
+    <section className="relative bg-[#0B1120] text-white py-16 px-6 border-y border-[rgba(80,120,255,0.25)]">
+      <h2 className="text-4xl font-extrabold text-center mb-10 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-blue-400 to-fuchsia-500 animate-[liquidflow_8s_ease_infinite]">
         🚀 Our Top Contributors
       </h2>
 
       {loading && (
-        <p className="text-center text-gray-400">Loading contributors...</p>
+        <p className="text-center text-gray-400 animate-pulse">
+          Loading contributors...
+        </p>
       )}
       {error && <p className="text-center text-red-500">Error: {error}</p>}
 
-      {!loading && !error && (
+      {!loading && !error && contributors.length > 0 && (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            {contributors.slice(0, 3).map((contributor) => (
-              <a
-                key={contributor.id}
-                href={contributor.html_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-[#111827] rounded-2xl shadow-md p-6 flex flex-col items-center hover:scale-105 transition-transform duration-200"
-              >
-                <img
-                  src={contributor.avatar_url}
-                  alt={contributor.login}
-                  className="w-20 h-20 rounded-full object-cover"
-                />
-                <p className="mt-3 font-medium">{contributor.login}</p>
-                <p className="text-sm text-gray-400">
-                  {contributor.contributions} commits
-                </p>
-              </a>
-            ))}
+          <div className="relative max-w-6xl mx-auto">
+            <InfiniteMovingCards
+              items={contributors.map((c) => ({
+                quote: `${c.contributions} commits`,
+                name: c.login,
+                title: "GitHub Contributor",
+                avatar: c.avatar_url,
+                url: c.html_url,
+              }))}
+              direction="left"
+              speed="slow"
+            />
           </div>
 
           <button
             onClick={() => navigate("/contributors")}
-            className="absolute bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 cursor-pointer"
+            className="absolute bottom-6 right-6 bg-gradient-to-r from-blue-600 to-fuchsia-500 hover:from-blue-500 hover:to-fuchsia-400 
+                       text-white p-4 rounded-full shadow-lg flex items-center justify-center 
+                       transition-all duration-300 cursor-pointer hover:scale-110"
           >
             <FaArrowRight className="text-xl" />
           </button>
         </>
       )}
-    </div>
+
+      <style>{`
+        @keyframes liquidflow {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+      `}</style>
+    </section>
   );
 };
 

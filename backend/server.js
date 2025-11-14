@@ -7,6 +7,7 @@ const session = require("express-session");
 require("./utils/leetcodeCron");
 const passport = require("passport");
 const githubRoute = require("./routes/github.route");
+const statsRoute = require("./routes/stats");
 
 
 // Database connection
@@ -65,6 +66,7 @@ app.use("/api/profile", generalMiddleware, require("./routes/profile"));
 app.use("/api/contact", generalMiddleware, contactRouter);
 app.use("/api/tasks", require("./routes/tasks.route"));
 app.use("/api/feedback", require("./routes/feedback"));
+app.use("/api/stats", statsRoute);
 
 
 // Default route

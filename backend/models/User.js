@@ -99,6 +99,7 @@ const UserSchema = new Schema({
     type: [String],
     default: []
   },
+  lastActivity: { type: Date, default: null },
 
   // ✅ Fields for forgot/reset password
   resetPasswordToken: String,

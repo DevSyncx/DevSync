@@ -31,6 +31,7 @@ import FeedbackReviewPage from "./Components/feedback/FeedbackReviewPage";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 import NotFound from "./Components/ui/NotFound";
+import StatsSection from "./Components/DashBoard/StatsSection";
 
 
 function Home() {
@@ -84,7 +85,7 @@ function Home() {
             <FAQ />
           </div>
         </ScrollRevealWrapper>
-
+        < StatsSection />
         <ContributorsSection />
         <Footer />
         <FloatingSupportButton />
