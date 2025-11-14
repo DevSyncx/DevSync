@@ -42,7 +42,7 @@ export default function Sidebar() {
                   {label}
                 </Button>
               ))}
-              
+
               {/* Feedback Button */}
               <Button
                 variant="ghost"
@@ -58,7 +58,7 @@ export default function Sidebar() {
       </div>
 
       {/* Desktop Sidebar */}
-      <aside className="hidden sm:flex w-48 flex-col p-4 bg-[var(--sidebar)] h-full shadow-inner">
+      <aside className="hidden sm:flex w-48 flex-col p-4 bg-[var(--sidebar)] min-h-screen h-full shadow-inner">
         <nav className="flex flex-col gap-3">
           {menuItems.map(({ icon: Icon, label, path }) => (
             <Button
@@ -71,7 +71,7 @@ export default function Sidebar() {
               {label}
             </Button>
           ))}
-          
+
           {/* Feedback Button */}
           <Button
             variant="ghost"
