@@ -1,0 +1,19 @@
+class Solution {
+    public int earliestTime(int[][] tasks) {
+    int minFinish = Integer.MAX_VALUE;
+        for(int[] task : tasks){
+      int start = task[0];
+       int end = task[1];
+        int finish = start+end;
+        minFinish = Math.min(minFinish, finish);
+    }
+    return minFinish;
+    }
+    public static void main(String[] args){
+     Solution sol = new Solution();   
+        int[][] task1 = {{1,6}, {2,3}};
+        System.out.println(sol.earliestTime(task1));
+        int[][] task2 = {{100,100},{100,100},{100,100}};
+        System.out.println(sol.earliestTime(task2));
+    }
+}
